@@ -10,39 +10,54 @@
 <h1>Custom dashboard</h1>
 @if (Instance != null && Instance.Items != null)
 {
-    <div class="d-grid">
-        @foreach (var group in GroupItemsByY(Instance.Items.OrderBy(i => i.SortIndex)))
+    <div class="d-grid" style="gap:5px !important;">
+        @foreach (var group in GroupItemsByY(Instance.Items.OrderBy(i => i.Position.Y)))
         {
-            <div class="row gap-2 row-cols-@Instance.MaxX">
+            <div class="row " style="gap:5px !important;">
                 @foreach (var item in group.OrderBy(i => i.Position.X))
                 {
                     <div class="col" style="max-width: 400px; max-height: 150px; position: relative;">
                         <div class="card" style="width: 100%; height: 100%;">
                             <div class="card-body">
-                                <h5 class="card-title no-select">@JsonConvert.SerializeObject(item)</h5>
+                                <h5 class="card-title no-select">@item.Name</h5>
+                                @* <h5 class="card-title no-select">@JsonConvert.SerializeObject(item)</h5> *@
                                 <span class="badge @(SelectedIndex == Instance.Items.IndexOf(item) ? "bg-primary" : "bg-secondary")"
                                     style="position: absolute; top: 0; right: 0;">
                                     @if (SelectedIndex == Instance.Items.IndexOf(item))
                                     {
-                                        <i class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex" style="cursor:pointer;"></i>
+                                        <i title="Switch positions" class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex"
+                                            style="cursor:pointer;"> Selected</i>
                                     }
                                     else
                                     {
-                                        <i class="bi bi-arrow-left-right" style="cursor:pointer;"
-                                            @onclick="e => ClickItem(e, item)"></i>
+                                        <i title="Switch positions" class="bi bi-arrow-left-right" style="cursor:pointer;"
+                                            @onclick="e => ClickItem(e, item)">
+                                            @if (SelectedIndex.HasValue && SelectedIndex != Instance.Items.IndexOf(item))
+                                            {
+                                                @: Switch Positions with
+                                            }
+                                        </i>
                                     }
                                 </span>
-
                             </div>
                         </div>
                     </div>
                 }
             </div>
         }
+        <div class="row">
+            <div class="col">
+                <AddWidgetToCustomDashboard Instance="@Instance" />
+            </div>
+        </div>
     </div>
 }
 
-<AddWidgetToCustomDashboard Instance="@Instance" />
+@if (Instance != null && Instance.Items != null)
+{
+    <pre style="max-width: 80vw; margin: 5rem 0">@JsonConvert.SerializeObject(Instance, Formatting.Indented)</pre>
+}
+
 
 @code {
     public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance();
@@ -90,12 +105,15 @@
 
     private void SwapItems(int index1, int index2)
     {
-        var item1 = Instance.Items[index1];
-        var item2 = Instance.Items[index2];
+        CustomDashboardItem item1 = Instance.Items[index1];
+        CustomDashboardItem item2 = Instance.Items[index2];
 
-        var tempPosition = item1.Position;
+        (int X, int Y) tempPosition = item1.Position;
+        int tempSortIndex = item1.SortIndex;
         item1.Position = item2.Position;
         item2.Position = tempPosition;
+        item1.SortIndex = item2.SortIndex;
+        item2.SortIndex = tempSortIndex;
     }
     private int? SelectedIndex { get; set; }
 
@@ -107,6 +125,7 @@
         {
             SwapItems(SelectedIndex.Value, Instance.Items.IndexOf(item));
             SelectedIndex = null;
+            StateHasChanged();
         }
         else
         {
