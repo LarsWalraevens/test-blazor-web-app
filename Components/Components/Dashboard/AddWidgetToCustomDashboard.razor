@@ -1,0 +1,124 @@
+@namespace CustomDashboard.Components
+@using Newtonsoft.Json
+@using BaseComponents
+@using Microsoft.AspNetCore.Components
+@using CustomDashboard.Components
+@using System.Collections.ObjectModel
+
+<div @onclick="@ToggleModal" id="custom-dashboard-add-widget"
+    class="d-flex justify-content-center align-items-center border border-3 rounded-sm"
+    style="width: 200px; height: 200px;">
+    <span class="bi bi-plus" style="font-size: 3rem" />
+</div>
+
+@if (ShowModal)
+{
+    <div class="modal d-block" id="exampleModal" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adding new widget</h5>
+                    <button @onclick="@ToggleModal" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (ToAddItem != null)
+                    {
+                        <form @onsubmit="@OnSubmitNewItem">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input required type="text" class="form-control" id="name" @bind="@ToAddItem.Name">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p>Adding new item...</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public CustomDashboardInstance Instance { get; set; }
+
+    private CustomDashboardItem ToAddItem { get; set; }
+
+    private bool ShowModal { get; set; }
+
+    // Toggle modal & create new to-add item
+    private async Task ToggleModal()
+    {
+        ShowModal = !ShowModal;
+        await AddNewItem();
+        if (ToAddItem == null)
+        {
+            ShowModal = false;
+        }
+    }
+
+    // Create new item with next available position logic
+    private Task AddNewItem()
+    {
+        try
+        {
+            if (Instance.Items.Count == 0)
+            {
+
+                ToAddItem = new CustomDashboardItem
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = string.Empty,
+                        SortIndex = Instance.Items.Count + 1,
+                        Position = (1, 1),
+                    };
+            }
+            else
+            {
+                CustomDashboardItem LatestItem = Instance.Items.OrderBy(i => i.SortIndex).Last();
+                // ? Check if we reached max capacity in grid
+                if (LatestItem.Position.X + 1 > Instance.MaxX && (LatestItem.Position.X + 1 > Instance.MaxX && Instance.MaxY ==
+                LatestItem.Position.Y))
+                {
+                    throw new Exception("Max capacity reached");
+                }
+                else
+                {
+                    ToAddItem = new CustomDashboardItem
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = string.Empty,
+                            SortIndex = Instance.Items.Count + 1,
+                            Position = (
+                        // If we dont have any space left in row, add to next row
+                        LatestItem.Position.X >= Instance.MaxX ? 1 : LatestItem.Position.X + 1,
+                        // If we dont have any space left in row, add to next column
+                        LatestItem.Position.X + 1 > Instance.MaxX ? LatestItem.Position.Y + 1 : LatestItem.Position.Y
+                        ),
+                        };
+
+                }
+            }
+            return Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("AddNewItem Exception:" + ex.Message);
+            return Task.CompletedTask;
+        }
+    }
+
+    private async Task OnSubmitNewItem()
+    {
+        Instance.Items.Add(ToAddItem);
+        await InvokeAsync(StateHasChanged);
+        ToAddItem = null;
+
+        await InvokeAsync(StateHasChanged);
+        await ToggleModal();
+    }
+}

@@ -1,0 +1,116 @@
+@page "/dashboard"
+@rendermode InteractiveServer
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using System.Collections.ObjectModel
+@using Newtonsoft.Json
+
+<PageTitle>Custom dashboard</PageTitle>
+
+<h1>Custom dashboard</h1>
+@if (Instance != null && Instance.Items != null)
+{
+    <div class="d-grid">
+        @foreach (var group in GroupItemsByY(Instance.Items.OrderBy(i => i.SortIndex)))
+        {
+            <div class="row gap-2 row-cols-@Instance.MaxX">
+                @foreach (var item in group.OrderBy(i => i.Position.X))
+                {
+                    <div class="col" style="max-width: 400px; max-height: 150px; position: relative;">
+                        <div class="card" style="width: 100%; height: 100%;">
+                            <div class="card-body">
+                                <h5 class="card-title no-select">@JsonConvert.SerializeObject(item)</h5>
+                                <span class="badge @(SelectedIndex == Instance.Items.IndexOf(item) ? "bg-primary" : "bg-secondary")"
+                                    style="position: absolute; top: 0; right: 0;">
+                                    @if (SelectedIndex == Instance.Items.IndexOf(item))
+                                    {
+                                        <i class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex" style="cursor:pointer;"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-arrow-left-right" style="cursor:pointer;"
+                                            @onclick="e => ClickItem(e, item)"></i>
+                                    }
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+<AddWidgetToCustomDashboard Instance="@Instance" />
+
+@code {
+    public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance();
+    protected override void OnInitialized()
+    {
+        try
+        {
+            // Ensure UI updates when Items collection changes
+            Instance.Items.CollectionChanged += (sender, e) => InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    // Method to group items by Position.Y
+    private IEnumerable<IEnumerable<CustomDashboardItem>> GroupItemsByY(IEnumerable<CustomDashboardItem> items)
+    {
+        var groups = new List<List<CustomDashboardItem>>();
+        var currentGroup = new List<CustomDashboardItem>();
+        int? lastY = null;
+
+        foreach (var item in items)
+        {
+            if (!lastY.HasValue || item.Position.Y != lastY)
+            {
+                if (currentGroup.Count > 0)
+                {
+                    groups.Add(currentGroup);
+                    currentGroup = new List<CustomDashboardItem>();
+                }
+                lastY = item.Position.Y;
+            }
+            currentGroup.Add(item);
+        }
+
+        if (currentGroup.Count > 0)
+        {
+            groups.Add(currentGroup);
+        }
+
+        return groups;
+    }
+
+    private void SwapItems(int index1, int index2)
+    {
+        var item1 = Instance.Items[index1];
+        var item2 = Instance.Items[index2];
+
+        var tempPosition = item1.Position;
+        item1.Position = item2.Position;
+        item2.Position = tempPosition;
+    }
+    private int? SelectedIndex { get; set; }
+
+    private void ResetSelectedIndex() => SelectedIndex = null;
+
+    private void ClickItem(MouseEventArgs e, CustomDashboardItem item)
+    {
+        if (SelectedIndex.HasValue)
+        {
+            SwapItems(SelectedIndex.Value, Instance.Items.IndexOf(item));
+            SelectedIndex = null;
+        }
+        else
+        {
+            SelectedIndex = Instance.Items.IndexOf(item);
+        }
+    }
+}

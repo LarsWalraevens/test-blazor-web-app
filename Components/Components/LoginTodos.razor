@@ -1,0 +1,98 @@
+@namespace LoginTodos
+
+<section>
+    @if (isPasswordValid)
+    {
+        <div>
+            <EditForm Model="@this" OnValidSubmit="AddTodo" FormName="passwordForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="d-inline-block">
+                    <label for="password">
+                        <span class="d-block mb-2">
+                            New todo:
+                        </span>
+                        <InputText type="text" @bind-Value="TodoInputController.NewTodo" />
+                    </label>
+                </div>
+                <button class="btn btn-primary" type="submit">add todo</button>
+            </EditForm>
+            <ul>
+                @foreach (TodoInputClass todo in todos)
+                {
+                    <li>@todo.NewTodo</li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <EditForm Model="@this" OnValidSubmit="CheckPassword" FormName="passwordForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="d-inline-block">
+                <label for="password">Password</label>
+                <InputText type="password" id="password" @bind-Value="PasswordFormController.myPasswordInput" />
+            </div>
+            <button class="btn btn-primary" type="submit">Check password</button>
+        </EditForm>
+    }
+</section>
+
+@code {
+    [SupplyParameterFromForm]
+    public PasswordFormClass PasswordFormController { get; set; }
+    [SupplyParameterFromForm]
+    public TodoInputClass TodoInputController { get; set; }
+    private List<TodoInputClass> todos = new List<TodoInputClass>();
+
+    private string myPasswordLock = "wachtwoord";
+    private bool isPasswordValid = false;
+    protected override void OnInitialized()
+    {
+        PasswordFormController ??= new();
+        TodoInputController ??= new();
+    }
+
+    async void AddTodo()
+    {
+        todos.Add(new TodoInputClass(TodoInputController));
+        await Task.Delay(1000);
+        TodoInputController.NewTodo = string.Empty;
+    }
+
+    void CheckPassword(EditContext editContext)
+    {
+        Console.WriteLine($"Password entered: {PasswordFormController.myPasswordInput}"); // Debugging output
+
+        if (PasswordFormController.myPasswordInput == myPasswordLock)
+        {
+            isPasswordValid = true;
+            Console.WriteLine("Password is valid"); // Confirm password validity
+            StateHasChanged(); // Ensure the UI updates
+        }
+        else
+        {
+            Console.WriteLine("Invalid password");
+        }
+    }
+
+
+    public class PasswordFormClass
+    {
+        public string myPasswordInput { get; set; }
+    }
+    public class TodoInputClass
+    {
+        public TodoInputClass()
+        {
+
+        }
+        public TodoInputClass(TodoInputClass todo)
+        {
+            NewTodo = todo.NewTodo;
+        }
+
+        public string NewTodo { get; set; }
+    }
+}

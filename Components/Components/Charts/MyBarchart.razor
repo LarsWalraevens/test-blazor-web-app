@@ -1,0 +1,57 @@
+@using BlazorDemo.Data;
+@using BlazorDemo.DataProviders;
+@using DevExpress.Blazor;
+
+
+<hr>
+<div class="mx-auto w-75 py-5">
+    <h3>Barchart component</h3>
+    <DxChart T="PopulationAgeStructureItem" Data="@ChartsData" Width="100%">
+        <DxChartTitle Text="Population: Age Structure">
+            <DxChartSubTitle Text="Data Estimate for 2020" />
+        </DxChartTitle>
+        <DxChartBarSeries Name="0-14 years" T="PopulationAgeStructureItem" TArgument="string" TValue="int"
+            ArgumentField="pasi => pasi.Country" ValueField="pasi => pasi.Population" SummaryMethod="Enumerable.Sum"
+            Filter='pasi => pasi.AgeGroup == "0-14 years"' />
+        <DxChartBarSeries Name="15-64 years" T="PopulationAgeStructureItem" TArgument="string" TValue="int"
+            ArgumentField="pasi => pasi.Country" ValueField="pasi => pasi.Population" SummaryMethod="Enumerable.Sum"
+            Filter='pasi => pasi.AgeGroup == "15-64 years"' />
+        <DxChartBarSeries Name="65 years and older" T="PopulationAgeStructureItem" TArgument="string" TValue="int"
+            ArgumentField="pasi => pasi.Country" ValueField="pasi => pasi.Population" SummaryMethod="Enumerable.Sum"
+            Filter='pasi => pasi.AgeGroup == "65 years and older"' />
+        <DxChartLegend Position="RelativePosition.Outside" HorizontalAlignment="HorizontalAlignment.Center"
+            VerticalAlignment="VerticalEdge.Bottom" />
+        <DxChartTooltip Enabled="true" Position="RelativePosition.Outside">
+            <div style="margin: 0.75rem">
+                <div class="fw-bold">@context.Point.Argument</div>
+                <div>Age Group: @context.Point.SeriesName</div>
+                <div>Population: @($"{context.Point.Value:N0}")</div>
+            </div>
+        </DxChartTooltip>
+    </DxChart>
+
+    @* <p>Raw data</p> *@
+</div>
+<hr>
+
+@code {
+    IEnumerable<PopulationAgeStructureItem> ChartsData;
+    protected override async Task OnInitializedAsync()
+    {
+        ChartsData = new List<PopulationAgeStructureItem>() {
+            new PopulationAgeStructureItem("0-14 years", "Male", "USA", 10000),
+            new PopulationAgeStructureItem("0-14 years", "Female", "USA", 20000),
+            new PopulationAgeStructureItem("15-64 years", "Male", "USA", 30000),
+            new PopulationAgeStructureItem("15-64 years", "Female", "USA", 40000),
+            new PopulationAgeStructureItem("65 years and older", "Male", "USA", 50000),
+            new PopulationAgeStructureItem("65 years and older", "Female", "USA", 60000),
+            new PopulationAgeStructureItem("0-14 years", "Male", "UK", 70000),
+            new PopulationAgeStructureItem("0-14 years", "Female", "UK", 80000),
+            new PopulationAgeStructureItem("15-64 years", "Male", "UK", 90000),
+            new PopulationAgeStructureItem("15-64 years", "Female", "UK", 100000),
+            new PopulationAgeStructureItem("65 years and older", "Male", "UK", 110000)
+        };
+    }
+    [Parameter] public bool ShowSeriesPointMarkers { get; set; }
+    [Parameter] public bool ShowSeriesLabels { get; set; }
+}

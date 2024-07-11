@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject IFileVersionProvider? FileVersionProvider
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="test-blazor-web-app.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @* bootstrap-external for Bootstrap 5 *@
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/bootstrap-external.bs5.min.css") rel="stylesheet" />
+    @* bootstrap-external for Bootstrap 4 *@
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/bootstrap-external.bs4.min.css") rel="stylesheet" />
+    @* Bootstrap 5 *@
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-berry.bs5.min.css") rel="stylesheet" />
+    @* Bootstrap 4 *@
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-berry.bs4.min.css") rel="stylesheet" />
+    @DxResourceManager.RegisterScripts()
+
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes />
+    <script type="text/javascript" src="_framework/blazor.server.js"></script>
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.2.5/js/dx.all.js"></script>
+    <script src="_framework/blazor.web.js"></script>
+    <script>
+        window.interop = {
+            getBoundingClientRect: function (element) {
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    return {
+                        left: rect.left,
+                        top: rect.top,
+                        right: rect.right,
+                        bottom: rect.bottom,
+                        width: rect.width,
+                        height: rect.height
+                    };
+                }
+                return null;
+            }
+        };
+
+    </script>
+</body>
+
+</html>
+
+@code {
+    private string AppendVersion(string path)
+    {
+        if (FileVersionProvider != null)
+        {
+            return FileVersionProvider.AddFileVersionToPath("/", path);
+        }
+        return path;
+    }
+}

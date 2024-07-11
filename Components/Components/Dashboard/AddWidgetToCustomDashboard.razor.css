@@ -1,0 +1,6 @@
+#custom-dashboard-add-widget:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+#custom-dashboard-add-widget {
+    cursor: pointer;
+}

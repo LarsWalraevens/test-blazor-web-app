@@ -1,0 +1,54 @@
+@page "/http-request"
+@using System.Text.Json
+@using Newtonsoft.Json
+
+<PageTitle>Http request</PageTitle>
+
+<h1>Http request</h1>
+
+@if (TodoItem == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <p><strong>ID:</strong> @TodoItem.Id</p>
+        <p><strong>Title:</strong> @TodoItem.Title</p>
+        <p><strong>Completed:</strong> @TodoItem.Completed</p>
+        <pre>@JsonConvert.SerializeObject(TodoItem)</pre>
+    </div>
+}
+
+@code {
+    [Inject]
+    public HttpClient Http { get; set; }
+
+    public Todo TodoItem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            @* await Task.Delay(2000); *@
+            var response = await Http.GetAsync("https://jsonplaceholder.typicode.com/todos/1");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            TodoItem = JsonConvert.DeserializeObject<Todo>(content);
+
+            @* TodoItem = JsonSerializer.Deserialize<Todo>(content); *@
+        }
+        catch (Exception ex)
+        {
+            // Handle errors here (logging, displaying error message, etc.)
+            Console.WriteLine($"Error fetching data: {ex.Message}");
+        }
+    }
+
+    public class Todo
+    {
+        public long Id { get; set; }
+        public string Title { get; set; }
+        public bool Completed { get; set; }
+    }
+}

@@ -1,0 +1,182 @@
+@page "/dashboard"
+@rendermode InteractiveServer
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using System.Collections.ObjectModel
+@using Newtonsoft.Json
+@using System.Drawing
+
+<PageTitle>Custom dashboard</PageTitle>
+
+<h1>Custom dashboard</h1>
+@if (Instance != null && Instance.Items != null)
+{
+    <div class="d-grid" @onmousedown="StartDragging" @onmouseup="StopDragging" @onmousemove="Dragging">
+        @foreach (var group in GroupItemsByY(Instance.Items.OrderBy(i => i.SortIndex)))
+        {
+            <div class="row gap-2 row-cols-@Instance.MaxX">
+                @foreach (var item in group.OrderBy(i => i.Position.X))
+                {
+                    <div class="col" style="max-width: 400px; max-height: 150px; position: relative;">
+                        <div class="card" style="width: 100%; height: 100%;" @onmousedown="e => StartDraggingItem(e, item)"
+                            @ondragstart="OnDragStart">
+                            <div class="card-body">
+                                <h5 class="card-title">@JsonConvert.SerializeObject(item)</h5>
+                            </div>
+                        </div>
+                        @if (DraggingItem != null && DraggingItem == item)
+                        {
+                            <div class="drag-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+<AddWidgetToCustomDashboard Instance="@Instance" />
+
+@code {
+    public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance();
+
+    // Dragging state
+    private bool IsDragging { get; set; }
+    private CustomDashboardItem DraggingItem { get; set; }
+    private int InitialIndex { get; set; }
+    private int CurrentIndex { get; set; }
+    private int InitialX { get; set; }
+    private int InitialY { get; set; }
+
+    // Method to group items by Position.Y
+    private IEnumerable<IEnumerable<CustomDashboardItem>> GroupItemsByY(IEnumerable<CustomDashboardItem> items)
+    {
+        var groups = new List<List<CustomDashboardItem>>();
+        var currentGroup = new List<CustomDashboardItem>();
+        int? lastY = null;
+
+        foreach (var item in items)
+        {
+            if (!lastY.HasValue || item.Position.Y != lastY)
+            {
+                if (currentGroup.Count > 0)
+                {
+                    groups.Add(currentGroup);
+                    currentGroup = new List<CustomDashboardItem>();
+                }
+                lastY = item.Position.Y;
+            }
+            currentGroup.Add(item);
+        }
+
+        if (currentGroup.Count > 0)
+        {
+            groups.Add(currentGroup);
+        }
+
+        return groups;
+    }
+
+    // Dragging events
+    private void StartDragging(MouseEventArgs e)
+    {
+        if (IsDragging || DraggingItem != null)
+        {
+            return;
+        }
+
+        IsDragging = true;
+    }
+
+    private void StopDragging(MouseEventArgs e)
+    {
+        if (!IsDragging)
+        {
+            return;
+        }
+
+        IsDragging = false;
+        DraggingItem = null;
+        StateHasChanged();
+    }
+
+    private void Dragging(MouseEventArgs e)
+    {
+        if (!IsDragging)
+        {
+            return;
+        }
+
+        CurrentIndex = GetItemIndex((int)e.ClientX, (int)e.ClientY);
+        if (CurrentIndex != InitialIndex)
+        {
+            SwapItems(CurrentIndex, InitialIndex);
+            InitialIndex = CurrentIndex;
+            StateHasChanged();
+        }
+    }
+
+    private void StartDraggingItem(MouseEventArgs e, CustomDashboardItem item)
+    {
+        if (IsDragging)
+        {
+            return;
+        }
+
+        IsDragging = true;
+        DraggingItem = item;
+        InitialIndex = Instance.Items.IndexOf(item);
+        InitialX = item.Position.X;
+        InitialY = item.Position.Y;
+    }
+
+    private void OnDragStart(DragEventArgs e)
+    {
+        @* e.PreventDefault(); *@   
+        e.DataTransfer.EffectAllowed = "move";
+    }
+    private int GetItemIndex(int x, int y)
+    {
+        foreach (var group in GroupItemsByY(Instance.Items.OrderBy(i => i.SortIndex)))
+        {
+            foreach (var item in group.OrderBy(i => i.Position.X))
+            {
+                // Use Rectangle instead of GetBoundingClientRect
+                var rect = new Rectangle(item.Position.X, item.Position.Y, 400, 150);
+                if (x >= rect.Left && x <= rect.Right && y >= rect.Top && y <= rect.Bottom)
+                {
+                    return Instance.Items.IndexOf(item);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private void SwapItems(int index1, int index2)
+    {
+        var item1 = Instance.Items[index1];
+        var item2 = Instance.Items[index2];
+
+        Instance.Items[index1] = item2;
+        Instance.Items[index2] = item1;
+
+        item1.Position = item2.Position;
+        item2.Position = (InitialX, InitialY);
+
+        item1.SortIndex = index2 + 1;
+        item2.SortIndex = index1 + 1;
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            // Ensure UI updates when Items collection changes
+            Instance.Items.CollectionChanged += (sender, e) => InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

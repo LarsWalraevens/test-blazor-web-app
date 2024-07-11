@@ -1,0 +1,60 @@
+@using BlazorDemo.Data;
+@using BlazorDemo.DataProviders;
+@using DevExpress.Blazor;
+
+
+<hr>
+<div class="mx-auto w-75 py-5">
+    <h3>Linechart component</h3>
+    <DxChart Data="chartsData" Width="100%" LabelOverlap="ChartLabelOverlap.Hide">
+        <DxChartLineSeries Name="North America" T="SaleInfo" TArgument="DateTime" TValue="int"
+            ArgumentField="si => new DateTime(si.Date.Year, si.Date.Month, 1)" ValueField="si => si.Amount"
+            SummaryMethod="Enumerable.Sum" Filter='si => si.Region == "North America" '
+            HoverMode="ChartContinuousSeriesHoverMode.None">
+            <DxChartSeriesPoint Visible=ShowSeriesPointMarkers HoverMode="ChartSeriesPointHoverMode.None" />
+            <DxChartSeriesLabel Visible=ShowSeriesLabels ValueFormat="ChartElementFormat.Thousands(1)" />
+        </DxChartLineSeries>
+        <DxChartLineSeries Name="Europe" T="SaleInfo" TArgument="DateTime" TValue="int"
+            ArgumentField="si => new DateTime(si.Date.Year, si.Date.Month, 1)" ValueField="si => si.Amount"
+            SummaryMethod="Enumerable.Sum" Filter='si => si.Region == "Europe"'
+            HoverMode="ChartContinuousSeriesHoverMode.None">
+            <DxChartSeriesPoint Visible=ShowSeriesPointMarkers HoverMode="ChartSeriesPointHoverMode.None" />
+            <DxChartSeriesLabel Visible=ShowSeriesLabels ValueFormat="ChartElementFormat.Thousands(1)" />
+        </DxChartLineSeries>
+        <DxChartLineSeries Name="North Africa" T="SaleInfo" TArgument="DateTime" TValue="int"
+            ArgumentField="si => new DateTime(si.Date.Year, si.Date.Month, 1)" ValueField="si => si.Amount"
+            SummaryMethod="Enumerable.Sum" Filter='si => si.Region == "North Africa"'
+            HoverMode="ChartContinuousSeriesHoverMode.None">
+            <DxChartSeriesPoint Visible=ShowSeriesPointMarkers HoverMode="ChartSeriesPointHoverMode.None" />
+            <DxChartSeriesLabel Visible=ShowSeriesLabels ValueFormat="ChartElementFormat.Thousands(1)" />
+        </DxChartLineSeries>
+        <DxChartLegend Position="RelativePosition.Outside" HorizontalAlignment="HorizontalAlignment.Right" />
+    </DxChart>
+    <p>Raw data</p>
+    <ul>@foreach (var item in chartsData)
+        {
+            <li class="mb-1">@item.Region has $@item.Amount at @item.Date </li>
+        }
+    </ul>
+</div>
+<hr>
+
+@code {
+    IEnumerable<SaleInfo> chartsData;
+    [Parameter] public bool ShowSeriesPointMarkers { get; set; }
+    [Parameter] public bool ShowSeriesLabels { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ShowSeriesPointMarkers = true;
+        chartsData = new List<SaleInfo>() {
+new SaleInfo() { Date = new DateTime(2022, 1, 1), Region = "North America", Amount = 10000 },
+new SaleInfo() { Date = new DateTime(2022, 1, 1), Region = "Europe", Amount = 20000 },
+new SaleInfo() { Date = new DateTime(2022, 1, 1), Region = "North Africa", Amount = 30000 },
+new SaleInfo() { Date = new DateTime(2022, 2, 1), Region = "North America", Amount = 12000 },
+new SaleInfo() { Date = new DateTime(2022, 2, 1), Region = "Europe", Amount = 22000 },
+new SaleInfo() { Date = new DateTime(2022, 2, 1), Region = "North Africa", Amount = 10000 },
+};
+
+    }
+}

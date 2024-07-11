@@ -1,0 +1,52 @@
+@using BlazorDemo.Data;
+@using BlazorDemo.DataProviders;
+@using DevExpress.Blazor;
+
+<hr>
+<div class="mx-auto w-75 py-5">
+    <h3>Piechart component</h3>
+    <DxPieChart Data="@SalesData" Diameter="diameter" InnerDiameter="innerDiameter" StartAngle="startAngle"
+        SegmentDirection="segmentDirection" T="SaleInfo">
+        <DxPieChartSeries T="SaleInfo" TArgument="string" TValue="double" ValueField="si => si.Amount"
+            ArgumentField="si => si.Region" SummaryMethod="Enumerable.Sum">
+            <DxChartSeriesLabel Visible="showLabels" Position="labelPosition"
+                ValueFormat="ChartElementFormat.Thousands(1)">
+                <DxChartSeriesLabelConnector Visible="true" />
+            </DxChartSeriesLabel>
+        </DxPieChartSeries>
+        <DxChartTooltip Enabled="true" Position="RelativePosition.Outside">
+            <div style="margin: 0.75rem">
+                <div class="fw-bold">@context.Point.Argument</div>
+                <div>Sales: @($"${context.Point.Value:#,0.}")</div>
+            </div>
+        </DxChartTooltip>
+        <DxChartTitle Text="Sales by Continent">
+            <DxChartSubTitle Text="USD" />
+        </DxChartTitle>
+        <DxChartLegend HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalEdge.Bottom"
+            Position="RelativePosition.Outside" Orientation="Orientation.Horizontal" />
+    </DxPieChart>
+    <p>Raw data</p>
+    <ul>@foreach (var item in SalesData)
+        {
+            <li class="mb-1">@item.Region has $@item.Amount </li>
+        }
+    </ul>
+
+</div>
+<hr>
+
+@code {
+    IEnumerable<SaleInfo> SalesData = new List<SaleInfo>(){
+new SaleInfo { Region = "North America", Amount = 1000 },
+new SaleInfo { Region = "Europe", Amount = 1200 },
+new SaleInfo { Region = "Asia", Amount = 1400 },
+new SaleInfo { Region = "Australia", Amount = 1600 },
+};
+    double? diameter = null;
+    double innerDiameter = 0.5;
+    bool showLabels = true;
+    int startAngle = 0;
+    PieChartSegmentDirection segmentDirection = PieChartSegmentDirection.Clockwise;
+    RelativePosition labelPosition = RelativePosition.Outside;
+}
