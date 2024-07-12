@@ -24,13 +24,15 @@
                 <div class="modal-body">
                     @if (ToAddItem != null)
                     {
-                        <form @onsubmit="@OnSubmitNewItem">
+                        <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem">
+                            <DataAnnotationsValidator />
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input required type="text" class="form-control" id="name" @bind="@ToAddItem.Name">
+                                <InputText id="name" @bind-Value="@ToAddItem.Name" />
+                                <ValidationMessage For="@(() => ToAddItem.Name)" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        </EditForm>
                     }
                     else
                     {
@@ -68,7 +70,6 @@
         {
             if (Instance.Items.Count == 0)
             {
-
                 ToAddItem = new CustomDashboardItem
                     {
                         Id = Guid.NewGuid(),
@@ -114,11 +115,14 @@
 
     private async Task OnSubmitNewItem()
     {
-        Instance.Items.Add(ToAddItem);
-        await InvokeAsync(StateHasChanged);
-        ToAddItem = null;
+        if (ToAddItem != null)
+        {
+            Instance.Items.Add(ToAddItem);
+            await InvokeAsync(StateHasChanged);
+            ToAddItem = null;
 
-        await InvokeAsync(StateHasChanged);
-        await ToggleModal();
+            await InvokeAsync(StateHasChanged);
+            await ToggleModal();
+        }
     }
 }

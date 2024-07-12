@@ -34,8 +34,21 @@ namespace CustomDashboard.Components
 
     public class CustomDashboardInstance
     {
-        public int MaxX { get; set; } = 4;
-        public int MaxY { get; set; } = 10;
+        private int _maxX = 4;
+        public int MaxX
+        {
+            get => _maxX;
+            set => _maxX = value > 0 ? value : 4;
+        }
+
+        private int _maxY = 5;
+        public int MaxY
+        {
+            get => _maxY;
+            set => _maxY = value > 0 ? value : 5;
+        }
+
+        public bool IsEditing { get; set; } = false;
 
         public ObservableCollection<CustomDashboardItem> Items { get; set; } = new ObservableCollection<CustomDashboardItem>([]);
 

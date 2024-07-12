@@ -27,7 +27,7 @@
             <div class="row " style="gap:5px !important;">
                 @foreach (var item in group.OrderBy(i => i.Position.X))
                 {
-                    <div class="col" style="position: relative;">
+                    <div class="col" style="max-width: 400px; max-height: 150px; position: relative;">
                         <div class="card" style="width: 100%; height: 100%;">
                             <div class="card-body">
                                 <h5 class="card-title no-select">@item.Name</h5>
