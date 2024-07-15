@@ -1,9 +1,9 @@
 @page "/dashboard-grid"
-@rendermode InteractiveServer
 @using CustomDashboard.Components
 @using Microsoft.AspNetCore.Components
 @using System.Collections.ObjectModel
 @using Newtonsoft.Json
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Custom dashboard</PageTitle>
 
@@ -16,7 +16,7 @@
 
 @if (Instance != null && Instance.Items != null)
 {
-    <div style="@GenerateGridStyles()">
+    <div id="gridContainer">
         @foreach (var item in Instance.Items)
         {
             <div class="grid-item" style="grid-area: @GetGridAreaName(item.Name); min-width: 300px; min-height: 150px; position: relative; background-color: white;">
@@ -79,11 +79,11 @@
     {
         Items = new ObservableCollection<CustomDashboardItem>() {
             new CustomDashboardItem() { Position = (0, 0), SortIndex = 1, Name= "Widget 1", Size= (2, 2) },
-            new CustomDashboardItem() { Position = (2, 0), SortIndex = 2, Name= "Widget 2", Size=(1,1) },
-            new CustomDashboardItem() { Position = (0, 2), SortIndex = 3, Name= "Widget 3", Size=(1,1) },
-            new CustomDashboardItem() { Position = (1, 2), SortIndex = 4, Name= "Widget 4", Size=(1,1) },
-            new CustomDashboardItem() { Position = (2, 2), SortIndex = 5, Name= "Widget 5", Size=(1,1) },
-            new CustomDashboardItem() { Position = (3, 2), SortIndex = 6, Name= "Widget 6", Size=(1,1) },
+            new CustomDashboardItem() { Position = (2, 0), SortIndex = 2, Name= "Widget 2" },
+            new CustomDashboardItem() { Position = (0, 2), SortIndex = 3, Name= "Widget 3" },
+            new CustomDashboardItem() { Position = (1, 2), SortIndex = 4, Name= "Widget 4" },
+            new CustomDashboardItem() { Position = (2, 2), SortIndex = 5, Name= "Widget 5" },
+            new CustomDashboardItem() { Position = (3, 2), SortIndex = 6, Name= "Widget 6" },
         },
         MaxX = 5,
         MaxY = 5,
@@ -93,6 +93,20 @@
     private string GetGridAreaName(string name)
     {
         return name.ToLower().Replace(" ", "");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await UpdateGridTemplateAreas();
+        }
+    }
+
+    private async Task UpdateGridTemplateAreas()
+    {
+        var style = GenerateGridStyles();
+        await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('gridContainer').setAttribute('style', '{style}');");
     }
 
     private string GenerateGridStyles()
@@ -149,8 +163,9 @@
         item2.Position = tempPosition;
         item1.SortIndex = item2.SortIndex;
         item2.SortIndex = tempSortIndex;
-        GenerateGridStyles();
+
         StateHasChanged();
+        UpdateGridTemplateAreas(); // Update grid style after swapping items
     }
 
     private int? SelectedIndex { get; set; }
@@ -166,7 +181,6 @@
         {
             SwapItems(SelectedIndex.Value, Instance.Items.IndexOf(item));
             ResetSelectedIndex();
-            StateHasChanged();
         }
         else
         {
