@@ -24,6 +24,8 @@ namespace CustomDashboard.Components
         public int SortIndex { get; set; }
         public (int X, int Y) Position { get; set; }
 
+        public (int X, int Y) Size { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
