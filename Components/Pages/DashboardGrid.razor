@@ -19,60 +19,60 @@
             @:Edit
         }
     </span></h1>
-<div style="display: grid; gap: 5px !important; grid-template-columns: repeat(5, 1fr);">
-    @foreach (IEnumerable<CustomDashboardItem> group in GroupItemsByY(Instance.Items.OrderBy(i => i.Position.Y)))
-    {
-        @foreach (CustomDashboardItem item in group.OrderBy(i => i.Position.X))
-        {
-            <div
-                style="grid-row: span @(item?.Size.Y ?? 1); grid-column: span @(item?.Size.X ?? 1); min-width: 300px; max-height: 150px; position: relative;">
-
-                @* <div style="grid-row: @(item?.Size != null ? $"{item.Position.Y + 1} / span {item.Size.Y +1}" : "auto");
-        grid-column:
-        @(item?.Size != null ? $"{item.Position.X + 1} / span {item.Size.X +1}" : "auto"); min-width: 300px; max-height:
-        150px; position: relative;"> *@
-                <div class="card" style="width: 100%; height: 100%;">
-                    <div class="card-body">
-                        <h5 class="card-title no-select">@item.Name</h5>
-
-                        @if (Instance != null && Instance.IsEditing)
-                        {
-                            <span class="badge @(SelectedIndex == Instance.Items.IndexOf(item) ? "bg-primary" : "bg-secondary")"
-                                style="position: absolute; top: 0; right: 0;">
-                                @if (SelectedIndex == Instance.Items.IndexOf(item))
-                                {
-                                    <i title="Switch positions" class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex"
-                                        style="cursor:pointer;"> Selected</i>
-                                }
-                                else
-                                {
-                                    <i title="Switch positions" class="bi bi-arrow-left-right" style="cursor:pointer;"
-                                        @onclick="@(() => ClickItem(item))">
-                                        @if (SelectedIndex.HasValue && SelectedIndex != Instance.Items.IndexOf(item))
-                                        {
-                                            @: Switch Positions with
-                                        }
-                                    </i>
-                                }
-                            </span>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-    }
-</div>
-@if (Instance != null && Instance.IsEditing)
-{
-    <div class="row">
-        <div class="col">
-            <AddWidgetToCustomDashboard Instance="@Instance" />
-        </div>
-    </div>
-}
 
 @if (Instance != null && Instance.Items != null)
 {
+    <div style="display: grid; gap: 5px !important; grid-template-columns: repeat(5, 1fr);">
+        @foreach (IEnumerable<CustomDashboardItem> group in GroupItemsByY(Instance.Items.OrderBy(i => i.Position.Y)))
+        {
+            @foreach (CustomDashboardItem item in group.OrderBy(i => i.Position.X))
+            {
+                @if (item != null)
+                {
+                    <div
+                        style="grid-row: span @(item?.Size.Y ?? 1); grid-column: span @(item?.Size.X ?? 1); min-width: 300px; max-height: 150px; position: relative;">
+                        <div class="card" style="width: 100%; height: 100%;">
+                            <div class="card-body">
+                                <h5 class="card-title no-select">@item.Name</h5>
+
+                                @if (Instance != null && Instance.IsEditing)
+                                {
+                                    <span class="badge @(SelectedIndex == Instance.Items.IndexOf(item) ? "bg-primary" : "bg-secondary")"
+                                        style="position: absolute; top: 0; right: 0;">
+                                        @if (SelectedIndex == Instance.Items.IndexOf(item))
+                                        {
+                                            <i title="Switch positions" class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex"
+                                                style="cursor:pointer;"> Selected</i>
+                                        }
+                                        else
+                                        {
+                                            <i title="Switch positions" class="bi bi-arrow-left-right" style="cursor:pointer;"
+                                                @onclick="@(() => ClickItem(item))">
+                                                @if (SelectedIndex.HasValue && SelectedIndex != Instance.Items.IndexOf(item))
+                                                {
+                                                    @: Switch Positions with
+                                                }
+                                            </i>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    @if (Instance != null && Instance.IsEditing)
+    {
+        <div class="row">
+            <div class="col">
+                <AddWidgetToCustomDashboard Instance="@Instance" />
+            </div>
+        </div>
+    }
+
     <pre style="max-width: 80vw; margin: 5rem 0">@JsonConvert.SerializeObject(Instance, Formatting.Indented)</pre>
 }
 
