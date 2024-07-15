@@ -1,0 +1,8 @@
+# Ignore generated files
+test-blazor-web-app.dll
+test-blazor-web-app.exe
+test-blazor-web-app.pdb
+apphost.exe
+test-blazor-web-app.AssemblyInfo.cs
+test-blazor-web-app.pdb
+test-blazor-web-app.sourcelink.json

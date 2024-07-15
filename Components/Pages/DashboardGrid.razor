@@ -30,7 +30,7 @@
                 @if (item != null)
                 {
                     <div
-                        style="grid-row: span @(item?.Size.Y ?? 1); grid-column: span @(item?.Size.X ?? 1); min-width: 300px; max-height: 150px; position: relative;">
+                        style="grid-row: span @(item?.Size.Y ?? 1); grid-column: span @(item?.Size.X ?? 1); min-width: 300px; min-height: 150px; position: relative;">
                         <div class="card" style="width: 100%; height: 100%;">
                             <div class="card-body">
                                 <h5 class="card-title no-select">@item.Name</h5>
