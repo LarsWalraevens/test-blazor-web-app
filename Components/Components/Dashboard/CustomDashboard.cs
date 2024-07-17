@@ -34,7 +34,7 @@ namespace CustomDashboard.Components
         }
     }
 
-    public class CustomDashboardInstance
+    public class CustomDashboardInstance : INotifyPropertyChanged
     {
         private int _maxX = 4; // Default value for MaxX
         public int MaxX
@@ -52,25 +52,35 @@ namespace CustomDashboard.Components
 
         public bool IsEditing { get; set; } = false;
 
-        public ObservableCollection<CustomDashboardItem> Items { get; set; } = new ObservableCollection<CustomDashboardItem>();
+        public ObservableCollection<CustomDashboardItem> Items { get; set; }
 
         public CustomDashboardInstance()
         {
-            InitializeItems(MaxX, MaxY); // Initialize items with MaxX and MaxY from constructor
+            InitializeDefaults();
         }
 
         public CustomDashboardInstance(int maxX, int maxY)
         {
             MaxX = maxX;
             MaxY = maxY;
-            InitializeItems(maxX, maxY); // Initialize items with provided MaxX and MaxY
+            InitializeDefaults();
+        }
+
+        private void InitializeDefaults()
+        {
+            Items ??= new ObservableCollection<CustomDashboardItem>();
+
+            if (Items.Count == 0)
+            {
+                InitializeItems(MaxX, MaxY);
+            }
         }
 
         private void InitializeItems(int maxX, int maxY)
         {
-            Items.Clear(); // Clear existing items if any
+            Items.Clear();
 
-            Console.WriteLine($"New customDashboardInstance triggered - creating new grid items using the max values of {maxX}x, {maxY}y");
+            Console.WriteLine($"New CustomDashboardInstance triggered - creating new grid items using the max values of {maxX}x, {maxY}y");
 
             for (int y = 0; y < maxY; y++)
             {
@@ -86,6 +96,13 @@ namespace CustomDashboard.Components
                     });
                 }
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

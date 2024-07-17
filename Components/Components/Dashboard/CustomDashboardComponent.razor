@@ -72,13 +72,11 @@
 @code {
     [Parameter]
     public CustomDashboardInstance Instance { get; set; }
-
     private int? SelectedIndex { get; set; }
 
     private CustomDashboardItem FocusGridItem { get; set; }
 
     private void ResetFocusGridItem() => FocusGridItem = null;
-
     private string GenerateGridItemStyles(CustomDashboardItem item)
     {
         int gridColumnStart = item.Position.X + 1; // Convert to 1-based index for CSS grid-column
