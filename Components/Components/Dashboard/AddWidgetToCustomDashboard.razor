@@ -4,14 +4,14 @@
 @using Microsoft.AspNetCore.Components
 @using CustomDashboard.Components
 @using System.Collections.ObjectModel
+@inject IJSRuntime JSRuntime
 
-<div @onclick="@ToggleModal" id="custom-dashboard-add-widget"
-    class="d-flex justify-content-center align-items-center border border-3 rounded-sm"
-    style="width: 100px; height: 100px;">
+<div @onclick="@ToggleModal" id="custom-dashboard-add-widget" class="d-flex justify-content-center align-items-center"
+    style="width: 100%; height: 100%;">
     <span class="bi bi-plus" style="font-size: 3rem" />
 </div>
 
-@if (ShowModal)
+@if (ShowModal == true && ToAddItem != null)
 {
     <div class="modal d-block" id="exampleModal" aria-hidden="false">
         <div class="modal-dialog">
@@ -26,10 +26,25 @@
                     {
                         <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem">
                             <DataAnnotationsValidator />
-                            <div class="mb-3">
+                            <div>
                                 <label for="name" class="form-label">Name</label>
                                 <InputText id="name" @bind-Value="@ToAddItem.Name" />
                                 <ValidationMessage For="@(() => ToAddItem.Name)" />
+                                <div class="mb-3">
+                                    <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
+                                        @onclick="e => ToAddItem.Size = (1, 1)" />
+                                    <label for="size-1x1">1x1</label>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="radio" name="size" id="size-2x2" value="(2, 2)"
+                                        @onclick="e => ToAddItem.Size = (2, 2)" />
+                                    <label for="size-2x2">2x2</label>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="radio" name="size" id="size-3x3" value="(3,3)"
+                                        @onclick="e => ToAddItem.Size = (3,3)" />
+                                    <label for="size-3x3">3x3</label>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </EditForm>
@@ -47,82 +62,112 @@
 @code {
     [Parameter]
     public CustomDashboardInstance Instance { get; set; }
+    [Parameter]
+    public CustomDashboardItem Item { get; set; }
+    [Parameter]
+    public EventCallback OnSuccess { get; set; }
 
     private CustomDashboardItem ToAddItem { get; set; }
 
     private bool ShowModal { get; set; }
 
+    protected override void OnParametersSet()
+    {
+        ToAddItem = new CustomDashboardItem
+            {
+                Id = Item.Id,
+                Name = Item.Name,
+                IsAvailable = Item.IsAvailable,
+                Position = Item.Position,
+                Size = Item.Size
+            };
+    }
+
     // Toggle modal & create new to-add item
     private async Task ToggleModal()
     {
         ShowModal = !ShowModal;
-        await AddNewItem();
-        if (ToAddItem == null)
-        {
-            ShowModal = false;
-        }
-    }
-
-    // Create new item with next available position logic
-    private Task AddNewItem()
-    {
-        try
-        {
-            if (Instance.Items.Count == 0)
-            {
-                ToAddItem = new CustomDashboardItem
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = string.Empty,
-                        SortIndex = Instance.Items.Count + 1,
-                        Position = (1, 1),
-                    };
-            }
-            else
-            {
-                CustomDashboardItem LatestItem = Instance.Items.OrderBy(i => i.SortIndex).Last();
-                // ? Check if we reached max capacity in grid
-                if (LatestItem.Position.X + 1 > Instance.MaxX && (LatestItem.Position.X + 1 > Instance.MaxX && Instance.MaxY ==
-                LatestItem.Position.Y))
-                {
-                    throw new Exception("Max capacity reached");
-                }
-                else
-                {
-                    ToAddItem = new CustomDashboardItem
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = string.Empty,
-                            SortIndex = Instance.Items.Count + 1,
-                            Position = (
-                        // If we dont have any space left in row, add to next row
-                        LatestItem.Position.X >= Instance.MaxX ? 1 : LatestItem.Position.X + 1,
-                        // If we dont have any space left in row, add to next column
-                        LatestItem.Position.X + 1 > Instance.MaxX ? LatestItem.Position.Y + 1 : LatestItem.Position.Y
-                        ),
-                        };
-
-                }
-            }
-            return Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("AddNewItem Exception:" + ex.Message);
-            return Task.CompletedTask;
-        }
     }
 
     private async Task OnSubmitNewItem()
     {
-        if (ToAddItem != null)
+        try
         {
-            Instance.Items.Add(ToAddItem);
-            await InvokeAsync(StateHasChanged);
-            ToAddItem = null;
+            int index = Instance.Items.IndexOf(Item);
+            if (index >= 0)
+            {
+                // Check for overlap before making changes
+                if (CheckOverlap(ToAddItem))
+                {
+                    // Throw an error and show a browser alert
+                    throw new InvalidOperationException("Cannot add item. It overlaps with existing items.");
+                }
 
-            await InvokeAsync(StateHasChanged);
-            await ToggleModal();
+                ToAddItem.IsAvailable = false;
+                List<CustomDashboardItem> itemsToRemove = new List<CustomDashboardItem>();
+
+                if (ToAddItem.Size.X > 1 || ToAddItem.Size.Y > 1)
+                {
+                    for (int x = ToAddItem.Position.X; x < ToAddItem.Position.X + ToAddItem.Size.X; x++)
+                    {
+                        for (int y = ToAddItem.Position.Y; y < ToAddItem.Position.Y + ToAddItem.Size.Y; y++)
+                        {
+                            CustomDashboardItem itemToRemove =
+                            Instance.Items.FirstOrDefault(
+                            i =>
+                            i.Position.X == x &&
+                            i.Position.Y == y &&
+                            i.Id != ToAddItem.Id);
+
+                            if (itemToRemove != null)
+                            {
+                                itemsToRemove.Add(itemToRemove);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var item in itemsToRemove)
+                {
+                    Instance.Items.Remove(item);
+                }
+
+                Instance.Items[index] = ToAddItem;
+                await InvokeAsync(StateHasChanged);
+                await ToggleModal();
+                await OnSuccess.InvokeAsync();
+                await InvokeAsync(StateHasChanged);
+            }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine("OnSubmitNewItem: " + e);
+            // Show browser alert for the exception message
+            await JSRuntime.InvokeVoidAsync("alert", e.Message);
+        }
+    }
+
+    private bool CheckOverlap(CustomDashboardItem newItem)
+    {
+        // Determine the end positions for the new item
+        int endX = newItem.Position.X + newItem.Size.X - 1;
+        int endY = newItem.Position.Y + newItem.Size.Y - 1;
+
+        // Check if any of the positions required by the new item are not available
+        for (int x = newItem.Position.X; x <= endX; x++)
+        {
+            for (int y = newItem.Position.Y; y <= endY; y++)
+            {
+                var overlappingItem = Instance.Items.FirstOrDefault(
+                i => i.Position.X == x && i.Position.Y == y && !i.IsAvailable);
+
+                if (overlappingItem != null)
+                {
+                    return true; // Overlap detected
+                }
+            }
+        }
+
+        return false; // No overlap detected
     }
 }
