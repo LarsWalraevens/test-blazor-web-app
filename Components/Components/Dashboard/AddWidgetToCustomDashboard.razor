@@ -27,9 +27,8 @@
                         <div class="d-flex gap-3 flex-column">
                             <div>
                                 <label for="name" class="form-label d-block">Name</label>
-                                <InputText class="w-100" id="name" @bind-Value="@ToAddItem.Name" />
+                                <InputText class="w-100" id="name" @bind-Value="@ToAddItem.Name" required />
                                 <ValidationMessage For="@(() => ToAddItem.Name)" />
-
                             </div>
                             <div>
                                 <p class="mb-2">
@@ -41,13 +40,12 @@
                                             data-bs-delay="{ 'show': 50, 'hide': 100}"></i>
                                     </span>
                                 </p>
-                                <div class="d-grid  gap-2 flex-column" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="d-grid gap-2 flex-column" style="grid-template-columns: repeat(3, 1fr);">
                                     <div>
                                         <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
                                             @onclick="e => ToAddItem.Size = (1, 1)" />
                                         <label for="size-1x1">1x1</label>
                                     </div>
-
                                     <div>
                                         <input type="radio" name="size" id="size-1x2" value="(1, 2)"
                                             @onclick="e => ToAddItem.Size = (1, 2)" />
@@ -58,14 +56,13 @@
                                             @onclick="e => ToAddItem.Size = (2, 2)" />
                                         <label for="size-2x2">2x2</label>
                                     </div>
-
                                     <div>
                                         <input type="radio" name="size" id="size-3x3" value="(3, 3)"
                                             @onclick="e => ToAddItem.Size = (3, 3)" />
                                         <label for="size-3x3">3x3</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name="size" id="size-3x3" value="(2, 3)"
+                                        <input type="radio" name="size" id="size-2x3" value="(2, 3)"
                                             @onclick="e => ToAddItem.Size = (2, 3)" />
                                         <label for="size-2x3">2x3</label>
                                     </div>
@@ -74,7 +71,6 @@
                                             @onclick="e => ToAddItem.Size = (4, 4)" />
                                         <label for="size-4x4">4x4</label>
                                     </div>
-
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
@@ -101,7 +97,6 @@
     public EventCallback SetFocus { get; set; }
 
     private CustomDashboardItem ToAddItem { get; set; }
-
     private bool ShowModal { get; set; }
 
     protected override void OnParametersSet()
@@ -138,10 +133,16 @@
             int index = Instance.Items.IndexOf(Item);
             if (index >= 0)
             {
+                // Check if new item exceeds the maxX or maxY value
+                if ((ToAddItem.Position.X + ToAddItem.Size.X > Instance.MaxX) || (ToAddItem.Position.Y + ToAddItem.Size.Y >
+                Instance.MaxY))
+                {
+                    throw new InvalidOperationException("Cannot add item. It exceeds the maximum allowed dimensions.");
+                }
+
                 // Check for overlap before making changes
                 if (CheckOverlap(ToAddItem))
                 {
-                    // Throw an error and show a browser alert
                     throw new InvalidOperationException("Cannot add item. It overlaps with existing items.");
                 }
 
@@ -155,11 +156,8 @@
                     {
                         for (int y = ToAddItem.Position.Y; y < ToAddItem.Position.Y + ToAddItem.Size.Y; y++)
                         {
-                            CustomDashboardItem itemToRemove =
-                            Instance.Items.FirstOrDefault(i =>
-                            i.Position.X == x &&
-                            i.Position.Y == y &&
-                            i.Id != ToAddItem.Id);
+                            CustomDashboardItem itemToRemove = Instance.Items.FirstOrDefault(i =>
+                            i.Position.X == x && i.Position.Y == y && i.Id != ToAddItem.Id);
 
                             if (itemToRemove != null)
                             {
@@ -201,10 +199,9 @@
         {
             for (int y = newItem.Position.Item2; y <= endY; y++)
             {
-                var overlappingItem = Instance.Items.FirstOrDefault(
-                i => i.Position.Item1 <= x && x <= i.Position.Item1 + i.Size.Item1 - 1 &&
-                i.Position.Item2 <= y && y <= i.Position.Item2 + i.Size.Item2 - 1 &&
-                !i.IsAvailable);
+                var overlappingItem = Instance.Items.FirstOrDefault(i =>
+                i.Position.Item1 <= x && x <= i.Position.Item1 + i.Size.Item1 - 1 &&
+                i.Position.Item2 <= y && y <= i.Position.Item2 + i.Size.Item2 - 1 && !i.IsAvailable);
 
                 if (overlappingItem != null)
                 {
@@ -215,5 +212,4 @@
 
         return false; // No overlap detected
     }
-
 }

@@ -19,7 +19,6 @@
                         {
                             <div class="card relative"
                                 style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                <!-- Here, you can add editing controls or functionality -->
                                 <AddWidgetToCustomDashboard Instance="@Instance" Item="@item"
                                     OnSuccess="@(async (e) => { StateHasChanged(); })" SetFocus="@((e)=>{ FocusGridItem = item; })"
                                     ResetFocus="@((e)=>{ FocusGridItem = null; })" />
