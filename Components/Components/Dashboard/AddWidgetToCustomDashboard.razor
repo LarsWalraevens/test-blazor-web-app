@@ -21,29 +21,64 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem">
+                    <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem" style="width: 85%"
+                        class="mx-auto mb-4 mt-2">
                         <DataAnnotationsValidator />
-                        <div>
-                            <label for="name" class="form-label">Name</label>
-                            <InputText id="name" @bind-Value="@ToAddItem.Name" />
-                            <ValidationMessage For="@(() => ToAddItem.Name)" />
-                            <div class="mb-3">
-                                <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
-                                    @onclick="e => ToAddItem.Size = (1, 1)" />
-                                <label for="size-1x1">1x1</label>
+                        <div class="d-flex gap-3 flex-column">
+                            <div>
+                                <label for="name" class="form-label d-block">Name</label>
+                                <InputText class="w-100" id="name" @bind-Value="@ToAddItem.Name" />
+                                <ValidationMessage For="@(() => ToAddItem.Name)" />
+
                             </div>
-                            <div class="mb-3">
-                                <input type="radio" name="size" id="size-2x2" value="(2, 2)"
-                                    @onclick="e => ToAddItem.Size = (2, 2)" />
-                                <label for="size-2x2">2x2</label>
+                            <div>
+                                <p class="mb-2">
+                                    Size (X, Y)
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="How many cells in the grid this widget will take up">
+                                        <i class="bi bi-info-circle px-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            data-bs-trigger="hover" data-bs-container="body"
+                                            data-bs-delay="{ 'show': 50, 'hide': 100}"></i>
+                                    </span>
+                                </p>
+                                <div class="d-grid  gap-2 flex-column" style="grid-template-columns: repeat(3, 1fr);">
+                                    <div>
+                                        <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
+                                            @onclick="e => ToAddItem.Size = (1, 1)" />
+                                        <label for="size-1x1">1x1</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="radio" name="size" id="size-1x2" value="(1, 2)"
+                                            @onclick="e => ToAddItem.Size = (1, 2)" />
+                                        <label for="size-1x2">1x2</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="size" id="size-2x2" value="(2, 2)"
+                                            @onclick="e => ToAddItem.Size = (2, 2)" />
+                                        <label for="size-2x2">2x2</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="radio" name="size" id="size-3x3" value="(3, 3)"
+                                            @onclick="e => ToAddItem.Size = (3, 3)" />
+                                        <label for="size-3x3">3x3</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="size" id="size-3x3" value="(2, 3)"
+                                            @onclick="e => ToAddItem.Size = (2, 3)" />
+                                        <label for="size-2x3">2x3</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="size" id="size-4x4" value="(4, 4)"
+                                            @onclick="e => ToAddItem.Size = (4, 4)" />
+                                        <label for="size-4x4">4x4</label>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <input type="radio" name="size" id="size-3x3" value="(3, 3)"
-                                    @onclick="e => ToAddItem.Size = (3, 3)" />
-                                <label for="size-3x3">3x3</label>
-                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
                     </EditForm>
                 </div>
             </div>
@@ -60,6 +95,10 @@
 
     [Parameter]
     public EventCallback OnSuccess { get; set; }
+    [Parameter]
+    public EventCallback ResetFocus { get; set; }
+    [Parameter]
+    public EventCallback SetFocus { get; set; }
 
     private CustomDashboardItem ToAddItem { get; set; }
 
@@ -79,7 +118,17 @@
 
     private async Task ToggleModal()
     {
-        ShowModal = !ShowModal;
+        bool newValue = !ShowModal;
+
+        ShowModal = newValue;
+        if (newValue == false)
+        {
+            await ResetFocus.InvokeAsync();
+        }
+        else
+        {
+            await SetFocus.InvokeAsync();
+        }
     }
 
     private async Task OnSubmitNewItem()
