@@ -1,4 +1,7 @@
 @page "/dashboard"
+
+
+@inherits LayoutComponentBase
 @using CustomDashboard.Components
 @using Microsoft.AspNetCore.Components
 @using System.Collections.ObjectModel
@@ -6,6 +9,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Custom dashboard</PageTitle>
+
 <style>
     .grid-item {
         min-width: 300px;
@@ -13,17 +17,23 @@
     }
 </style>
 
-<h1 class="mb-4">Custom dashboard
+<h1 class="mb-4">
+    <a href="/">
+        <span class="bi bi-arrow-left mr-2"></span>
+    </a>
+    Custom dashboard
     <span class="btn btn-primary" @onclick="ToggleEditing">
         <i class="bi bi-pencil mr-2" />
         @(!Instance.IsEditing ? "Edit" : "Stop editing")
     </span>
 </h1>
-
-<CustomDashboardComponent Instance="@Instance" />
+@if (Instance != null && Instance.Items != null)
+{
+    <CustomDashboardComponent Instance="@Instance" />
+}
 
 @code {
-    public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance();
+    public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance(10, 10);
 
     private void ToggleEditing()
     {
