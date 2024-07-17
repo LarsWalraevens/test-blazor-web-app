@@ -13,7 +13,7 @@
             @* <div style="min-width: calc(@Instance.MaxX * 300px + 10px);"> *@
             <div class="grid-container"
                 style="display: grid; grid-template-columns: repeat(@Instance.MaxX, 1fr); gap: 5px;">
-                @foreach (var item in Instance.Items)
+                @foreach (CustomDashboardItem item in Instance.Items)
                 {
                     <div class="grid-item @(FocusGridItem == item ? "selected" : null)" style="@GenerateGridItemStyles(item)">
                         @if (Instance.IsEditing && item.IsAvailable)
