@@ -1,0 +1,141 @@
+@using CustomDashboard.Components
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using System.Collections.ObjectModel
+@inject IJSRuntime JSRuntime
+
+@namespace CustomDashboard.Components
+
+@if (Instance != null && Instance.Items != null)
+{
+    <div class="grid-container" style="display: grid; grid-template-columns: repeat(@Instance.MaxX, 1fr); gap: 5px;">
+        @foreach (var item in Instance.Items)
+        {
+            <div class="grid-item" style="@GenerateGridItemStyles(item)">
+                @if (Instance.IsEditing && item.IsAvailable)
+                {
+                    <div class="card relative"
+                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <!-- Here, you can add editing controls or functionality -->
+                        <AddWidgetToCustomDashboard Instance="@Instance" Item="@item"
+                            OnSuccess="@(async (e) => { StateHasChanged(); })" />
+                    </div>
+                }
+                else
+                {
+                    <div class="card @(item.IsAvailable == true && Instance.IsEditing == false ? "opacity-0" : null)"
+                        style="width: 100%; height: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title no-select">@item.Name</h5>
+                            @if (Instance.IsEditing)
+                            {
+                                <div style="position: absolute; top: 0; right: 0;">
+                                    <span @onclick="() => DeleteItemAsync(item)" class="badge bg-primary" style="cursor: pointer;">
+                                        <i title="Delete" class="bi bi-trash"></i>
+                                    </span>
+                                    @* <span
+                    class="badge @(SelectedIndex.HasValue && SelectedIndex == Instance.Items.IndexOf(item) ?
+                    "bg-primary" : "bg-secondary")">
+                    @if (SelectedIndex.HasValue && SelectedIndex == Instance.Items.IndexOf(item))
+                    {
+                    <i title="Switch positions" class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex"
+                    style="cursor:pointer;"> Selected</i>
+                    }
+                    else
+                    {
+                    <i title="Switch positions" class="bi bi-arrow-left-right" style="cursor:pointer;"
+                    @onclick="@(() => ClickItem(item))">
+                    @if (SelectedIndex.HasValue && SelectedIndex != Instance.Items.IndexOf(item))
+                    {
+                    @: Switch Positions with
+                    }
+                    </i>
+                    }
+                    </span> *@
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <pre style="max-width: 80vw; margin: 5rem 0">@JsonConvert.SerializeObject(Instance, Formatting.Indented)</pre>
+}
+
+@code {
+    [Parameter]
+    public CustomDashboardInstance Instance { get; set; }
+
+    private int? SelectedIndex { get; set; }
+
+    private string GenerateGridItemStyles(CustomDashboardItem item)
+    {
+        int gridColumnStart = item.Position.X + 1; // Convert to 1-based index for CSS grid-column
+        int gridRowStart = item.Position.Y + 1; // Convert to 1-based index for CSS grid-row
+        int gridColumnEnd = Math.Min(gridColumnStart + item.Size.X - 1, Instance.MaxX);
+        int gridRowEnd = Math.Min(gridRowStart + item.Size.Y - 1, Instance.MaxY);
+
+        if (gridColumnStart > Instance.MaxX || gridRowStart > Instance.MaxY)
+        {
+            return "display: none;";
+        }
+
+        return $"grid-column: {gridColumnStart} / {gridColumnEnd + 1}; grid-row: {gridRowStart} / {gridRowEnd + 1};";
+    }
+
+    private async Task DeleteItemAsync(CustomDashboardItem item)
+    {
+        try
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            };
+
+            (int x, int y) position = item.Position;
+            (int width, int height) size = item.Size;
+
+            List<CustomDashboardItem> itemsToAdd = new List<CustomDashboardItem>();
+
+            for (int i = position.x; i < position.x + size.width; i++)
+            {
+                for (int j = position.y; j < position.y + size.height; j++)
+                {
+                    if (i < Instance.MaxX && j < Instance.MaxY)
+                    {
+                        CustomDashboardItem newItem = new CustomDashboardItem
+                            {
+                                Id = Guid.NewGuid(),
+                                Position = (i, j),
+                                Size = (1, 1),
+                                Name = string.Empty,
+                                IsAvailable = true
+                            };
+                        itemsToAdd.Add(newItem);
+                    }
+                }
+            }
+
+            foreach (var newItem in itemsToAdd)
+            {
+                Instance.Items.Add(newItem);
+            }
+
+            Instance.Items.Remove(item);
+
+            await InvokeAsync(StateHasChanged);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error deleting item", ex);
+        }
+    }
+
+    private void ResetSelectedIndex()
+    {
+        SelectedIndex = null;
+    }
+}

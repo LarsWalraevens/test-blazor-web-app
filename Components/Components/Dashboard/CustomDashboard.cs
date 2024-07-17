@@ -70,7 +70,7 @@ namespace CustomDashboard.Components
         {
             Items.Clear(); // Clear existing items if any
 
-            Console.WriteLine($"InitializeItems of CustomDashboardInstance {maxX}x, {maxY}y called");
+            Console.WriteLine($"New customDashboardInstance triggered - creating new grid items using the max values of {maxX}x, {maxY}y");
 
             for (int y = 0; y < maxY; y++)
             {

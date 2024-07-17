@@ -1,58 +1,50 @@
 @namespace CustomDashboard.Components
+
 @using Newtonsoft.Json
-@using BaseComponents
 @using Microsoft.AspNetCore.Components
-@using CustomDashboard.Components
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
 <div @onclick="@ToggleModal" id="custom-dashboard-add-widget" class="d-flex justify-content-center align-items-center"
     style="width: 100%; height: 100%;">
-    <span class="bi bi-plus" style="font-size: 3rem" />
+    <span class="bi bi-plus" style="font-size: 3rem"></span>
 </div>
 
-@if (ShowModal == true && ToAddItem != null)
+@if (ShowModal && ToAddItem != null)
 {
     <div class="modal d-block" id="exampleModal" aria-hidden="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Adding new widget</h5>
-                    <button @onclick="@ToggleModal" type="button" class="btn-close" data-bs-dismiss="modal"
+                    <button @onclick="ToggleModal" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @if (ToAddItem != null)
-                    {
-                        <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem">
-                            <DataAnnotationsValidator />
-                            <div>
-                                <label for="name" class="form-label">Name</label>
-                                <InputText id="name" @bind-Value="@ToAddItem.Name" />
-                                <ValidationMessage For="@(() => ToAddItem.Name)" />
-                                <div class="mb-3">
-                                    <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
-                                        @onclick="e => ToAddItem.Size = (1, 1)" />
-                                    <label for="size-1x1">1x1</label>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="radio" name="size" id="size-2x2" value="(2, 2)"
-                                        @onclick="e => ToAddItem.Size = (2, 2)" />
-                                    <label for="size-2x2">2x2</label>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="radio" name="size" id="size-3x3" value="(3,3)"
-                                        @onclick="e => ToAddItem.Size = (3,3)" />
-                                    <label for="size-3x3">3x3</label>
-                                </div>
+                    <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem">
+                        <DataAnnotationsValidator />
+                        <div>
+                            <label for="name" class="form-label">Name</label>
+                            <InputText id="name" @bind-Value="@ToAddItem.Name" />
+                            <ValidationMessage For="@(() => ToAddItem.Name)" />
+                            <div class="mb-3">
+                                <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
+                                    @onclick="e => ToAddItem.Size = (1, 1)" />
+                                <label for="size-1x1">1x1</label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </EditForm>
-                    }
-                    else
-                    {
-                        <p>Adding new item...</p>
-                    }
+                            <div class="mb-3">
+                                <input type="radio" name="size" id="size-2x2" value="(2, 2)"
+                                    @onclick="e => ToAddItem.Size = (2, 2)" />
+                                <label for="size-2x2">2x2</label>
+                            </div>
+                            <div class="mb-3">
+                                <input type="radio" name="size" id="size-3x3" value="(3, 3)"
+                                    @onclick="e => ToAddItem.Size = (3, 3)" />
+                                <label for="size-3x3">3x3</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </EditForm>
                 </div>
             </div>
         </div>
@@ -62,8 +54,10 @@
 @code {
     [Parameter]
     public CustomDashboardInstance Instance { get; set; }
+
     [Parameter]
     public CustomDashboardItem Item { get; set; }
+
     [Parameter]
     public EventCallback OnSuccess { get; set; }
 
@@ -83,7 +77,6 @@
             };
     }
 
-    // Toggle modal & create new to-add item
     private async Task ToggleModal()
     {
         ShowModal = !ShowModal;
@@ -106,6 +99,7 @@
                 ToAddItem.IsAvailable = false;
                 List<CustomDashboardItem> itemsToRemove = new List<CustomDashboardItem>();
 
+                // Remove overlapping items
                 if (ToAddItem.Size.X > 1 || ToAddItem.Size.Y > 1)
                 {
                     for (int x = ToAddItem.Position.X; x < ToAddItem.Position.X + ToAddItem.Size.X; x++)
@@ -113,8 +107,7 @@
                         for (int y = ToAddItem.Position.Y; y < ToAddItem.Position.Y + ToAddItem.Size.Y; y++)
                         {
                             CustomDashboardItem itemToRemove =
-                            Instance.Items.FirstOrDefault(
-                            i =>
+                            Instance.Items.FirstOrDefault(i =>
                             i.Position.X == x &&
                             i.Position.Y == y &&
                             i.Id != ToAddItem.Id);
@@ -133,6 +126,7 @@
                 }
 
                 Instance.Items[index] = ToAddItem;
+
                 await InvokeAsync(StateHasChanged);
                 await ToggleModal();
                 await OnSuccess.InvokeAsync();
@@ -150,16 +144,18 @@
     private bool CheckOverlap(CustomDashboardItem newItem)
     {
         // Determine the end positions for the new item
-        int endX = newItem.Position.X + newItem.Size.X - 1;
-        int endY = newItem.Position.Y + newItem.Size.Y - 1;
+        int endX = newItem.Position.Item1 + newItem.Size.Item1 - 1;
+        int endY = newItem.Position.Item2 + newItem.Size.Item2 - 1;
 
         // Check if any of the positions required by the new item are not available
-        for (int x = newItem.Position.X; x <= endX; x++)
+        for (int x = newItem.Position.Item1; x <= endX; x++)
         {
-            for (int y = newItem.Position.Y; y <= endY; y++)
+            for (int y = newItem.Position.Item2; y <= endY; y++)
             {
                 var overlappingItem = Instance.Items.FirstOrDefault(
-                i => i.Position.X == x && i.Position.Y == y && !i.IsAvailable);
+                i => i.Position.Item1 <= x && x <= i.Position.Item1 + i.Size.Item1 - 1 &&
+                i.Position.Item2 <= y && y <= i.Position.Item2 + i.Size.Item2 - 1 &&
+                !i.IsAvailable);
 
                 if (overlappingItem != null)
                 {
@@ -170,4 +166,5 @@
 
         return false; // No overlap detected
     }
+
 }

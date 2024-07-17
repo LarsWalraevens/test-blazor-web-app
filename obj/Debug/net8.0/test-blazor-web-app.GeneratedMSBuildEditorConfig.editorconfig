@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXENoYXJ0c1xNeVBpZWNoYXJ0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/www/playground/test-blazor-web-app/Components/Components/Dashboard/CustomDashboardComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxDdXN0b21EYXNoYm9hcmRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/www/playground/test-blazor-web-app/Components/Components/LoginTodos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXExvZ2luVG9kb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -93,7 +97,3 @@ build_metadata.AdditionalFiles.CssScope = b-f2lph6kr76
 [C:/www/playground/test-blazor-web-app/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-bj6p98ftjl
-
-[C:/www/playground/test-blazor-web-app/Components/_Host.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSG9zdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
