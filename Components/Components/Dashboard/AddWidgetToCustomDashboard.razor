@@ -27,8 +27,7 @@
                         <div class="d-flex gap-3 flex-column">
                             <div>
                                 <label for="name" class="form-label d-block">Name</label>
-                                <InputText class="w-100" id="name" @bind-Value="@ToAddItem.Name" required />
-                                <ValidationMessage For="@(() => ToAddItem.Name)" />
+                                <InputText Autofocus class="w-100" id="name" @bind-Value="@ToAddItem.Name" required />
                             </div>
                             <div>
                                 <p class="mb-2">
@@ -40,7 +39,7 @@
                                             data-bs-delay="{ 'show': 50, 'hide': 100}"></i>
                                     </span>
                                 </p>
-                                <div class="d-grid gap-2 flex-column" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="d-grid gap-1 flex-column" style="grid-template-columns: repeat(3, 1fr);">
                                     <div>
                                         <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
                                             @onclick="e => ToAddItem.Size = (1, 1)" />

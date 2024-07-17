@@ -9,7 +9,8 @@
 @if (Instance != null && Instance.Items != null)
 {
     <div style="overflow-x: auto; position: relative; max-width:100%; overflow-y: hidden; padding: 10px 5px;">
-        <div style="min-width: calc(@Instance.MaxX * 300px + 10px);">
+        <div>
+            @* <div style="min-width: calc(@Instance.MaxX * 300px + 10px);"> *@
             <div class="grid-container"
                 style="display: grid; grid-template-columns: repeat(@Instance.MaxX, 1fr); gap: 5px;">
                 @foreach (var item in Instance.Items)
@@ -20,8 +21,8 @@
                             <div class="card relative"
                                 style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                                 <AddWidgetToCustomDashboard Instance="@Instance" Item="@item"
-                                    OnSuccess="@(async (e) => { StateHasChanged(); })" SetFocus="@((e)=>{ FocusGridItem = item; })"
-                                    ResetFocus="@((e)=>{ FocusGridItem = null; })" />
+                                    OnSuccess="@(async () => { StateHasChanged(); })" SetFocus="@((e)=>{ FocusGridItem = item; })"
+                                    ResetFocus="@(()=>{ FocusGridItem = null; })" />
                             </div>
                         }
                         else
@@ -32,8 +33,8 @@
                                     <h5 class="card-title no-select">@item.Name</h5>
                                     @if (Instance.IsEditing)
                                     {
-                                        <div style="position: absolute; top: 0; right: 0;">
-                                            <span @onclick="() => DeleteItemAsync(item)" class="badge bg-primary"
+                                        <div style="position: absolute; top: 4px; right: 4px; display: flex;">
+                                            <span @onclick="@(() => DeleteItemAsync(item))" class="badge bg-primary"
                                                 style="cursor: pointer;">
                                                 <i title="Delete" class="bi bi-trash"></i>
                                             </span>
@@ -66,8 +67,6 @@
             </div>
         </div>
     </div>
-
-    @* <pre style="max-width: 80vw; margin: 5rem 0">@JsonConvert.SerializeObject(Instance, Formatting.Indented)</pre> *@
 }
 
 @code {
