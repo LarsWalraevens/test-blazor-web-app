@@ -75,3 +75,5 @@ C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-bla.F8BC0529.Up2Date
 C:\www\playground\test-blazor-web-app\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\scopedcss\Components\Components\Dashboard\AddWidgetToCustomDashboard.razor.rz.scp.css
 C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-blazor-web-app.sourcelink.json
+C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-blazor-web-app.RazorAssemblyInfo.cache
+C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-blazor-web-app.RazorAssemblyInfo.cs

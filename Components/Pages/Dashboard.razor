@@ -38,13 +38,25 @@
 }
 
 @code {
-    // DEMO DATA
-    private CustomDashboardInstance Instance = new CustomDashboardInstance()
-        {
-            MaxY = 10,
-            MaxX = 10,
-            Items = new ObservableCollection<CustomDashboardItem>([
-        new CustomDashboardItem { Id = Guid.NewGuid(), Name = "My Side Widget 1", Position = (0, 0), Size = (1, 2), IsAvailable
+
+    private CustomDashboardInstance Instance;
+
+    private void ToggleEditing()
+    {
+        Instance.IsEditing = !Instance.IsEditing;
+        StateHasChanged();
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+        Instance = new CustomDashboardInstance()
+            {
+                MaxY = 6,
+                MaxX = 9,
+                Items = new ObservableCollection<CustomDashboardItem>([
+            new CustomDashboardItem { Id = Guid.NewGuid(), Name = "My Side Widget 1", Position = (0, 0), Size = (1, 2), IsAvailable
 = false },
 new CustomDashboardItem { Id = Guid.NewGuid(), Name = "Small Widget 2", Position = (2, 0), Size = (1, 1), IsAvailable =
 false },
@@ -96,15 +108,10 @@ new CustomDashboardItem { Id = Guid.NewGuid(), Position = (6, 6), Size = (1, 1),
 new CustomDashboardItem { Id = Guid.NewGuid(), Position = (7, 6), Size = (1, 1), IsAvailable = true },
 new CustomDashboardItem { Id = Guid.NewGuid(), Position = (8, 6), Size = (1, 1), IsAvailable = true },
 new CustomDashboardItem { Id = Guid.NewGuid(), Position = (9, 6), Size = (1, 1), IsAvailable = true }
-        ])
-        };
+            ])
+            };
+        @* Instance = new CustomDashboardInstance(8, 8); *@
 
-
-    @* public CustomDashboardInstance Instance { get; set; } = new CustomDashboardInstance(10, 10); *@
-
-    private void ToggleEditing()
-    {
-        Instance.IsEditing = !Instance.IsEditing;
-        StateHasChanged(); // Ensure the state change triggers a UI update
+        base.OnInitialized();
     }
 }
