@@ -19,7 +19,7 @@
                         @if (Instance.IsEditing && item.IsAvailable)
                         {
                             <div class="card relative"
-                                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.04)">
                                 <AddWidgetToCustomDashboard Instance="@Instance" Item="@item"
                                     OnSuccess="@(async () => { StateHasChanged(); })" SetFocus="@((e)=>{ FocusGridItem = item; })"
                                     ResetFocus="@(()=>{ FocusGridItem = null; })" />
@@ -38,25 +38,6 @@
                                                 style="cursor: pointer;">
                                                 <i title="Delete" class="bi bi-trash"></i>
                                             </span>
-                                            @* <span
-                            class="badge @(SelectedIndex.HasValue && SelectedIndex == Instance.Items.IndexOf(item) ?
-                            "bg-primary" : "bg-secondary")">
-                            @if (SelectedIndex.HasValue && SelectedIndex == Instance.Items.IndexOf(item))
-                            {
-                            <i title="Switch positions" class="bi bi-arrow-left-right" @onclick="ResetSelectedIndex"
-                            style="cursor:pointer;"> Selected</i>
-                            }
-                            else
-                            {
-                            <i title="Switch positions" class="bi bi-arrow-left-right" style="cursor:pointer;"
-                            @onclick="@(() => ClickItem(item))">
-                            @if (SelectedIndex.HasValue && SelectedIndex != Instance.Items.IndexOf(item))
-                            {
-                            @: Switch Positions with
-                            }
-                            </i>
-                            }
-                            </span> *@
                                         </div>
                                     }
                                 </div>
