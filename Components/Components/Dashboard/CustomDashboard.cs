@@ -59,21 +59,18 @@ namespace CustomDashboard.Components
             InitializeDefaults();
         }
 
-        public CustomDashboardInstance(int maxX, int maxY)
+        public CustomDashboardInstance((int maxX, int maxY) sizes)
         {
-            MaxX = maxX;
-            MaxY = maxY;
+            MaxX = sizes.maxX;
+            MaxY = sizes.maxY;
             InitializeDefaults();
         }
 
-        private void InitializeDefaults()
+        public void InitializeDefaults()
         {
             Items ??= new ObservableCollection<CustomDashboardItem>();
 
-            if (Items.Count == 0)
-            {
-                InitializeItems(MaxX, MaxY);
-            }
+            InitializeItems(MaxX, MaxY);
         }
 
         private void InitializeItems(int maxX, int maxY)

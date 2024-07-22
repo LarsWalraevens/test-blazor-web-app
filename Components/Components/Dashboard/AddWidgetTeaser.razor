@@ -1,0 +1,15 @@
+@namespace CustomDashboard.Components
+
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using System.Collections.ObjectModel
+
+<div @onclick="@SetActiveAddWidget" id="custom-dashboard-add-widget"
+    class="d-flex justify-content-center align-items-center" style="width: 100%; height: 100%;">
+    <span class="bi bi-plus" style="font-size: 3rem"></span>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback SetActiveAddWidget { get; set; }
+}

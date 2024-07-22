@@ -10,18 +10,6 @@
 
 <PageTitle>Custom dashboard</PageTitle>
 
-<style>
-    .grid-item {
-        min-width: 300px;
-        min-height: 150px;
-    }
-
-    .grid-item.selected .card {
-        border-color: #0d6efd !important;
-        background-color: #0d6dfd68 !important;
-    }
-</style>
-
 <h1 class="mb-4">
     <a href="/">
         <span class="bi bi-arrow-left mr-2"></span>
@@ -39,7 +27,7 @@
 
 @code {
 
-    private CustomDashboardInstance Instance;
+    private CustomDashboardInstance Instance { get; set; }
 
     private void ToggleEditing()
     {
@@ -51,10 +39,10 @@
 
     protected override void OnInitialized()
     {
-        Instance = new CustomDashboardInstance()
+        Instance = new CustomDashboardInstance(
+        (maxX: 9, maxY: 6)
+        )
             {
-                MaxY = 6,
-                MaxX = 9,
                 Items = new ObservableCollection<CustomDashboardItem>([
             new CustomDashboardItem { Id = Guid.NewGuid(), Name = "My Side Widget 1", Position = (0, 0), Size = (1, 2), IsAvailable
 = false },
@@ -110,7 +98,7 @@ new CustomDashboardItem { Id = Guid.NewGuid(), Position = (8, 6), Size = (1, 1),
 new CustomDashboardItem { Id = Guid.NewGuid(), Position = (9, 6), Size = (1, 1), IsAvailable = true }
             ])
             };
-        @* Instance = new CustomDashboardInstance(8, 8); *@
+        @* Instance = new CustomDashboardInstance((maxX: 10, maxY: 10)); *@
 
         base.OnInitialized();
     }

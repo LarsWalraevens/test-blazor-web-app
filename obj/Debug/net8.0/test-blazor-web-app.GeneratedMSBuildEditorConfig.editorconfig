@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXENoYXJ0c1xNeVBpZWNoYXJ0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/www/playground/test-blazor-web-app/Components/Components/Dashboard/CustomDashboardComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxDdXN0b21EYXNoYm9hcmRDb21wb25lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,9 +94,9 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetToCustomDashboard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRUb0N1c3RvbURhc2hib2FyZC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = b-j8dmvrg3kq
+[C:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetTeaser.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRUZWFzZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-s3gltzzj50
 
 [C:/www/playground/test-blazor-web-app/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==

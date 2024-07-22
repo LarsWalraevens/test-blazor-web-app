@@ -5,29 +5,24 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<div @onclick="@ToggleModal" id="custom-dashboard-add-widget" class="d-flex justify-content-center align-items-center"
-    style="width: 100%; height: 100%;">
-    <span class="bi bi-plus" style="font-size: 3rem"></span>
-</div>
 
-@if (ShowModal && ToAddItem != null)
+@if (Item != null)
 {
     <div class="modal d-block" id="exampleModal" aria-hidden="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Adding new widget</h5>
-                    <button @onclick="ToggleModal" type="button" class="btn-close" data-bs-dismiss="modal"
+                    <button @onclick="CloseAndResetModal" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="@ToAddItem" OnValidSubmit="@OnSubmitNewItem" style="width: 85%"
-                        class="mx-auto mb-4 mt-2">
+                    <EditForm Model="@Item" OnValidSubmit="@OnSubmitNewItem" style="width: 85%" class="mx-auto mb-4 mt-2">
                         <DataAnnotationsValidator />
                         <div class="d-flex gap-3 flex-column">
                             <div>
                                 <label for="name" class="form-label d-block">Name</label>
-                                <InputText autofocus class="w-100" id="name" @bind-Value="@ToAddItem.Name" required />
+                                <InputText autofocus class="w-100" id="name" @bind-Value="@Item.Name" required />
                             </div>
                             <div>
                                 <p class="mb-2">
@@ -41,37 +36,44 @@
                                 </p>
                                 <div class="d-grid gap-1 flex-column" style="grid-template-columns: repeat(3, 1fr);">
                                     <div>
-                                        <input type="radio" name="size" id="size-1x1" value="(1, 1)" checked
-                                            @onclick="e => ToAddItem.Size = (1, 1)" />
+                                        <input type="radio" name="size" id="size-1x1" value="(1, 1)"
+                                            @onclick="@(() => ChangeFocusSize(1, 1))"
+                                            checked="@((Item.Size.X == 1 && Item.Size.Y == 1))" />
                                         <label for="size-1x1">1x1</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="size" id="size-1x2" value="(1, 2)"
-                                            @onclick="e => ToAddItem.Size = (1, 2)" />
+                                            @onclick="@(() => ChangeFocusSize(1, 2))"
+                                            checked="@((Item.Size.X == 1 && Item.Size.Y == 2))" />
                                         <label for="size-1x2">1x2</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="size" id="size-2x2" value="(2, 2)"
-                                            @onclick="e => ToAddItem.Size = (2, 2)" />
+                                            @onclick="@(() => ChangeFocusSize(2, 2))"
+                                            checked="@((Item.Size.X == 2 && Item.Size.Y == 2))" />
                                         <label for="size-2x2">2x2</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="size" id="size-3x3" value="(3, 3)"
-                                            @onclick="e => ToAddItem.Size = (3, 3)" />
+                                            @onclick="@(() => ChangeFocusSize(3, 3))"
+                                            checked="@((Item.Size.X == 3 && Item.Size.Y == 3))" />
                                         <label for="size-3x3">3x3</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="size" id="size-2x3" value="(2, 3)"
-                                            @onclick="e => ToAddItem.Size = (2, 3)" />
+                                            @onclick="@(() => ChangeFocusSize(2, 3))"
+                                            checked="@((Item.Size.X == 2 && Item.Size.Y == 3))" />
                                         <label for="size-2x3">2x3</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="size" id="size-4x4" value="(4, 4)"
-                                            @onclick="e => ToAddItem.Size = (4, 4)" />
+                                            @onclick="@(() => ChangeFocusSize(4, 4))"
+                                            checked="@((Item.Size.X == 4 && Item.Size.Y == 4))" />
                                         <label for="size-4x4">4x4</label>
                                     </div>
                                 </div>
                             </div>
+                            <pre>@JsonConvert.SerializeObject(OriginalItem, Formatting.Indented)</pre>
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
                         </div>
                     </EditForm>
@@ -89,71 +91,63 @@
     public CustomDashboardItem Item { get; set; }
 
     [Parameter]
-    public EventCallback OnSuccess { get; set; }
-    [Parameter]
-    public EventCallback ResetFocus { get; set; }
-    [Parameter]
-    public EventCallback SetFocus { get; set; }
+    public EventCallback OnClose { get; set; }
 
-    private CustomDashboardItem ToAddItem { get; set; }
-    private bool ShowModal { get; set; }
+    [Parameter]
+    public EventCallback<CustomDashboardItem> OnItemChanged { get; set; }
 
-    protected override void OnParametersSet()
+    private CustomDashboardItem OriginalItem { get; set; }
+
+    private async Task ChangeFocusSize(int x, int y)
     {
-        ToAddItem = new CustomDashboardItem
-            {
-                Id = Item.Id,
-                Name = Item.Name,
-                IsAvailable = Item.IsAvailable,
-                Position = Item.Position,
-                Size = Item.Size
-            };
+        Item.Size = (x, y);
+        await OnItemChanged.InvokeAsync(Item);
+        await InvokeAsync(StateHasChanged);
     }
 
-    private async Task ToggleModal()
+    private async Task CloseModal()
     {
-        bool newValue = !ShowModal;
-
-        ShowModal = newValue;
-        if (newValue == false)
-        {
-            await ResetFocus.InvokeAsync();
-        }
-        else
-        {
-            await SetFocus.InvokeAsync();
-        }
-    }    
+        Item = OriginalItem;
+        await OnClose.InvokeAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+    private async Task CloseAndResetModal()
+    {
+        await ChangeFocusSize(1, 1);
+        Item = OriginalItem;
+        await OnClose.InvokeAsync();
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task OnSubmitNewItem()
     {
         try
         {
             // Check if new item exceeds the maxX or maxY value
-            if ((ToAddItem.Position.X + ToAddItem.Size.X > Instance.MaxX) || (ToAddItem.Position.Y + ToAddItem.Size.Y >
+            if ((Item.Position.X + Item.Size.X > Instance.MaxX) || (Item.Position.Y + Item.Size.Y >
             Instance.MaxY))
             {
                 throw new InvalidOperationException("Cannot add item. It exceeds the maximum allowed dimensions.");
             }
 
             // Check for overlap before making changes
-            if (CheckOverlap(ToAddItem))
+            if (CheckOverlap(Item))
             {
                 throw new InvalidOperationException("Cannot add item. It overlaps with existing items.");
             }
 
-            ToAddItem.IsAvailable = false;
+            Item.IsAvailable = false;
             List<CustomDashboardItem> itemsToRemove = new List<CustomDashboardItem>();
 
             // Remove overlapping items
-            if (ToAddItem.Size.X > 1 || ToAddItem.Size.Y > 1)
+            if (Item.Size.X > 1 || Item.Size.Y > 1)
             {
-                for (int x = ToAddItem.Position.X; x < ToAddItem.Position.X + ToAddItem.Size.X; x++)
+                for (int x = Item.Position.X; x < Item.Position.X + Item.Size.X; x++)
                 {
-                    for (int y = ToAddItem.Position.Y; y < ToAddItem.Position.Y + ToAddItem.Size.Y; y++)
+                    for (int y = Item.Position.Y; y < Item.Position.Y + Item.Size.Y; y++)
                     {
                         CustomDashboardItem itemToRemove = Instance.Items.FirstOrDefault(i =>
-                        i.Position.X == x && i.Position.Y == y && i.Id != ToAddItem.Id);
+                        i.Position.X == x && i.Position.Y == y && i.Id != Item.Id);
 
                         if (itemToRemove != null)
                         {
@@ -171,18 +165,18 @@
             // Add the new item if it's not found in the list
             if (Instance.Items.IndexOf(Item) < 0)
             {
-                Instance.Items.Add(ToAddItem);
+                Instance.Items.Add(Item);
             }
             else
             {
                 int index = Instance.Items.IndexOf(Item);
-                Instance.Items[index] = ToAddItem;
+                Instance.Items[index] = Item;
             }
 
+            await OnItemChanged.InvokeAsync(Item);
+            await CloseModal();
             await InvokeAsync(StateHasChanged);
-            await ToggleModal();
-            await OnSuccess.InvokeAsync();
-            await InvokeAsync(StateHasChanged);
+
         }
         catch (Exception e)
         {
@@ -215,5 +209,17 @@
         }
 
         return false; // No overlap detected
+    }
+
+    protected override void OnInitialized()
+    {
+        OriginalItem = new CustomDashboardItem()
+            {
+                Id = Item.Id,
+                IsAvailable = Item.IsAvailable,
+                Name = string.Empty,
+                Position = Item.Position,
+                Size = (1, 1)
+            };
     }
 }

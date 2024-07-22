@@ -6,6 +6,24 @@
 
 @namespace CustomDashboard.Components
 
+
+<style>
+    .grid-item {
+        min-width: 300px;
+        min-height: 150px;
+    }
+
+    .grid-item.selected .card {
+        border-color: #9b6cd1 !important;
+        background-color: #9b6cd1 !important;
+        z-index: 10;
+    }
+
+    .grid-item.selected .card #custom-dashboard-add-widget>span {
+        display: none;
+    }
+</style>
+
 @if (Instance != null && Instance.Items != null)
 {
     <div style="overflow-x: auto; position: relative; max-width:100%; overflow-y: hidden; padding: 10px 5px;">
@@ -14,14 +32,12 @@
                 style="display: grid; grid-template-columns: repeat(@Instance.MaxX, 1fr); gap: 5px;">
                 @foreach (CustomDashboardItem item in Instance.Items)
                 {
-                    <div class="grid-item @(FocusGridItem == item ? "selected" : null)" style="@GenerateGridItemStyles(item)">
+                    <div class="grid-item @(ActiveAddWidget == item ? "selected" : null)" style="@GenerateGridItemStyles(item)">
                         @if (Instance.IsEditing && item.IsAvailable)
                         {
                             <div class="card relative"
                                 style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.04)">
-                                <AddWidgetToCustomDashboard Instance="@Instance" Item="@item"
-                                    OnSuccess="@(async () => { StateHasChanged(); })" SetFocus="@((e)=>{ FocusGridItem = item; })"
-                                    ResetFocus="@(()=>{ FocusGridItem = null; })" />
+                                <AddWidgetTeaser SetActiveAddWidget="@((e) => { ActiveAddWidget = item; })" />
                             </div>
                         }
                         else
@@ -47,35 +63,38 @@
             </div>
         </div>
     </div>
-    <pre>@JsonConvert.SerializeObject(Instance, Formatting.Indented)</pre>
+    @if (ActiveAddWidget != null)
+    {
+        <AddWidgetModal Instance="@Instance" Item="ActiveAddWidget"
+            OnClose="@(() => { ActiveAddWidget = null; StateHasChanged(); })" OnItemChanged="@OnItemChanged" />
+        <pre>@JsonConvert.SerializeObject(ActiveAddWidget, Formatting.Indented)</pre>
+    }
+    <pre>@JsonConvert.SerializeObject(Instance.Items, Formatting.Indented)</pre>
 }
 
 @code {
     [Parameter]
     public CustomDashboardInstance Instance { get; set; }
-    private int? SelectedIndex { get; set; }
 
-    private CustomDashboardItem FocusGridItem { get; set; }
+    private CustomDashboardItem _activeAddWidget;
 
-    private void ResetFocusGridItem() => FocusGridItem = null;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private CustomDashboardItem ActiveAddWidget
     {
-        // Always call the base method at the end
-        await base.OnAfterRenderAsync(firstRender);
-    }
-    protected override void OnInitialized()
-    {
-        // You can log the values here to verify they are correct
-        Console.WriteLine($"Initialized with MaxX = {Instance.MaxX}, MaxY = {Instance.MaxY}");
-
-        base.OnInitialized();
+        get => _activeAddWidget;
+        set
+        {
+            if (_activeAddWidget != value)
+            {
+                _activeAddWidget = value;
+                InvokeAsync(StateHasChanged);
+            }
+        }
     }
 
     private string GenerateGridItemStyles(CustomDashboardItem item)
     {
-        int gridColumnStart = item.Position.X + 1; // Convert to 1-based index for CSS grid-column
-        int gridRowStart = item.Position.Y + 1; // Convert to 1-based index for CSS grid-row
+        int gridColumnStart = item.Position.X + 1; // Convert to 1-based index for CSS grid
+        int gridRowStart = item.Position.Y + 1; // Convert to 1-based index for CSS grid
         int gridColumnEnd = Math.Min(gridColumnStart + item.Size.X - 1, Instance.MaxX);
         int gridRowEnd = Math.Min(gridRowStart + item.Size.Y - 1, Instance.MaxY);
 
@@ -135,8 +154,23 @@
         }
     }
 
-    private void ResetSelectedIndex()
+    protected override void OnInitialized()
     {
-        SelectedIndex = null;
+        // You can log the values here to verify they are correct
+        Console.WriteLine($"Initialized with MaxX = {Instance.MaxX}, MaxY = {Instance.MaxY}");
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Always call the base method at the end
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnItemChanged(CustomDashboardItem item)
+    {
+        ActiveAddWidget = item;
+        await InvokeAsync(StateHasChanged);
     }
 }
