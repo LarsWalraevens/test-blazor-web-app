@@ -5,6 +5,248 @@
 #custom-dashboard-add-widget[b-s3gltzzj50] {
     cursor: pointer;
 }
+/* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor.rz.scp.css */
+.compass-map[b-4t59l3xqdg] {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    border-radius: 100%;
+    box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.1);
+    background: linear-gradient(to bottom, #2C9CF9 0%, #88D3E9 100%);
+    flex-grow: 1;
+}
+
+.compass-map[b-4t59l3xqdg]:after,
+.compass-map[b-4t59l3xqdg]:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    border-top: 1px solid rgba(1, 1, 1, 0.1);
+    z-index: 0;
+}
+
+.compass-map[b-4t59l3xqdg]:after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.compass-map-labels[b-4t59l3xqdg] {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+}
+
+.compass-map-labels > p[b-4t59l3xqdg] {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgb(0, 12, 39);
+    display: inline-block;
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 0px;
+    line-height: 0px;
+    width: 20px;
+    text-align: center;
+}
+
+.compass-map-labels #y-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #y-axis[b-4t59l3xqdg]:after,
+.compass-map-labels #x-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+    content: " ";
+    background: rgb(0, 32, 78);
+    width: 2px;
+    height: 11px;
+    position: absolute;
+    text-align: center;
+}
+
+.compass-map-labels #y-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #y-axis[b-4t59l3xqdg]:after {
+    width: 2px;
+    height: 12px;
+}
+
+.compass-map-labels #x-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+    height: 2px;
+    width: 12px;
+}
+
+.compass-map-labels #x-axis[b-4t59l3xqdg]:before {
+    left: 1px;
+    top: 50.4%;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+    right: -11px;
+    top: 50.4%;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #y-axis[b-4t59l3xqdg]:before {
+    top: 1px;
+    left: 50.4%;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #y-axis[b-4t59l3xqdg]:after {
+    bottom: -11px;
+    left: 50.4%;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #north[b-4t59l3xqdg] {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #west[b-4t59l3xqdg] {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #east[b-4t59l3xqdg] {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    transform: translate(-50%, -50%);
+}
+
+.compass-map-labels #south[b-4t59l3xqdg] {
+    position: absolute;
+    bottom: 27px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.compass-map[b-4t59l3xqdg] {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        border-radius: 100%;
+        box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.1);
+        background: linear-gradient(to bottom, #2C9CF9 0%, #88D3E9 100%);
+        flex-grow: 1;
+}
+
+.compass-map[b-4t59l3xqdg]:after,
+.compass-map[b-4t59l3xqdg]:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    border-top: 1px solid rgba(1, 1, 1, 0.1);
+    z-index: 1;
+}
+    
+.compass-map[b-4t59l3xqdg]:after{
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.compass-map-labels[b-4t59l3xqdg] {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+}
+
+.compass-map-labels>p[b-4t59l3xqdg] {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgb(0, 12, 39, 50%);
+    /* color: white; */
+    display: inline-block;
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 0px;
+    line-height: 0px;
+    width: 20px;
+    text-align: center;
+}
+
+.compass-map-labels #y-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #y-axis[b-4t59l3xqdg]:after,
+.compass-map-labels #x-axis[b-4t59l3xqdg]:before,
+.compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+        content: " ";
+        background: rgb(0, 32, 78);
+        width: 2px;
+        height: 11px;
+        position: absolute;
+        text-align: center;
+}
+
+    .compass-map-labels #y-axis[b-4t59l3xqdg]:before,
+    .compass-map-labels #y-axis[b-4t59l3xqdg]:after {
+        width: 2px;
+        height: 12px;
+    }
+
+    .compass-map-labels #x-axis[b-4t59l3xqdg]:before,
+    .compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+        height: 2px;
+        width: 12px;
+    }
+
+    .compass-map-labels #x-axis[b-4t59l3xqdg]:before {
+        left: 1px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #x-axis[b-4t59l3xqdg]:after {
+        right: -11px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #y-axis[b-4t59l3xqdg]:before {
+        top: 1px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #y-axis[b-4t59l3xqdg]:after {
+        bottom: -11px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #north[b-4t59l3xqdg] {
+        position: absolute;
+        top: 26px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #west[b-4t59l3xqdg] {
+        position: absolute;
+        top: 50%;
+        left: 30px;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #east[b-4t59l3xqdg] {
+        position: absolute;
+        top: 50%;
+        right: 7px;
+        transform: translate(-50%, -50%);
+    }
+
+    .compass-map-labels #south[b-4t59l3xqdg] {
+        position: absolute;
+        bottom: 27px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 /* _content/test-blazor-web-app/Components/Layout/MainLayout.razor.rz.scp.css */
 .page[b-f2lph6kr76] {
     position: relative;

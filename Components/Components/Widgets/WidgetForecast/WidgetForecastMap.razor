@@ -1,0 +1,33 @@
+@namespace test_blazor_web_app.Components
+
+<div style="max-width: @SizeInPx; min-height: @SizeInPx; position: relative; display: flex; flex-direction:column;">
+    @if (ChildContent != null)
+    {
+        <div style="width: 100%; min-height: 100%; position: absolute; flex-grow:1; display:flex;">
+            @ChildContent
+        </div>
+    }
+    <div class="compass-map">
+        <div class="compass-map-labels">
+            <p id="north">n</p>
+            <p id="west">w</p>
+            <p id="east">e</p>
+            <p id="south">s</p>
+            <span id="y-axis" />
+            <span id="x-axis" />
+        </div>
+
+        <div class="compass-map-inner"></div>
+        <div class="compass-map-positioning"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int DiameterInPx { get; set; }
+
+    private string SizeInPx => $"{DiameterInPx}px";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

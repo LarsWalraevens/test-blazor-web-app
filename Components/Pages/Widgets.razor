@@ -1,0 +1,79 @@
+@page "/widgets"
+
+@inherits LayoutComponentBase
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using Widget.Forecast
+@using System.Collections.ObjectModel
+@using Newtonsoft.Json
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+
+<PageTitle>Widgets</PageTitle>
+
+<style>
+    section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(1, 1, 1, 0.2);
+    }
+</style>
+
+<h1>Widgets</h1>
+
+<section>
+    <h2>Planned & actual forcast widget</h2>
+    <WidgetForecastComponent ForecastItems="@ForecastItems" TargetDotSizeInPx="60" />
+    <pre>@JsonConvert.SerializeObject(ForecastItems, Formatting.Indented)</pre>
+</section>
+
+@code {
+    private WidgetForecast WidgetForecast;
+    private List<WidgetForecastItem> ForecastItems;
+
+    protected readonly System.Collections.ObjectModel.ReadOnlyCollection<Widget.Forecast.WidgetForecastType> ForecastTypes =
+    WidgetForecast.Types;
+
+
+    protected override void OnInitialized()
+    {
+        ForecastItems = new List<WidgetForecastItem>([
+        new WidgetForecastItem() {
+IsActual = true,
+Degrees = 7,
+Value = 4,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+},
+new WidgetForecastItem() {
+IsActual = false,
+Degrees = 5,
+Value = 3,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+},
+
+new WidgetForecastItem() {
+IsActual = false,
+Degrees = 185,
+Value = 3,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+},
+new WidgetForecastItem() {
+IsActual = true,
+Degrees = 199,
+Value = 3,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+},
+]);
+    }
+
+
+
+
+}
