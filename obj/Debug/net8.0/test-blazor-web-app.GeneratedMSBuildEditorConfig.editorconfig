@@ -54,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RWZXNzZWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastWaypoint.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RXYXlwb2ludC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/www/playground/test-blazor-web-app/Components/Layout/DashboardLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRGFzaGJvYXJkTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

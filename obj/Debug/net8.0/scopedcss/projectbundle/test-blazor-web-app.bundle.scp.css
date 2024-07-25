@@ -5,13 +5,14 @@
 #custom-dashboard-add-widget[b-s3gltzzj50] {
     cursor: pointer;
 }
+/* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor.rz.scp.css */
 /* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor.rz.scp.css */
 .compass-map[b-4t59l3xqdg] {
     width: 100%;
     min-height: 100%;
     display: flex;
     border-radius: 100%;
-    box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.1);
+    box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.2);
     background: linear-gradient(to bottom, #2C9CF9 0%, #88D3E9 100%);
     flex-grow: 1;
 }

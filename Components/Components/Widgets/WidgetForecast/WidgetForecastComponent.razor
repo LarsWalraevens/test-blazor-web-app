@@ -6,67 +6,35 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<WidgetForecastMap DiameterInPx="250">
-    @* <WidgetForecastVessel Degrees="77" IsActual="true" /> *@
-
-    @* <WidgetForecastVessel Degrees="-9" IsActual="false" /> *@
-
-
+<WidgetForecastMap DiameterInPx="500">
     @foreach (var item in ForecastItems.Where(x => x.Type.Name == "Speed"))
     {
         <WidgetForecastVessel Degrees="@item.Degrees" IsActual="@item.IsActual" />
-        <div class="compass-map-vessel-waypoint @(item.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
-            style="transform: rotate(@(item.Degrees)deg)" />
-        <div class="compass-map-target-dot-button-container"
-            style="transform: rotate(@(item.Degrees)deg); transform-origin: 0% 100%; width: @(TargetDotSizeInPx)px; left:calc(50% - @(TargetDotSizeInPx/2)px)">
-            <span class="compass-map-target-dot-button"
-                style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
-                <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(item.Degrees)deg);">
-                    <i class="bi @(item.Type.Icon)"
-                        style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
-                    <div class="compass-map-target-dot-button-indicators">
-                        <span id="planned" class="active"
-                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                        <span id="actual" class="active"
-                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                    </div>
-                </div>
-            </span>
-
-        </div>
+        <WidgetForecastWaypoint IsVessel="true" TargetDotSizeInPx="@TargetDotSizeInPx" Item="@item" />
     }
     @foreach (var item in ForecastItems.Where(x => x.Type.Name != "Speed"))
     {
-        <div class="compass-map-vessel-waypoint @(item.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
-            style="transform: rotate(@(item.Degrees)deg)" />
-        <div class="compass-map-target-dot-button-container"
-            style="transform: rotate(@(item.Degrees)deg); transform-origin: 0% calc(100% - @(TargetDotSizeInPx /2)px); width: @(TargetDotSizeInPx)px; left:calc(50% - @(TargetDotSizeInPx/2)px);">
-            <span class="compass-map-target-dot-button"
-                style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
-                <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(item.Degrees)deg);">
-                    <i class="bi @(item.Type.Icon)"
-                        style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
-                    <div class="compass-map-target-dot-button-indicators">
-                        <span id="planned" class="active"
-                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                        <span id="actual" class="active"
-                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                    </div>
-                </div>
-            </span>
-
-        </div>
+        <WidgetForecastWaypoint IsVessel="false" TargetDotSizeInPx="@TargetDotSizeInPx" Item="@item" />
     }
 </WidgetForecastMap>
 
+@code {
+    [Parameter]
+    public List<WidgetForecastItem> ForecastItems { get; set; }
+
+    [Parameter]
+    public int TargetDotSizeInPx { get; set; }
+}
+
+
+
 <style>
     .compass-map-target-dot-button-container .compass-map-target-dot-button {
-        position: absolute;
         bottom: 95%;
         right: 0;
         transform-origin: 0% 100%;
         border-radius: 100%;
-        z-index: 32;
+        z-index: 30;
         background: #1B87DF;
         box-shadow: inset 0px 0px 0px 2px rgba(1, 1, 1, 0.2);
         display: flex;
@@ -94,7 +62,7 @@
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>span {
         border-radius: 100%;
         background-color: #175B93;
-        box-sizing: inset 0px 0px 0px 1px rgba(1, 1, 1, 0.1);
+        box-shadow: inset 0px 0px 2px rgba(1, 1, 1, 0.8);
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#planned.active {
@@ -111,10 +79,13 @@
 
     .compass-map-target-dot-button-container {
         position: absolute;
-        height: 50%;
+        display: grid;
+        justify-content: center;
+        align-items: flex-start;
+        justify-items: center;
         bottom: 50%;
         border-radius: 10%;
-        z-index: 1;
+        z-index: 30;
     }
 
     .compass-map-vessel-waypoint {
@@ -125,21 +96,43 @@
         transform-origin: 0% 100%;
         border-radius: 10%;
         z-index: 1;
-        border-left: 1px solid white;
-        border-right: 1px solid white;
+        width: 2px;
+        background-color: white;
     }
 
     .compass-map-vessel-waypoint-actual {
-        border-color: #1EFF00 !important;
-        border-style: dashed !important;
+        background-color: unset;
+        background-image: linear-gradient(to top, #1EFF00 60%, rgba(255, 255, 255, 0) 0%);
+        background-size: 2px 9px;
+        background-repeat: repeat;
+    }
+
+    .compass-map-target-waypoint .arrow {
+        content: "";
+        position: absolute;
+        left: -6px;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 15px solid white;
+    }
+
+    .compass-map-target-waypoint-actual .arrow {
+        border-top-color: #1EFF00 !important;
+    }
+
+    .compass-map-target-waypoint {
+        position: absolute;
+        height: 50%;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: 0% 100%;
+        border-radius: 10%;
+        z-index: 1;
+        width: 2px;
+        background-color: unset;
+        background-repeat: repeat;
+        background-size: cover;
     }
 </style>
-
-@code {
-    [Parameter]
-    public List<WidgetForecastItem> ForecastItems { get; set; }
-
-    [Parameter]
-    public int TargetDotSizeInPx { get; set; }
-
-}

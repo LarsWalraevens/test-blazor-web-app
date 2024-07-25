@@ -5,112 +5,42 @@
 
 <h3>Todo (with login) component </h3>
 <LoginTodos.LoginTodos />
-
-<div
-    style="display: grid; gap: 5px; grid-template-columns: repeat(5, 1fr); grid-template-areas: 'widget1 widget1 . . .' 'widget1 widget1 . . .' '. . . . .' '. . . . .' '. . . . .';">
-    <div class="grid-item"
-        style="grid-area: widget1; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 1</h5>
-            </div>
-        </div>
-    </div>
-    <div class="grid-item"
-        style="grid-area: widget2; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 2</h5>
-            </div>
-        </div>
-    </div>
-    <div class="grid-item"
-        style="grid-area: widget3; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 3</h5>
-            </div>
-        </div>
-    </div>
-    <div class="grid-item"
-        style="grid-area: widget4; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 4</h5>
-            </div>
-        </div>
-    </div>
-    <div class="grid-item"
-        style="grid-area: widget5; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 5</h5>
-            </div>
-        </div>
-    </div>
-    <div class="grid-item"
-        style="grid-area: widget6; min-width: 300px; min-height: 150px; position: relative; background-color: white;">
-        <div class="card" style="width: 100%; height: 100%;">
-            <div class="card-body">
-                <h5 class="card-title no-select">Widget 6</h5>
-            </div>
-        </div>
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div><!--!-->
-    <div class="grid-item"
-        style="grid-area: .; background-color: lightgray; min-width: 300px; min-height: 150px; position: relative;">
-    </div>
+<div class="clock">
+    <div class="hand" id="hand"></div>
 </div>
+
+
+<style>
+    .clock {
+        position: relative;
+        width: 200px;
+        /* Diameter of the clock */
+        height: 200px;
+        /* Diameter of the clock */
+        border: 2px solid black;
+        /* Border of the clock */
+        border-radius: 50%;
+        /* Make it a circle */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hand {
+        position: absolute;
+        width: 2px;
+        /* Width of the hand */
+        height: 100px;
+        /* 20% of the clock's diameter (200px * 0.2) */
+        background: black;
+        /* Color of the hand */
+        top: 50%;
+        /* Center the hand vertically */
+        left: 50%;
+        /* Center the hand horizontally */
+        transform-origin: bottom center;
+        /* Rotate around the bottom center */
+        transform: rotate(90deg) translateY(-50%);
+        /* Rotate to 90 degrees and move the hand to start from the edge */
+    }
+</style>

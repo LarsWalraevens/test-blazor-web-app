@@ -1,0 +1,88 @@
+@namespace test_blazor_web_app.Components
+@using Widget.Forecast
+
+@if(IsVessel) {
+        <div class="compass-map-vessel-waypoint @(Item.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
+            style="transform: rotate(@(Item.Degrees)deg)" />
+        <div class="compass-map-target-dot-button-container"
+            style="transform: rotate(@(Item.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
+            <span class="compass-map-target-dot-button"
+                style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
+                <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(Item.Degrees)deg);">
+                    <i class="bi @(Item.Type.Icon)"
+                        style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
+                    <div class="compass-map-target-dot-button-indicators">
+                        <span id="planned" class="active"
+                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
+                        <span id="actual" class="active"
+                            style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
+                    </div>
+                </div>
+            </span>
+        </div>
+}
+else {
+    <div class="compass-map-target-waypoint @(Item.IsActual ? "compass-map-target-waypoint-actual" : null)"
+        style="@GenerateTargetWaypointSizeStyle(Item.Degrees, Item.IsActual, Item.Value)">
+        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(Item.Value)"></span>
+    </div>
+    <div class="compass-map-target-dot-button-container"
+        style="transform: rotate(@(Item.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
+        <span class="compass-map-target-dot-button" style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
+            <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(Item.Degrees)deg);">
+                <i class="bi @(Item.Type.Icon)" style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
+                <div class="compass-map-target-dot-button-indicators">
+                    <span id="planned" class="active"
+                        style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
+                    <span id="actual" class="active"
+                        style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
+                </div>
+            </div>
+        </span>
+    </div>
+}
+
+
+@code {
+    [Parameter] 
+    public bool IsVessel { get; set; }
+
+    [Parameter]
+    public int TargetDotSizeInPx { get; set; }
+
+    [Parameter]
+    public WidgetForecastItem Item { get; set; }
+
+
+    private string GenerateTargetWaypointSizeStyle(decimal degrees, bool isActual, decimal percentage)
+    {
+        string color = isActual ? "#1EFF00" : "white";
+        decimal percent;
+
+if(percentage <=13){
+    percent=13;
+} else if (percentage >=63) {
+    percent = 63;
+} else {
+    percent = percentage;
+}
+        
+        return $"background-image: linear-gradient(to top, rgba(255, 255, 255, 0) {100 - percent}%, {color} {100 - percent}%) !important; transform: rotate({degrees}deg)";
+    }
+    private string GenerateTargetWaypointArrowStyle(decimal percentage)
+    {
+        decimal percent;
+
+if(percentage <=13){
+    percent=13;
+} else if (percentage >=63) {
+    percent = 63;
+} else {
+    percent = percentage;
+}
+        
+        return $"top: calc({percent}%);";
+    }
+
+    
+}

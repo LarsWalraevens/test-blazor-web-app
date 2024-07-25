@@ -50,7 +50,7 @@ Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
 },
 new WidgetForecastItem() {
 IsActual = false,
-Degrees = 5,
+Degrees = 18,
 Value = 3,
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
@@ -58,19 +58,33 @@ Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
 
 new WidgetForecastItem() {
 IsActual = false,
-Degrees = 185,
-Value = 3,
+Degrees = 165,
+Value = 30,
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
 },
 new WidgetForecastItem() {
 IsActual = true,
 Degrees = 199,
-Value = 3,
+Value = 80,
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
 },
-]);
+new WidgetForecastItem() {
+IsActual = true,
+Degrees = 322,
+Value = 8,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+},
+new WidgetForecastItem() {
+IsActual = false,
+Degrees = 310,
+Value = 90,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+}
+        ]);
     }
 
 
