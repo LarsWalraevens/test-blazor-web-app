@@ -78,4 +78,3 @@ C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-blazor-web-app.Razor
 C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\test-blazor-web-app.RazorAssemblyInfo.cs
 C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\scopedcss\Components\Components\Dashboard\AddWidgetTeaser.razor.rz.scp.css
 C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\scopedcss\Components\Components\Widgets\WidgetForecast\WidgetForecastMap.razor.rz.scp.css
-C:\www\playground\test-blazor-web-app\obj\Debug\net8.0\scopedcss\Components\Components\Widgets\WidgetForecast\WidgetForecastComponent.razor.rz.scp.css

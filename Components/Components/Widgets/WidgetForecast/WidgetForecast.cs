@@ -24,6 +24,7 @@ namespace Widget.Forecast
         public decimal Degrees { get; set; }
 
         public decimal Value { get; set; }
+        public string ValueText { get; set; }
 
         public bool IsVisible { get; set; }
 

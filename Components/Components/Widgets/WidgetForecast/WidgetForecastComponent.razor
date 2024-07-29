@@ -6,15 +6,26 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<WidgetForecastMap DiameterInPx="500">
-    @foreach (var item in ForecastItems.Where(x => x.Type.Name == "Speed"))
+<WidgetForecastMap DiameterInPx="DiameterInPx" DegreePositioning="DegreePositioning">
+    @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
     {
-        <WidgetForecastVessel Degrees="@item.Degrees" IsActual="@item.IsActual" />
-        <WidgetForecastWaypoint IsVessel="true" TargetDotSizeInPx="@TargetDotSizeInPx" Item="@item" />
+        var mainItem = group.FirstOrDefault();
+        if (mainItem != null)
+        {
+            <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" TargetDotSizeInPx="@TargetDotSizeInPx"
+                Item="@mainItem" Options="@(group.Skip(1).ToList())" ForecastGroupedItems="@ForecastGroupedItems" SetForecastGroupedItems="SetForecastGroupedItems" />
+        }
     }
-    @foreach (var item in ForecastItems.Where(x => x.Type.Name != "Speed"))
+    @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
     {
-        <WidgetForecastWaypoint IsVessel="false" TargetDotSizeInPx="@TargetDotSizeInPx" Item="@item" />
+        foreach (WidgetForecastItem item in group)
+        {
+            if (item.Type.Name == "Speed")
+            {
+                <WidgetForecastVessel Degrees="@item.Degrees" IsActual="@item.IsActual" />
+            }
+
+        }
     }
 </WidgetForecastMap>
 
@@ -24,17 +35,80 @@
 
     [Parameter]
     public int TargetDotSizeInPx { get; set; }
+
+    [Parameter]
+    public int DiameterInPx { get; set; }
+
+    [Parameter]
+    public decimal? DegreePositioning { get; set; }
+
+    public List<List<WidgetForecastItem>> ForecastGroupedItems { get; set; }
+
+    public async Task SetForecastGroupedItems(List<List<WidgetForecastItem>> items) 
+    {
+        ForecastGroupedItems = items;
+        await InvokeAsync(StateHasChanged);
+    }
+
+// Loop through items to group if degree value is in the same margin
+protected override void OnInitialized()
+{
+    ForecastGroupedItems = new List<List<WidgetForecastItem>>();
+    List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
+    decimal currentDegree = 0;
+    decimal margin = (decimal)DiameterInPx / 2.8M * (decimal)TargetDotSizeInPx / (decimal)DiameterInPx;
+
+    Console.WriteLine(margin);
+    Console.WriteLine((decimal)TargetDotSizeInPx / 3.5M);
+
+    // Order by Degrees first, and ensure "Speed" items are processed first
+    var myItems = ForecastItems.OrderBy(x => x.Degrees).ThenBy(x => x.Type.Name != "Speed").ToList();
+
+    foreach (var item in myItems)
+    {
+        if (currentGroup.Count == 0 || Math.Abs(item.Degrees - currentDegree) <= margin)
+        {
+            currentGroup.Add(item);
+        }
+        else
+        {
+            if (currentGroup.Any())
+            {
+                ForecastGroupedItems.Add(currentGroup);
+            }
+            currentGroup = new List<WidgetForecastItem> { item };
+        }
+        currentDegree = item.Degrees;
+    }
+
+    // Add the last group if it has items
+    if (currentGroup.Any())
+    {
+        ForecastGroupedItems.Add(currentGroup);
+    }
+
+    // Ensure that each group is ordered with "Speed" items first
+    for (int i = 0; i < ForecastGroupedItems.Count; i++)
+    {
+        ForecastGroupedItems[i] = ForecastGroupedItems[i].OrderBy(x => x.Type.Name != "Speed").ThenBy(x => x.Degrees).ToList();
+    }
+
+    // Ensure the group containing "Speed" items is at the top
+    var sortedGroups = ForecastGroupedItems.OrderByDescending(g => g.Any(item => item.Type.Name == "Speed")).ThenBy(g => g.Min(item => item.Degrees)).ToList();
+    ForecastGroupedItems = sortedGroups;
+}
+
 }
 
 
-
 <style>
+    .compass-map-target-dot-button {
+        position: relative;
+        cursor: help;
+    }
+
     .compass-map-target-dot-button-container .compass-map-target-dot-button {
-        bottom: 95%;
-        right: 0;
-        transform-origin: 0% 100%;
         border-radius: 100%;
-        z-index: 30;
         background: #1B87DF;
         box-shadow: inset 0px 0px 0px 2px rgba(1, 1, 1, 0.2);
         display: flex;
@@ -49,6 +123,10 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        gap: 4px;
+    }
+    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content i{
+        margin-top: -5px;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators {
@@ -57,6 +135,7 @@
         align-items: center;
         flex-direction: row;
         gap: 2px;
+        margin-top: -2px;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>span {
@@ -97,14 +176,14 @@
         border-radius: 10%;
         z-index: 1;
         width: 2px;
-        background-color: white;
+        background-color: unset;
+        background-size: 2px 9px;
+        background-repeat: repeat;
+        background-image: linear-gradient(to top, #FFFFFF 60%, rgba(255, 255, 255, 0) 0%);
     }
 
     .compass-map-vessel-waypoint-actual {
-        background-color: unset;
         background-image: linear-gradient(to top, #1EFF00 60%, rgba(255, 255, 255, 0) 0%);
-        background-size: 2px 9px;
-        background-repeat: repeat;
     }
 
     .compass-map-target-waypoint .arrow {
@@ -134,5 +213,40 @@
         background-color: unset;
         background-repeat: repeat;
         background-size: cover;
+    }
+
+    .compass-map-dot-button-options {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        justify-items: center;
+        top: -15%;
+        left: 0;
+        width: 50%;
+        height: 50%;
+        background-color: #175B93;
+        box-shadow: inset 0px 0px 3px rgba(1, 1, 1, 1);
+        border:none;
+        border-radius: 100%;
+    }
+    .compass-map-dot-button-options:hover {
+        background-color: #65BEF0;
+    }
+
+    .compass-map-target-dot-button:hover .compass-map-target-dot-button-tooltip {
+        display:block;
+    }
+
+    .compass-map-target-dot-button-tooltip {
+        background-color: white; 
+        z-index: 100; 
+        min-width: 200px; 
+        position: absolute !important; 
+        top: 100%; 
+        padding: 0.5rem; 
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.25); 
+        border-radius: 0.2rem;
+        display:none;
     }
 </style>

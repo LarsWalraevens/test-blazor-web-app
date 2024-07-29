@@ -26,8 +26,8 @@
 
 <section>
     <h2>Planned & actual forcast widget</h2>
-    <WidgetForecastComponent ForecastItems="@ForecastItems" TargetDotSizeInPx="60" />
-    <pre>@JsonConvert.SerializeObject(ForecastItems, Formatting.Indented)</pre>
+    <WidgetForecastComponent ForecastItems="@ForecastItems" TargetDotSizeInPx="60" DiameterInPx="250"
+        DegreePositioning="180" />
 </section>
 
 @code {
@@ -43,51 +43,69 @@
         ForecastItems = new List<WidgetForecastItem>([
         new WidgetForecastItem() {
 IsActual = true,
-Degrees = 7,
+Degrees = 15,
 Value = 4,
+ValueText= "9.1kn /4°",
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
 },
 new WidgetForecastItem() {
 IsActual = false,
-Degrees = 18,
+Degrees = 10,
 Value = 3,
+ValueText= "9.1kn /3°",
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
 },
 
 new WidgetForecastItem() {
 IsActual = false,
-Degrees = 165,
+Degrees = 224,
 Value = 30,
+ValueText= "8kn / 224°",
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
 },
 new WidgetForecastItem() {
 IsActual = true,
-Degrees = 199,
+Degrees = 222,
 Value = 80,
 IsVisible= true,
+ValueText= "7.5kn / 222°",
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
 },
 new WidgetForecastItem() {
 IsActual = true,
-Degrees = 322,
-Value = 8,
+Degrees = 12,
+Value = 18,
+ValueText= "1.7m / 6s 12°",
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
 },
 new WidgetForecastItem() {
 IsActual = false,
-Degrees = 310,
+Degrees = 120,
+ValueText= "1.5m / 6s 120°",
 Value = 90,
 IsVisible= true,
 Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+},
+new WidgetForecastItem() {
+IsActual = false,
+Degrees = 144,
+ValueText= "1.5m / 6s 120°",
+Value = 55,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+},
+new WidgetForecastItem() {
+IsActual = true,
+Degrees = 164,
+ValueText= "1.5m / 6s 120°",
+Value = 55,
+IsVisible= true,
+Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
 }
         ]);
     }
-
-
-
-
 }

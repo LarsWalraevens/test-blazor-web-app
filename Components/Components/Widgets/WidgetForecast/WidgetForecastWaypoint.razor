@@ -1,51 +1,123 @@
 @namespace test_blazor_web_app.Components
 @using Widget.Forecast
+@using Newtonsoft.Json
 
-@if(IsVessel) {
-        <div class="compass-map-vessel-waypoint @(Item.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
-            style="transform: rotate(@(Item.Degrees)deg)" />
+@if(ShownMainItem != null) 
+{
+    <div class="compass-map-waypoints">
+        @if (IsVessel)
+        {
+                <div class="compass-map-vessel-waypoint @(ShownMainItem.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
+                    style="transform: rotate(@(ShownMainItem.Degrees)deg)" />
+        }
+        else
+        {
+            <div class="compass-map-target-waypoint @(ShownMainItem.IsActual ? "compass-map-target-waypoint-actual" : null)"
+                style="@GenerateTargetWaypointSizeStyle(ShownMainItem.Degrees, ShownMainItem.IsActual, ShownMainItem.Value)">
+                <span class="arrow" style="@GenerateTargetWaypointArrowStyle(ShownMainItem.Value)"></span>
+            </div>
+        }
+        @* CLICKABLE DOT - OPTIONS TO TOGGLE BETWEEN LAYERS *@
         <div class="compass-map-target-dot-button-container"
-            style="transform: rotate(@(Item.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
-            <span class="compass-map-target-dot-button"
-                style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
-                <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(Item.Degrees)deg);">
-                    <i class="bi @(Item.Type.Icon)"
-                        style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
+            style="transform: rotate(@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle : ShownMainItem.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
+            <span class="compass-map-target-dot-button" style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; transform: rotate(-@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle :ShownMainItem.Degrees)deg);">
+                <div class="compass-map-target-dot-button-content">
+                    <i class="bi @(ShownMainItem.Type.Icon)" style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.7))px;" />
                     <div class="compass-map-target-dot-button-indicators">
-                        <span id="planned" class="active"
+                        <span id="planned" class="@(IsActivePlanned ? "active" : null)"
                             style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                        <span id="actual" class="active"
+                        <span id="actual" class="@(IsActiveActual ? "active" : null)"
                             style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
                     </div>
                 </div>
+                @if (OtherOptions.Count > 0)
+                {
+                        <button @onclick="e=> ShowModal = true" class="compass-map-dot-button-options" style="left: @(DegreesItemsMiddle > 180 ? "-17%" : "67%")">
+                            <i class="bi bi-list" style="font-size:1.1rem;"></i>
+                        </button>    
+                }
+                @* TOOLTIP *@
+                <div class="compass-map-target-dot-button-tooltip">
+                    <p class="fw-bold mb-1">@ShownMainItem.Type.Name</p>
+                    <ul class="list-unstyle pl-4 @(OtherOptions.Count > 0 ? "mb-3" : "mb-1")">
+                        <li>@(ShownMainItem.IsActual ? "Actual" : "Planned"): @ShownMainItem.ValueText</li>
+                        @{
+                            if(SameTypeInOptions != null)
+                            {
+                                <li>@(SameTypeInOptions.IsActual ? "Actual" : "Planned"): @SameTypeInOptions.ValueText</li>
+                            }
+                        }
+                    </ul>
+                    @if (OtherOptions.Count > 0) {
+                    <p class="fw-bold mb-1">Other options</p>                
+                        <ul class="list-unstyled mb-1">
+                            @{
+                                    if (OtherOptions.Count >0 )
+                                    {
+                                        foreach (WidgetForecastItem MyOtherOption in OtherOptions.GroupBy(x => x.Type.Name).Select(x => x.First()))
+                                        {
+                                        <li style="cursor:pointer; text-decoration:underline;" @onclick="e=> ChangeToOption(MyOtherOption)">@(MyOtherOption.Type.Name)</li>
+                                        }
+                                    } 
+                            }
+                        </ul>
+                    }
+                </div>
             </span>
         </div>
-}
-else {
-    <div class="compass-map-target-waypoint @(Item.IsActual ? "compass-map-target-waypoint-actual" : null)"
-        style="@GenerateTargetWaypointSizeStyle(Item.Degrees, Item.IsActual, Item.Value)">
-        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(Item.Value)"></span>
-    </div>
-    <div class="compass-map-target-dot-button-container"
-        style="transform: rotate(@(Item.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
-        <span class="compass-map-target-dot-button" style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; ">
-            <div class="compass-map-target-dot-button-content" style="transform: rotate(-@(Item.Degrees)deg);">
-                <i class="bi @(Item.Type.Icon)" style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.8))px;" />
-                <div class="compass-map-target-dot-button-indicators">
-                    <span id="planned" class="active"
-                        style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
-                    <span id="actual" class="active"
-                        style="width: @(TargetDotSizeInPx/6)px; height: @(TargetDotSizeInPx/6)px; " />
+
+        @if (SameTypeInOptions != null)
+        {
+            if (SameTypeInOptions.Type.Name == "Speed")
+            {        
+                    <div class="compass-map-vessel-waypoint @(SameTypeInOptions.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
+                        style="transform: rotate(@(SameTypeInOptions.Degrees)deg)" />
+            }
+            else
+            {
+                    <div class="compass-map-target-waypoint @(SameTypeInOptions.IsActual ? "compass-map-target-waypoint-actual" : null)"
+                        style="@GenerateTargetWaypointSizeStyle(SameTypeInOptions.Degrees, SameTypeInOptions.IsActual, SameTypeInOptions.Value)">
+                        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(SameTypeInOptions.Value)"></span>
+                    </div>
+            }
+        }
+
+        @if (ShowModal == true)
+        {
+        <div class="modal d-block" id="exampleModal" aria-hidden="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Switch to</h5>
+                            <button @onclick="e=> ShowModal = false" type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                    <p>This is done because the items are so close to each other that we can only show one per time on the radar</p>
+                    <ul>
+                            @foreach (WidgetForecastItem item in OtherOptions.GroupBy(x => x.Type.Name).Select(x => x.First()))
+                            {
+                                    <li class="mb-1" style="cursor:pointer; text-decoration:underline;" @onclick="e=> ChangeToOption(item)">@item.Type.Name</li>
+                            }
+                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </span>
+        }
     </div>
 }
 
 
 @code {
-    [Parameter] 
+    [Parameter]
     public bool IsVessel { get; set; }
+
+    [Parameter]
+    public List<List<WidgetForecastItem>> ForecastGroupedItems { get; set; }
+
+    [Parameter]
+    public EventCallback<List<List<WidgetForecastItem>>> SetForecastGroupedItems { get; set; }
 
     [Parameter]
     public int TargetDotSizeInPx { get; set; }
@@ -53,36 +125,164 @@ else {
     [Parameter]
     public WidgetForecastItem Item { get; set; }
 
+    [Parameter]
+    public List<WidgetForecastItem> Options { get; set; }
+
+    public List<WidgetForecastItem> OtherOptions = new List<WidgetForecastItem>();
+
+    private bool IsActiveActual = false;
+    private bool IsActivePlanned = false;
+    private decimal MaxPercentage=61;
+    private decimal MinPercentage=13;
+
+    private bool ShowModal = false;
+
+    private WidgetForecastItem ShownMainItem { get; set; }
+
+    private WidgetForecastItem SameTypeInOptions = null;
+
+    private decimal DegreesItemsMiddle = 0;
+
+    private async Task ChangeToOption(WidgetForecastItem item)
+    {
+        ShownMainItem = item;
+        ShowModal = false;
+
+        List<WidgetForecastItem> availableOptions = new List<WidgetForecastItem>(Options.Concat(new WidgetForecastItem[] { Item }));
+        List<List<WidgetForecastItem>> CopyOfForecastGroupedItems = new List<List<WidgetForecastItem>>(ForecastGroupedItems);
+
+        OtherOptions = availableOptions.Where(i => i.Type != item.Type && i.IsActual != item.IsActual).ToList();
+        ShownMainItem = item;
+
+        // Set focused item at the first index in the ForecastGroupedItems
+        int indexOfGroup = CopyOfForecastGroupedItems.FindIndex(group => group.Contains(item));
+        Console.WriteLine("indexOfGroup: " + indexOfGroup);
+
+    
+        if (indexOfGroup != -1)
+        {
+            List<WidgetForecastItem> group = CopyOfForecastGroupedItems[indexOfGroup];
+            group.Remove(item);
+            group.Insert(0, item);
+            CopyOfForecastGroupedItems[indexOfGroup] = group;
+        }
+
+
+        // Calculate middle degrees when options are found 
+        if (OtherOptions.Count > 0)
+        {
+            List<decimal> listOfOffsets = new List<decimal>([Item.Degrees]);
+
+            foreach (WidgetForecastItem oItem in OtherOptions)
+            {
+                // Also check if actual or planned are included in this waypoint item if its the same type of the main item
+                if (oItem.Type == item.Type && item.IsActual == true && IsActiveActual == false)
+                {
+                    IsActiveActual = true;
+                } else {
+                    IsActiveActual = false;
+                }
+                if (oItem.Type == item.Type && item.IsActual == false && IsActivePlanned == false)
+                {
+                    IsActivePlanned = true;
+                } else {
+                    IsActivePlanned = false;
+                }
+                if(oItem.Type == item.Type) {
+                listOfOffsets.Add(item.Degrees);
+                }
+            }
+            DegreesItemsMiddle = listOfOffsets.Average();
+        }
+        
+        await SetForecastGroupedItems.InvokeAsync(CopyOfForecastGroupedItems);
+    }
+
+    protected override void OnParametersSet()
+    {
+        SameTypeInOptions = Options
+            .Where(i => i.Type == Item.Type)
+            .FirstOrDefault();
+
+        // Calculate middle degrees when options are found 
+        if (Options.Count > 0)
+        {
+            List<decimal> listOfOffsets = new List<decimal>([Item.Degrees]);
+
+            foreach (WidgetForecastItem item in Options)
+            {
+                // Also check if actual or planned are included in this waypoint item if its the same type of the main item
+                if (Item.Type == item.Type && item.IsActual == true && IsActiveActual == false)
+                {
+                    IsActiveActual = true;
+                }
+                if (Item.Type == item.Type && item.IsActual == false && IsActivePlanned == false)
+                {
+                    IsActivePlanned = true;
+                }
+                if (Item.Type != item.Type)
+                {
+                    OtherOptions.Add(item);
+                } else {
+                listOfOffsets.Add(item.Degrees);
+                }
+            }
+            DegreesItemsMiddle = listOfOffsets.Average();
+        }
+        // Make sure actives are set on main item
+        if (Item.IsActual == true && IsActiveActual == false)
+        {
+            IsActiveActual = true;
+        }
+        if (Item.IsActual == false && IsActivePlanned == false)
+        {
+            IsActivePlanned = true;
+        }
+
+        ShownMainItem = Item;
+        StateHasChanged();
+
+    }
 
     private string GenerateTargetWaypointSizeStyle(decimal degrees, bool isActual, decimal percentage)
     {
         string color = isActual ? "#1EFF00" : "white";
         decimal percent;
 
-if(percentage <=13){
-    percent=13;
-} else if (percentage >=63) {
-    percent = 63;
-} else {
-    percent = percentage;
-}
-        
+        if (percentage <= MinPercentage)
+        {
+            percent = MinPercentage;
+        }
+        else if (percentage >= MaxPercentage)
+        {
+            percent = MaxPercentage;
+        }
+        else
+        {
+            percent = percentage;
+        }
+
         return $"background-image: linear-gradient(to top, rgba(255, 255, 255, 0) {100 - percent}%, {color} {100 - percent}%) !important; transform: rotate({degrees}deg)";
     }
     private string GenerateTargetWaypointArrowStyle(decimal percentage)
     {
         decimal percent;
 
-if(percentage <=13){
-    percent=13;
-} else if (percentage >=63) {
-    percent = 63;
-} else {
-    percent = percentage;
-}
-        
+        if (percentage <= MinPercentage)
+        {
+            percent = MinPercentage;
+        }
+        else if (percentage >= MaxPercentage)
+        {
+            percent = MaxPercentage;
+        }
+        else
+        {
+            percent = percentage;
+        }
+
         return $"top: calc({percent}%);";
     }
 
-    
+
 }
