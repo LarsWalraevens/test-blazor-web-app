@@ -13,8 +13,8 @@
         else
         {
             <div class="compass-map-target-waypoint @(ShownMainItem.IsActual ? "compass-map-target-waypoint-actual" : null)"
-                style="@GenerateTargetWaypointSizeStyle(ShownMainItem.Degrees, ShownMainItem.IsActual, ShownMainItem.Value)">
-                <span class="arrow" style="@GenerateTargetWaypointArrowStyle(ShownMainItem.Value)"></span>
+                style="@GenerateTargetWaypointSizeStyle(ShownMainItem.Degrees, ShownMainItem.IsActual, ShownMainItem.ValueInPercent)">
+                <span class="arrow" style="@GenerateTargetWaypointArrowStyle(ShownMainItem.ValueInPercent)"></span>
             </div>
         }
         @* CLICKABLE DOT - OPTIONS TO TOGGLE BETWEEN LAYERS *@
@@ -37,6 +37,7 @@
                         </button>    
                 }
                 @* TOOLTIP *@
+                <div style="position: fixed;">
                 <div class="compass-map-target-dot-button-tooltip">
                     <p class="fw-bold mb-1">@ShownMainItem.Type.Name</p>
                     <ul class="list-unstyle pl-4 @(OtherOptions.Count > 0 ? "mb-3" : "mb-1")">
@@ -63,6 +64,8 @@
                         </ul>
                     }
                 </div>
+
+                </div>
             </span>
         </div>
 
@@ -76,8 +79,8 @@
             else
             {
                     <div class="compass-map-target-waypoint @(SameTypeInOptions.IsActual ? "compass-map-target-waypoint-actual" : null)"
-                        style="@GenerateTargetWaypointSizeStyle(SameTypeInOptions.Degrees, SameTypeInOptions.IsActual, SameTypeInOptions.Value)">
-                        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(SameTypeInOptions.Value)"></span>
+                        style="@GenerateTargetWaypointSizeStyle(SameTypeInOptions.Degrees, SameTypeInOptions.IsActual, SameTypeInOptions.ValueInPercent)">
+                        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(SameTypeInOptions.ValueInPercent)"></span>
                     </div>
             }
         }

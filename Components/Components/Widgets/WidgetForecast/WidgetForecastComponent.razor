@@ -50,23 +50,20 @@
         await InvokeAsync(StateHasChanged);
     }
 
-// Loop through items to group if degree value is in the same margin
-protected override void OnInitialized()
+    // Loop through items to group if degree value is in the same margin
+   protected override void OnInitialized()
 {
     ForecastGroupedItems = new List<List<WidgetForecastItem>>();
     List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
     decimal currentDegree = 0;
     decimal margin = (decimal)DiameterInPx / 2.8M * (decimal)TargetDotSizeInPx / (decimal)DiameterInPx;
 
-    Console.WriteLine(margin);
-    Console.WriteLine((decimal)TargetDotSizeInPx / 3.5M);
-
     // Order by Degrees first, and ensure "Speed" items are processed first
     var myItems = ForecastItems.OrderBy(x => x.Degrees).ThenBy(x => x.Type.Name != "Speed").ToList();
 
     foreach (var item in myItems)
     {
-        if (currentGroup.Count == 0 || Math.Abs(item.Degrees - currentDegree) <= margin)
+        if (currentGroup.Count == 0 || IsWithinMargin(item.Degrees, currentDegree, margin))
         {
             currentGroup.Add(item);
         }
@@ -97,6 +94,15 @@ protected override void OnInitialized()
     var sortedGroups = ForecastGroupedItems.OrderByDescending(g => g.Any(item => item.Type.Name == "Speed")).ThenBy(g => g.Min(item => item.Degrees)).ToList();
     ForecastGroupedItems = sortedGroups;
 }
+
+// Helper method to determine if two degrees are within the margin, considering wrapping
+private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
+{
+    decimal difference = Math.Abs(degree1 - degree2);
+    return difference <= margin || (360 - difference) <= margin;
+}
+
+
 
 }
 
