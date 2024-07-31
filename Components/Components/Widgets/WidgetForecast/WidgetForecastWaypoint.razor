@@ -2,6 +2,8 @@
 @using Widget.Forecast
 @using Newtonsoft.Json
 
+@typeparam FocusedForecastItemModal
+
 @if(ShownMainItem != null) 
 {
     <div class="compass-map-waypoints">
@@ -20,7 +22,7 @@
         @* CLICKABLE DOT - OPTIONS TO TOGGLE BETWEEN LAYERS *@
         <div class="compass-map-target-dot-button-container"
             style="transform: rotate(@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle : ShownMainItem.Degrees)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); height: calc(50% + @(TargetDotSizeInPx/2)px);">
-            <span class="compass-map-target-dot-button" style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; transform: rotate(-@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle :ShownMainItem.Degrees)deg);">
+            <span @onclick="ShowMoreInfo" class="compass-map-target-dot-button" style="height: @(TargetDotSizeInPx)px; width: @(TargetDotSizeInPx)px; transform: rotate(-@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle :ShownMainItem.Degrees)deg);">
                 <div class="compass-map-target-dot-button-content">
                     <i class="bi @(ShownMainItem.Type.Icon)" style="font-size: @(TargetDotSizeInPx - (TargetDotSizeInPx / 1.7))px;" />
                     <div class="compass-map-target-dot-button-indicators">
@@ -37,7 +39,7 @@
                         </button>    
                 }
                 @* TOOLTIP *@
-                <div style="position: fixed;">
+                <div style="position: fixed; width: 100%; height: 100%; z-index: 1000;">
                 <div class="compass-map-target-dot-button-tooltip">
                     <p class="fw-bold mb-1">@ShownMainItem.Type.Name</p>
                     <ul class="list-unstyle pl-4 @(OtherOptions.Count > 0 ? "mb-3" : "mb-1")">
@@ -123,6 +125,9 @@
     public EventCallback<List<List<WidgetForecastItem>>> SetForecastGroupedItems { get; set; }
 
     [Parameter]
+    public EventCallback<FocusedForecastItemModal> SetFocusedForecastItem { get; set; }
+
+    [Parameter]
     public int TargetDotSizeInPx { get; set; }
 
     [Parameter]
@@ -145,6 +150,11 @@
     private WidgetForecastItem SameTypeInOptions = null;
 
     private decimal DegreesItemsMiddle = 0;
+
+    private async Task ShowMoreInfo() {        
+        FocusedForecastItemModal Clicked = (FocusedForecastItemModal)(ShownMainItem, OtherOptions);
+        await SetFocusedForecastItem.InvokeAsync(Clicked);
+    }
 
     private async Task ChangeToOption(WidgetForecastItem item)
     {

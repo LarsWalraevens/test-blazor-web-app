@@ -12,8 +12,10 @@
         var mainItem = group.FirstOrDefault();
         if (mainItem != null)
         {
-            <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" TargetDotSizeInPx="@TargetDotSizeInPx"
-                Item="@mainItem" Options="@(group.Skip(1).ToList())" ForecastGroupedItems="@ForecastGroupedItems" SetForecastGroupedItems="SetForecastGroupedItems" />
+            <WidgetForecastWaypoint FocusedForecastItemModal="FocusedForecastItemModal"
+                SetFocusedForecastItem="(item) => SetFocusedForecastItem(item)" IsVessel="@(mainItem.Type.Name == "Speed")"
+                TargetDotSizeInPx="@TargetDotSizeInPx" Item="@mainItem" Options="@(group.Skip(1).ToList())"
+                ForecastGroupedItems="@ForecastGroupedItems" SetForecastGroupedItems="SetForecastGroupedItems" />
         }
     }
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
@@ -28,6 +30,13 @@
         }
     }
 </WidgetForecastMap>
+@if (FocusedForecastItem != null)
+{
+    <div>
+
+    </div>
+
+}
 
 @code {
     [Parameter]
@@ -42,67 +51,80 @@
     [Parameter]
     public decimal? DegreePositioning { get; set; }
 
+    // Focused type
+    public record FocusedForecastItemModal(WidgetForecastItem Main, List<WidgetForecastItem> Others);
+
+    // Focused state for tooltip
+    public FocusedForecastItemModal FocusedForecastItem { get; set; }
+
     public List<List<WidgetForecastItem>> ForecastGroupedItems { get; set; }
 
-    public async Task SetForecastGroupedItems(List<List<WidgetForecastItem>> items) 
+    public async Task SetForecastGroupedItems(List<List<WidgetForecastItem>> items)
     {
         ForecastGroupedItems = items;
         await InvokeAsync(StateHasChanged);
     }
 
-    // Loop through items to group if degree value is in the same margin
-   protected override void OnInitialized()
-{
-    ForecastGroupedItems = new List<List<WidgetForecastItem>>();
-    List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
-    decimal currentDegree = 0;
-    decimal margin = (decimal)DiameterInPx / 2.8M * (decimal)TargetDotSizeInPx / (decimal)DiameterInPx;
-
-    // Order by Degrees first, and ensure "Speed" items are processed first
-    var myItems = ForecastItems.OrderBy(x => x.Degrees).ThenBy(x => x.Type.Name != "Speed").ToList();
-
-    foreach (var item in myItems)
+    // Set focused state
+    private async Task SetFocusedForecastItem(FocusedForecastItemModal item)
     {
-        if (currentGroup.Count == 0 || IsWithinMargin(item.Degrees, currentDegree, margin))
+        FocusedForecastItem = item;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    // Loop through items to group if degree value is in the same margin
+    protected override void OnInitialized()
+    {
+        ForecastGroupedItems = new List<List<WidgetForecastItem>>();
+        List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
+        decimal margin = (decimal)DiameterInPx / 2.8M * (decimal)TargetDotSizeInPx / (decimal)DiameterInPx;
+
+        // Order items by Degrees with wrap-around logic
+        var myItems = ForecastItems.OrderBy(x => x.Degrees < margin ? x.Degrees + 360 : x.Degrees)
+        .ThenBy(x => x.Type.Name != "Speed")
+        .ToList();
+
+        foreach (var item in myItems)
         {
-            currentGroup.Add(item);
-        }
-        else
-        {
-            if (currentGroup.Any())
+            if (currentGroup.Count == 0 || IsWithinMargin(currentGroup.Last().Degrees, item.Degrees, margin))
+            {
+                currentGroup.Add(item);
+            }
+            else
             {
                 ForecastGroupedItems.Add(currentGroup);
+                currentGroup = new List<WidgetForecastItem> { item };
             }
-            currentGroup = new List<WidgetForecastItem> { item };
         }
-        currentDegree = item.Degrees;
+
+        // Add the last group if it has items
+        if (currentGroup.Any())
+        {
+            ForecastGroupedItems.Add(currentGroup);
+        }
+
+        // Ensure that each group is ordered with "Speed" items first
+        for (int i = 0; i < ForecastGroupedItems.Count; i++)
+        {
+            ForecastGroupedItems[i] = ForecastGroupedItems[i].OrderBy(x => x.Type.Name != "Speed").ThenBy(x => x.Degrees).ToList();
+        }
+
+        // Ensure the group containing "Speed" items is at the top
+        ForecastGroupedItems = ForecastGroupedItems.OrderByDescending(g => g.Any(item => item.Type.Name == "Speed"))
+        .ThenBy(g => g.Min(item => item.Degrees))
+        .ToList();
     }
 
-    // Add the last group if it has items
-    if (currentGroup.Any())
+    // Helper method to determine if two degrees are within the margin, considering wrapping
+    private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
     {
-        ForecastGroupedItems.Add(currentGroup);
+        decimal difference = Math.Abs(degree1 - degree2);
+        if (difference > 180)
+        {
+            difference = 360 - difference;
+        }
+        return difference <= margin;
     }
-
-    // Ensure that each group is ordered with "Speed" items first
-    for (int i = 0; i < ForecastGroupedItems.Count; i++)
-    {
-        ForecastGroupedItems[i] = ForecastGroupedItems[i].OrderBy(x => x.Type.Name != "Speed").ThenBy(x => x.Degrees).ToList();
-    }
-
-    // Ensure the group containing "Speed" items is at the top
-    var sortedGroups = ForecastGroupedItems.OrderByDescending(g => g.Any(item => item.Type.Name == "Speed")).ThenBy(g => g.Min(item => item.Degrees)).ToList();
-    ForecastGroupedItems = sortedGroups;
-}
-
-// Helper method to determine if two degrees are within the margin, considering wrapping
-private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
-{
-    decimal difference = Math.Abs(degree1 - degree2);
-    return difference <= margin || (360 - difference) <= margin;
-}
-
-
 
 }
 
@@ -111,6 +133,7 @@ private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
     .compass-map-target-dot-button {
         position: relative;
         cursor: help;
+        z-index: 10;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button {
@@ -131,7 +154,8 @@ private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
         flex-direction: column;
         gap: 4px;
     }
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content i{
+
+    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content i {
         margin-top: -5px;
     }
 
@@ -233,26 +257,27 @@ private bool IsWithinMargin(decimal degree1, decimal degree2, decimal margin)
         height: 50%;
         background-color: #175B93;
         box-shadow: inset 0px 0px 3px rgba(1, 1, 1, 1);
-        border:none;
+        border: none;
         border-radius: 100%;
     }
+
     .compass-map-dot-button-options:hover {
         background-color: #65BEF0;
     }
 
     .compass-map-target-dot-button:hover .compass-map-target-dot-button-tooltip {
-        display:block;
+        display: block;
     }
 
     .compass-map-target-dot-button-tooltip {
-        background-color: white; 
-        z-index: 100; 
-        min-width: 200px; 
-        position: absolute !important; 
-        top: 100%; 
-        padding: 0.5rem; 
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.25); 
+        background-color: white;
+        z-index: 1000;
+        min-width: 200px;
+        position: absolute !important;
+        top: 100%;
+        padding: 0.5rem;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
         border-radius: 0.2rem;
-        display:none;
+        display: none;
     }
 </style>
