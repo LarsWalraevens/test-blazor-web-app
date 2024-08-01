@@ -6,16 +6,54 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<WidgetForecastMap DiameterInPx="DiameterInPx" DegreePositioning="DegreePositioning">
+<WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning">
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
     {
-        var mainItem = group.FirstOrDefault();
+        WidgetForecastItem mainItem = group.FirstOrDefault();
+        List<WidgetForecastItem> OtherOptions = group.Where(i => i.Type != mainItem.Type && i.IsActual !=
+        mainItem.IsActual).ToList();
+        @* List<WidgetForecastItem> SameTypeInOptions = new List<WidgetForecastItem>();
+    if(Instance.FocusedItem != null)
+    {
+    SameTypeInOptions = Instance.FocusedItem.others.FindAll(x => x.Type.Name == mainItem.Type.Name).ToList();
+    } *@
+
         if (mainItem != null)
         {
-            <WidgetForecastWaypoint FocusedForecastItemModal="FocusedForecastItemModal"
-                SetFocusedForecastItem="(item) => SetFocusedForecastItem(item)" IsVessel="@(mainItem.Type.Name == "Speed")"
-                TargetDotSizeInPx="@TargetDotSizeInPx" Item="@mainItem" Options="@(group.Skip(1).ToList())"
-                ForecastGroupedItems="@ForecastGroupedItems" SetForecastGroupedItems="SetForecastGroupedItems" />
+            <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" Instance="@Instance" Item="@mainItem"
+                Options="@(group.Skip(1).ToList())" ForecastGroupedItems="@ForecastGroupedItems"
+                SetForecastGroupedItems="SetForecastGroupedItems" SetFocusedItem="SetFocusedItem" />
+            @* @if(Instance.FocusedItem.main != null)
+    {
+    <div class="compass-map-target-dot-button-tooltip">
+    <p class="fw-bold mb-1">@Instance.FocusedItem.main.Type.Name</p>
+    <ul class="list-unstyle pl-4 @(Instance.FocusedItem.others.Count > 0 ? "mb-3" : "mb-1")">
+    <li>@(Instance.FocusedItem.main.IsActual ? "Actual" : "Planned"): @Instance.FocusedItem.main.ValueText</li>
+    @if(Instance.FocusedItem.others.FindAll(x => x.Type.Name == mainItem.Type.Name).Count > 0)
+    {
+    <li> has item </li>
+    <li>@(Instance.FocusedItem.others.FirstOrDefault(x => x.Type.Name == mainItem.Type.Name).IsActual ? "Actual" :
+    "Planned"): @Instance.FocusedItem.others.FirstOrDefault(x => x.Type.Name == mainItem.Type.Name).ValueText</li>
+    }
+
+    </ul>
+    <pre>@JsonConvert.SerializeObject(Instance.FocusedItem, Formatting.Indented)</pre>
+    @if (OtherOptions.Count > 0) {
+    <p class="fw-bold mb-1">Other options</p>
+    <ul class="list-unstyled mb-1">
+    @{
+    if (OtherOptions.Count >0 )
+    {
+    foreach (WidgetForecastItem MyOtherOption in OtherOptions.GroupBy(x => x.Type.Name).Select(x => x.First()))
+    {
+    <li style="cursor:pointer; text-decoration:underline;">@(MyOtherOption.Type.Name)</li>
+    }
+    }
+    }
+    </ul>
+    }
+    </div>
+    } *@
         }
     }
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
@@ -26,36 +64,11 @@
             {
                 <WidgetForecastVessel Degrees="@item.Degrees" IsActual="@item.IsActual" />
             }
-
         }
     }
 </WidgetForecastMap>
-@if (FocusedForecastItem != null)
-{
-    <div>
-
-    </div>
-
-}
-
 @code {
-    [Parameter]
-    public List<WidgetForecastItem> ForecastItems { get; set; }
-
-    [Parameter]
-    public int TargetDotSizeInPx { get; set; }
-
-    [Parameter]
-    public int DiameterInPx { get; set; }
-
-    [Parameter]
-    public decimal? DegreePositioning { get; set; }
-
-    // Focused type
-    public record FocusedForecastItemModal(WidgetForecastItem Main, List<WidgetForecastItem> Others);
-
-    // Focused state for tooltip
-    public FocusedForecastItemModal FocusedForecastItem { get; set; }
+    [Parameter] public WidgetForecastInstance Instance { get; set; }
 
     public List<List<WidgetForecastItem>> ForecastGroupedItems { get; set; }
 
@@ -65,10 +78,9 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    // Set focused state
-    private async Task SetFocusedForecastItem(FocusedForecastItemModal item)
+    public async Task SetFocusedItem((WidgetForecastItem, List<WidgetForecastItem>) item)
     {
-        FocusedForecastItem = item;
+        Instance.SetFocusedForecastItem(item);
         await InvokeAsync(StateHasChanged);
     }
 
@@ -77,10 +89,11 @@
     {
         ForecastGroupedItems = new List<List<WidgetForecastItem>>();
         List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
-        decimal margin = (decimal)DiameterInPx / 2.8M * (decimal)TargetDotSizeInPx / (decimal)DiameterInPx;
+        decimal margin = (decimal)Instance.DiameterInPx / 2.8M * (decimal)Instance.TargetDotSizeInPx /
+        (decimal)Instance.DiameterInPx;
 
         // Order items by Degrees with wrap-around logic
-        var myItems = ForecastItems.OrderBy(x => x.Degrees < margin ? x.Degrees + 360 : x.Degrees)
+        var myItems = Instance.Items.OrderBy(x => x.Degrees < margin ? x.Degrees + 360 : x.Degrees)
         .ThenBy(x => x.Type.Name != "Speed")
         .ToList();
 
@@ -130,13 +143,7 @@
 
 
 <style>
-    .compass-map-target-dot-button {
-        position: relative;
-        cursor: help;
-        z-index: 10;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button {
+    .compass-map-target-dot-button-container .compass-map-target-dot-button-wrapper {
         border-radius: 100%;
         background: #1B87DF;
         box-shadow: inset 0px 0px 0px 2px rgba(1, 1, 1, 0.2);
@@ -145,6 +152,8 @@
         align-items: center;
         flex-direction: column;
         gap: 4px;
+        position: relative;
+        cursor: pointer;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content {
@@ -194,7 +203,6 @@
         justify-items: center;
         bottom: 50%;
         border-radius: 10%;
-        z-index: 30;
     }
 
     .compass-map-vessel-waypoint {
@@ -255,10 +263,13 @@
         left: 0;
         width: 50%;
         height: 50%;
+        max-width: 35px;
+        max-height: 35px;
         background-color: #175B93;
         box-shadow: inset 0px 0px 3px rgba(1, 1, 1, 1);
         border: none;
         border-radius: 100%;
+        z-index: 10;
     }
 
     .compass-map-dot-button-options:hover {
@@ -266,18 +277,20 @@
     }
 
     .compass-map-target-dot-button:hover .compass-map-target-dot-button-tooltip {
-        display: block;
+        display: block !important;
+        z-index: 1000 !important;
     }
 
     .compass-map-target-dot-button-tooltip {
+        display: none;
         background-color: white;
-        z-index: 1000;
+        z-index: 1000 !important;
+        width: 100%;
         min-width: 200px;
         position: absolute !important;
         top: 100%;
         padding: 0.5rem;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
         border-radius: 0.2rem;
-        display: none;
     }
 </style>

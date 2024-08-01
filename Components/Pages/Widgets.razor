@@ -9,7 +9,6 @@
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
-
 <PageTitle>Widgets</PageTitle>
 
 <style>
@@ -27,20 +26,17 @@
 <section>
     <h2>Planned & actual forcast widget</h2>
     <div class="d-flex align-items-start" style="gap: 5px;">
-        <WidgetForecastComponent ForecastItems="@ForecastItems" TargetDotSizeInPx="60" DiameterInPx="250"
-            DegreePositioning="180" />
-        <WidgetForecastComponent ForecastItems="@ForecastItems2" TargetDotSizeInPx="60" DiameterInPx="250"
-            DegreePositioning="162" />
-        <WidgetForecastComponent ForecastItems="@ForecastItems3" TargetDotSizeInPx="60" DiameterInPx="250"
-            DegreePositioning="280" />
+        <WidgetForecastComponent Instance="@ForecastInstance" />
+        <WidgetForecastComponent Instance="@ForecastInstance2" />
+        <WidgetForecastComponent Instance="@ForecastInstance3" />
     </div>
 </section>
 
 @code {
     private WidgetForecast WidgetForecast;
-    private List<WidgetForecastItem> ForecastItems;
-    private List<WidgetForecastItem> ForecastItems2;
-    private List<WidgetForecastItem> ForecastItems3;
+    private WidgetForecastInstance ForecastInstance;
+    private WidgetForecastInstance ForecastInstance2;
+    private WidgetForecastInstance ForecastInstance3;
 
     protected readonly System.Collections.ObjectModel.ReadOnlyCollection<Widget.Forecast.WidgetForecastType> ForecastTypes =
     WidgetForecast.Types;
@@ -48,215 +44,220 @@
 
     protected override void OnInitialized()
     {
-        ForecastItems = new List<WidgetForecastItem>([
-        new WidgetForecastItem() {
-IsActual = true,
-Degrees = 15,
-ValueInPercent = 4,
-ValueText= "9.1kn /4°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 10,
-ValueInPercent = 3,
-ValueText= "9.1kn /3°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
+        ForecastInstance = new WidgetForecastInstance()
+            {
+                Items = new List<WidgetForecastItem>([
+                new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 15,
+                    ValueInPercent = 4,
+                    ValueText= "9.1kn /4°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 10,
+                    ValueInPercent = 3,
+                    ValueText= "9.1kn /3°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
 
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 224,
-ValueInPercent = 30,
-ValueText= "8kn / 224°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 222,
-ValueInPercent = 80,
-IsVisible= true,
-ValueText= "7.5kn / 222°",
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 12,
-ValueInPercent = 18,
-ValueText= "1.7m / 6s 12°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 120,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 90,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 144,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 55,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 162,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 45,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-}
-        ]);
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 224,
+                    ValueInPercent = 30,
+                    ValueText= "8kn / 224°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 222,
+                    ValueInPercent = 80,
+                    IsVisible= true,
+                    ValueText= "7.5kn / 222°",
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 50,
+                    ValueInPercent = 18,
+                    ValueText= "1.7m / 6s 12°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 50,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 90,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 144,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 55,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 162,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 45,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    }
+                ])
+            };
 
-        /**
-        *
-        * ITEMS 2
-        *
-        **/
-        ForecastItems2 = new List<WidgetForecastItem>([
-        new WidgetForecastItem() {
-IsActual = true,
-Degrees = 240,
-ValueInPercent = 4,
-ValueText= "9.1kn /4°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees =7,
-ValueInPercent = 3,
-ValueText= "9.1kn /3°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 224,
-ValueInPercent = 30,
-ValueText= "8kn / 224°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 222,
-ValueInPercent = 80,
-IsVisible= true,
-ValueText= "7.5kn / 222°",
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 45,
-ValueInPercent = 18,
-ValueText= "1.7m / 6s 12°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 320,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 90,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 144,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 55,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 162,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 45,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-}
-        ]);
-        /**
-        *
-        * ITEMS 3
-        *
-        **/
-        ForecastItems3 = new List<WidgetForecastItem>([
-        new WidgetForecastItem() {
-IsActual = true,
-Degrees = 86,
-ValueInPercent = 4,
-ValueText= "9.1kn /4°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 101,
-ValueInPercent = 3,
-ValueText= "9.1kn /3°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 87,
-ValueInPercent = 30,
-ValueText= "8kn / 224°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 93,
-ValueInPercent = 80,
-IsVisible= true,
-ValueText= "7.5kn / 222°",
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 88,
-ValueInPercent = 18,
-ValueText= "1.7m / 6s 12°",
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 94,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 90,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
-},
-new WidgetForecastItem() {
-IsActual = false,
-Degrees = 99,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 55,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-},
-new WidgetForecastItem() {
-IsActual = true,
-Degrees = 90,
-ValueText= "1.5m / 6s 120°",
-ValueInPercent = 45,
-IsVisible= true,
-Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
-}
-        ]);
+            ForecastInstance2 = new WidgetForecastInstance()
+            {
+                DegreePositioning=28,
+                Items = new List<WidgetForecastItem>([
+                new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 15,
+                    ValueInPercent = 4,
+                    ValueText= "9.1kn /4°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 10,
+                    ValueInPercent = 3,
+                    ValueText= "9.1kn /3°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
+
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 224,
+                    ValueInPercent = 30,
+                    ValueText= "8kn / 224°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 222,
+                    ValueInPercent = 80,
+                    IsVisible= true,
+                    ValueText= "7.5kn / 222°",
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 10,
+                    ValueInPercent = 18,
+                    ValueText= "1.7m / 6s 12°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 50,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 90,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 224,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 55,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 235,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 45,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    }
+                ])
+            };
+            ForecastInstance3 = new WidgetForecastInstance()
+            {
+                DegreePositioning=90,
+                DiameterInPx=300,
+                TargetDotSizeInPx=80,
+                Items = new List<WidgetForecastItem>([
+                new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 90,
+                    ValueInPercent = 4,
+                    ValueText= "9.1kn /4°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 92,
+                    ValueInPercent = 3,
+                    ValueText= "9.1kn /3°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Speed")
+                    },
+
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 95,
+                    ValueInPercent = 30,
+                    ValueText= "8kn / 224°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 91,
+                    ValueInPercent = 80,
+                    IsVisible= true,
+                    ValueText= "7.5kn / 222°",
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wind")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 88,
+                    ValueInPercent = 18,
+                    ValueText= "1.7m / 6s 12°",
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 86,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 90,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Wave")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = false,
+                    Degrees = 87,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 55,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    },
+                    new WidgetForecastItem() {
+                    IsActual = true,
+                    Degrees = 83,
+                    ValueText= "1.5m / 6s 120°",
+                    ValueInPercent = 45,
+                    IsVisible= true,
+                    Type = WidgetForecast.Types.FirstOrDefault(x => x.Name == "Current")
+                    }
+                ])
+            };
     }
 }

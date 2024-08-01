@@ -33,14 +33,11 @@
 </div>
 
 @code {
-    [Parameter]
-    public int DiameterInPx { get; set; }
+    [Parameter] public int DiameterInPx { get; set; }
 
-    [Parameter]
-    public decimal? DegreePositioning { get; set; }
+    [Parameter] public decimal? DegreePositioning { get; set; }
 
     private string SizeInPx => $"{DiameterInPx}px";
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 }

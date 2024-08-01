@@ -84,17 +84,13 @@
 }
 
 @code {
-    [Parameter]
-    public CustomDashboardInstance Instance { get; set; }
+    [Parameter] public CustomDashboardInstance Instance { get; set; }
 
-    [Parameter]
-    public CustomDashboardItem Item { get; set; }
+    [Parameter] public CustomDashboardItem Item { get; set; }
 
-    [Parameter]
-    public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
 
-    [Parameter]
-    public EventCallback<CustomDashboardItem> OnItemChanged { get; set; }
+    [Parameter] public EventCallback<CustomDashboardItem> OnItemChanged { get; set; }
 
     private CustomDashboardItem OriginalItem { get; set; }
 
