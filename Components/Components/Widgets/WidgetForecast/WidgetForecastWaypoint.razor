@@ -208,7 +208,7 @@
         await SetForecastGroupedItems.InvokeAsync(CopyOfForecastGroupedItems);
     }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         SameTypeInOptions = Options
             .Where(i => i.Type == Item.Type)
