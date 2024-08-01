@@ -22,7 +22,7 @@
             <div class="compass-map-target-dot-button-container"
                 style="height: calc(53% + @(Instance.TargetDotSizeInPx/2)px); transform: rotate(@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle : ShownMainItem.Degree)deg); transform-origin: 0% 100%; width: 2px; left:calc(50%); z-index: @(IsHovering ? 100 : 30) !important;">
                 <div @onmouseover="ToggleIsHovering" @onmouseout="ToggleIsHovering"  class="compass-map-target-dot-button" style="transform: rotate(-@(DegreesItemsMiddle != 0 ? DegreesItemsMiddle : ShownMainItem.Degree)deg);" >
-                    <div  class="compass-map-target-dot-button-wrapper" style="height: @(Instance.TargetDotSizeInPx)px; width: @(Instance.TargetDotSizeInPx)px; border: @(IsHovering ? "1px solid white" : "unset"); ">
+                    <div  class="compass-map-target-dot-button-wrapper" style="height: @(Instance.TargetDotSizeInPx)px; width: @(Instance.TargetDotSizeInPx)px; border: @(IsHovering ? "2px solid white" : "unset"); ">
                     <div class="compass-map-target-dot-button-content" style="pointer-events: none;">
                         <i class="bi @(ShownMainItem.Type.Icon)" style="font-size: @(Instance.TargetDotSizeInPx - (Instance.TargetDotSizeInPx / 1.7))px;" />
                         <div class="compass-map-target-dot-button-indicators">
@@ -274,7 +274,7 @@
             percent = percentage;
         }
 
-        return $"background-image: linear-gradient(to top, rgba(255, 255, 255, 0) {100 - percent}%, {color} {100 - percent}%) !important; transform: rotate({degrees}deg)";
+        return $"background-image: linear-gradient(to top, rgba(255, 255, 255, 0) {100 - percent}%, {color} {100 - percent}%) !important; transform: rotate({degrees}deg); z-index:10;";
     }
     private string GenerateTargetWaypointArrowStyle(decimal percentage)
     {
