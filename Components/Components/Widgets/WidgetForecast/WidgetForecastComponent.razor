@@ -6,54 +6,34 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning">
+<div class="widget-forecast">
+  @* <div class="d-flex justify-content-center align-items-center" style="gap:5px;">
+        @foreach (WidgetForecastType type in WidgetForecast.Types)
+        {
+            <div class="compass-map-target-dot-button-container" style="position: relative;">
+                <div class="compass-map-target-dot-button" style=" height: 50px; width:50px; position: relative; opacity:@(IsTypeVisible(type.Name) ? 1 : 0.5)" @onclick="() => FilterItems(type.Name, !IsTypeVisible(type.Name))">
+                    <div class="compass-map-target-dot-button-wrapper" style="height: 100%; ">
+                        <div class="compass-map-target-dot-button-content" style="pointer-events: none;">
+                            <i class="bi @(type.Icon)" style="font-size:1.2rem;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div> *@
+
+<WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning"
+    DegreeBearing="Instance.DegreeBearing">
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
     {
         WidgetForecastItem mainItem = group.FirstOrDefault();
-        List<WidgetForecastItem> OtherOptions = group.Where(i => i.Type != mainItem.Type && i.IsActual !=
-        mainItem.IsActual).ToList();
-        @* List<WidgetForecastItem> SameTypeInOptions = new List<WidgetForecastItem>();
-    if(Instance.FocusedItem != null)
-    {
-    SameTypeInOptions = Instance.FocusedItem.others.FindAll(x => x.Type.Name == mainItem.Type.Name).ToList();
-    } *@
+        List<WidgetForecastItem> OtherOptions = group.Where(i => i != mainItem && i.IsVisible == true).ToList();
 
         if (mainItem != null)
         {
             <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" Instance="@Instance" Item="@mainItem"
-                Options="@(group.Skip(1).ToList())" ForecastGroupedItems="@ForecastGroupedItems"
-                SetForecastGroupedItems="SetForecastGroupedItems" SetFocusedItem="SetFocusedItem" />
-            @* @if(Instance.FocusedItem.main != null)
-    {
-    <div class="compass-map-target-dot-button-tooltip">
-    <p class="fw-bold mb-1">@Instance.FocusedItem.main.Type.Name</p>
-    <ul class="list-unstyle pl-4 @(Instance.FocusedItem.others.Count > 0 ? "mb-3" : "mb-1")">
-    <li>@(Instance.FocusedItem.main.IsActual ? "Actual" : "Planned"): @Instance.FocusedItem.main.ValueText</li>
-    @if(Instance.FocusedItem.others.FindAll(x => x.Type.Name == mainItem.Type.Name).Count > 0)
-    {
-    <li> has item </li>
-    <li>@(Instance.FocusedItem.others.FirstOrDefault(x => x.Type.Name == mainItem.Type.Name).IsActual ? "Actual" :
-    "Planned"): @Instance.FocusedItem.others.FirstOrDefault(x => x.Type.Name == mainItem.Type.Name).ValueText</li>
-    }
-
-    </ul>
-    <pre>@JsonConvert.SerializeObject(Instance.FocusedItem, Formatting.Indented)</pre>
-    @if (OtherOptions.Count > 0) {
-    <p class="fw-bold mb-1">Other options</p>
-    <ul class="list-unstyled mb-1">
-    @{
-    if (OtherOptions.Count >0 )
-    {
-    foreach (WidgetForecastItem MyOtherOption in OtherOptions.GroupBy(x => x.Type.Name).Select(x => x.First()))
-    {
-    <li style="cursor:pointer; text-decoration:underline;">@(MyOtherOption.Type.Name)</li>
-    }
-    }
-    }
-    </ul>
-    }
-    </div>
-    } *@
+                Options="@(OtherOptions)" ForecastGroupedItems="@ForecastGroupedItems"
+                SetForecastGroupedItems="SetForecastGroupedItems" />
         }
     }
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
@@ -62,11 +42,13 @@
         {
             if (item.Type.Name == "Speed")
             {
-                <WidgetForecastVessel Degrees="@item.Degrees" IsActual="@item.IsActual" />
+                <WidgetForecastVessel Degree="@item.Degree" IsActual="@item.IsActual" />
             }
         }
     }
 </WidgetForecastMap>
+</div>
+
 @code {
     [Parameter] public WidgetForecastInstance Instance { get; set; }
 
@@ -77,11 +59,24 @@
         ForecastGroupedItems = items;
         await InvokeAsync(StateHasChanged);
     }
-
-    public async Task SetFocusedItem((WidgetForecastItem, List<WidgetForecastItem>) item)
+    private void FilterItems(string typeName, bool isVisible)
     {
-        Instance.SetFocusedForecastItem(item);
-        await InvokeAsync(StateHasChanged);
+        Console.WriteLine("FilterItems: " + typeName + ", " + isVisible);
+        foreach (var group in ForecastGroupedItems)
+        {
+            foreach (var item in group)
+            {
+                if (item.Type.Name == typeName)
+                {
+                    item.IsVisible = isVisible;
+                }
+            }
+        }
+    }
+
+    private bool IsTypeVisible(string typeName)
+    {
+        return ForecastGroupedItems.SelectMany(g => g).Any(item => item.Type.Name == typeName && item.IsVisible);
     }
 
     // Loop through items to group if degree value is in the same margin
@@ -89,17 +84,17 @@
     {
         ForecastGroupedItems = new List<List<WidgetForecastItem>>();
         List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
-        decimal margin = (decimal)Instance.DiameterInPx / 2.8M * (decimal)Instance.TargetDotSizeInPx /
+        decimal margin = (decimal)Instance.DiameterInPx / 2.7M * (decimal)Instance.TargetDotSizeInPx /
         (decimal)Instance.DiameterInPx;
 
-        // Order items by Degrees with wrap-around logic
-        var myItems = Instance.Items.OrderBy(x => x.Degrees < margin ? x.Degrees + 360 : x.Degrees)
+        // Order items by Degree with wrap-around logic
+        var myItems = Instance.Items.OrderBy(x => x.Degree < margin ? x.Degree + 360 : x.Degree)
         .ThenBy(x => x.Type.Name != "Speed")
         .ToList();
 
         foreach (var item in myItems)
         {
-            if (currentGroup.Count == 0 || IsWithinMargin(currentGroup.Last().Degrees, item.Degrees, margin))
+            if (currentGroup.Count == 0 || IsWithinMargin(currentGroup.Last().Degree, item.Degree, margin))
             {
                 currentGroup.Add(item);
             }
@@ -119,12 +114,12 @@
         // Ensure that each group is ordered with "Speed" items first
         for (int i = 0; i < ForecastGroupedItems.Count; i++)
         {
-            ForecastGroupedItems[i] = ForecastGroupedItems[i].OrderBy(x => x.Type.Name != "Speed").ThenBy(x => x.Degrees).ToList();
+            ForecastGroupedItems[i] = ForecastGroupedItems[i].OrderBy(x => x.Type.Name != "Speed").ThenBy(x => x.Degree).ToList();
         }
 
         // Ensure the group containing "Speed" items is at the top
         ForecastGroupedItems = ForecastGroupedItems.OrderByDescending(g => g.Any(item => item.Type.Name == "Speed"))
-        .ThenBy(g => g.Min(item => item.Degrees))
+        .ThenBy(g => g.Min(item => item.Degree))
         .ToList();
     }
 
@@ -143,6 +138,11 @@
 
 
 <style>
+    :root {
+        --color-actual: #1EFF00;
+        --color-planned: white;
+    }
+
     .compass-map-target-dot-button-container .compass-map-target-dot-button-wrapper {
         border-radius: 100%;
         background: #1B87DF;
@@ -181,14 +181,17 @@
         border-radius: 100%;
         background-color: #175B93;
         box-shadow: inset 0px 0px 2px rgba(1, 1, 1, 0.8);
+        display: none;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#planned.active {
-        background-color: white !important;
+        display: inline-block;
+        background-color: var(--color-planned) !important;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#actual.active {
-        background-color: #1EFF00 !important;
+        display: inline-block;
+        background-color: var(--color-actual) !important;
     }
 
     .compass-map-target-dot-button-container .compass-map-target-dot-button i {
@@ -217,11 +220,11 @@
         background-color: unset;
         background-size: 2px 9px;
         background-repeat: repeat;
-        background-image: linear-gradient(to top, #FFFFFF 60%, rgba(255, 255, 255, 0) 0%);
+        background-image: linear-gradient(to top, var(--color-planned) 60%, rgba(255, 255, 255, 0) 0%);
     }
 
     .compass-map-vessel-waypoint-actual {
-        background-image: linear-gradient(to top, #1EFF00 60%, rgba(255, 255, 255, 0) 0%);
+        background-image: linear-gradient(to top, var(--color-actual) 60%, rgba(255, 255, 255, 0) 0%);
     }
 
     .compass-map-target-waypoint .arrow {
@@ -232,11 +235,11 @@
         height: 0;
         border-left: 7px solid transparent;
         border-right: 7px solid transparent;
-        border-top: 15px solid white;
+        border-top: 15px solid var(--color-planned);
     }
 
     .compass-map-target-waypoint-actual .arrow {
-        border-top-color: #1EFF00 !important;
+        border-top-color: var(--color-actual) !important;
     }
 
     .compass-map-target-waypoint {

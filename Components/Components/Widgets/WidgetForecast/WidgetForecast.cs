@@ -36,6 +36,8 @@ namespace Widget.Forecast
 
         public decimal? DegreePositioning { get; set; }
 
+        public decimal? DegreeBearing { get; set; }
+
         public void SetFocusedForecastItem((WidgetForecastItem main, List<WidgetForecastItem> others) newItem)
         {
             FocusedItem = newItem;
@@ -61,7 +63,7 @@ namespace Widget.Forecast
         public WidgetForecastType Type { get; set; }
         public bool IsActual { get; set; }
 
-        public decimal Degrees { get; set; }
+        public decimal Degree { get; set; }
 
         public decimal ValueInPercent { get; set; }
         public string ValueText { get; set; }

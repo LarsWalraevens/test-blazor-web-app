@@ -22,10 +22,19 @@
         <div class="compass-map-positioning">
             @if (DegreePositioning != null)
             {
-                <div
-                    style="transform: rotate(@(DegreePositioning)deg); transform-origin: 0% 50%;width: 1px;left:calc(50%);height: 100%;position: absolute; display:flex; justify-content: center;">
+                <div title="Compared position from what was planned"
+                    style="cursor:help; transform: rotate(@(DegreePositioning)deg); transform-origin: 0% 50%;width: 1px;left:calc(50%);height: 100%;position: absolute; display:flex; justify-content: center; z-index: 10;">
                     <span
                         style="background-color:#FFFFFF; box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 40%); width: 13px; height: 13px; border-radius: 100%; display: block; position: absolute; opacity: 0.8;"></span>
+                </div>
+            }
+            @if (DegreeBearing != null)
+            {
+                <div title="Bearing of vessel" class="compass-map-target-waypoint compass-map-target-waypoint-actual "
+                    style="cursor:help; transform: rotate(@(DegreeBearing)deg); width: 1px; position: absolute; height: 45%;bottom: 50%;left: 50%;transform-origin: 0% 100%; display:flex; justify-content: center; align-items: center;">
+                    <span
+                        style="background-color: var(--color-actual); border: 1px solid var(--color-actual); width: 100%; height: 100%; display: block; position: absolute; opacity: 0.8;"></span>
+                    <span class="arrow" style="top:-4px; transform:rotate(180deg)" />
                 </div>
             }
         </div>
@@ -36,6 +45,7 @@
     [Parameter] public int DiameterInPx { get; set; }
 
     [Parameter] public decimal? DegreePositioning { get; set; }
+    [Parameter] public decimal? DegreeBearing { get; set; }
 
     private string SizeInPx => $"{DiameterInPx}px";
 
