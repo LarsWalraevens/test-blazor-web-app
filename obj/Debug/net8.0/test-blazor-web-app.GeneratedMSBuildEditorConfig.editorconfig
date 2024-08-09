@@ -42,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxDdXN0b21EYXNoYm9hcmRDb21wb25lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/www/playground/test-blazor-web-app/Components/Components/Gauge-meter/GaugeMeter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXEdhdWdlLW1ldGVyXEdhdWdlTWV0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/www/playground/test-blazor-web-app/Components/Components/LoginTodos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXExvZ2luVG9kb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -78,6 +82,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/www/playground/test-blazor-web-app/Components/Pages/Forecast.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JlY2FzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/www/playground/test-blazor-web-app/Components/Pages/Gauge-meter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYXVnZS1tZXRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/www/playground/test-blazor-web-app/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -86,8 +98,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIdHRwLXJlcXVlc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/www/playground/test-blazor-web-app/Components/Pages/Map.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/www/playground/test-blazor-web-app/Components/Pages/Test.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/www/playground/test-blazor-web-app/Components/Pages/Timeline.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaW1lbGluZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [c:/www/playground/test-blazor-web-app/Components/Pages/Todo.razor]
@@ -113,6 +133,10 @@ build_metadata.AdditionalFiles.CssScope =
 [c:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetTeaser.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRUZWFzZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-s3gltzzj50
+
+[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineSlider.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcVGltZWxpbmVcVGltZWxpbmVTbGlkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-f0eol83jsw
 
 [c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RNYXAucmF6b3I=

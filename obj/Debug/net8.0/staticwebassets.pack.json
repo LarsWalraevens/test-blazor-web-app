@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leafletmap.js",
+      "PackagePath": "staticwebassets\\leafletmap.js"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.test-blazor-web-app.props",
       "PackagePath": "build\\test-blazor-web-app.props"
     },

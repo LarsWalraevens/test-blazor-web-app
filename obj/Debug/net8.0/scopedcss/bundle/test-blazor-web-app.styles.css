@@ -5,6 +5,48 @@
 #custom-dashboard-add-widget[b-s3gltzzj50] {
     cursor: pointer;
 }
+/* _content/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineSlider.razor.rz.scp.css */
+input[type="range"][b-f0eol83jsw] {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none; 
+  /* creating a custom design */
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  /*  slider progress trick  */
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Track: webkit browsers */
+input[type="range"][b-f0eol83jsw]::-webkit-slider-runnable-track {
+  height: 15px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+/* Track: Mozilla Firefox */
+input[type="range"][b-f0eol83jsw]::-moz-range-track {
+  height: 15px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+/* Thumb: webkit */
+input[type="range"][b-f0eol83jsw]::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none; 
+  /* creating a custom design */
+  height: 15px;
+  width: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #f50;
+  /*  slider progress trick  */
+  box-shadow: -407px 0 0 400px #f50;
+}
 /* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor.rz.scp.css */
 .compass-map[b-4t59l3xqdg] {
     width: 100%;
@@ -132,8 +174,21 @@
         display: flex;
         border-radius: 100%;
         box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.1);
-        background: linear-gradient(to bottom, #2C9CF9 0%, #88D3E9 100%);
         flex-grow: 1;
+}
+.compass-map.level-1[b-4t59l3xqdg] {
+    background: radial-gradient(circle at 50% 50%, #6ADFF3 40%, #88D3E9 100%);
+}
+    
+.compass-map.level-2[b-4t59l3xqdg] {
+    background: radial-gradient(circle at 50% 50%, #44b5de 40%, #88D3E9 100%);
+}
+.compass-map.level-3[b-4t59l3xqdg] {
+    background: radial-gradient(circle at 50% 50%, #3ba5fb 40%, #88D3E9 100%);
+}
+
+.compass-map.level-4[b-4t59l3xqdg] {
+    background: radial-gradient(circle at 50% 50%, #1B87DF 40%, #88D3E9 100%);
 }
 
 .compass-map[b-4t59l3xqdg]:after,

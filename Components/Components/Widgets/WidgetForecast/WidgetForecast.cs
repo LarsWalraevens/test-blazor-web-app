@@ -5,45 +5,20 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Widget.Forecast
 {
-    public class WidgetForecastInstance : INotifyPropertyChanged
+    public class WidgetForecastInstance
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private (WidgetForecastItem main, List<WidgetForecastItem> others) _focusedItem;
-        public (WidgetForecastItem main, List<WidgetForecastItem> others) FocusedItem
-        {
-            get => _focusedItem;
-            set
-            {
-                if (_focusedItem != value)
-                {
-                    _focusedItem = value;
-                    OnPropertyChanged(nameof(FocusedItem)); // Notify UI
-                }
-            }
-        }
-
         public List<WidgetForecastItem> Items { get; set; }
 
         public int TargetDotSizeInPx { get; set; } = 60;
 
+        public decimal DepthValueInMeter { get; set; }
+
         public int DiameterInPx { get; set; } = 250;
 
         public decimal? DegreePositioning { get; set; }
+        public bool? PositioningIsWarning { get; set; }
 
         public decimal? DegreeBearing { get; set; }
-
-        public void SetFocusedForecastItem((WidgetForecastItem main, List<WidgetForecastItem> others) newItem)
-        {
-            FocusedItem = newItem;
-            // You don't need to call OnPropertyChanged here again, 
-            // as setting FocusedItem already calls it
-        }
     }
 
     public class WidgetForecastType
@@ -52,6 +27,7 @@ namespace Widget.Forecast
 
         public string Icon { get; set; }
         public string Name { get; set; }
+        public decimal? Threshold { get; set; }
 
 
     }
@@ -76,9 +52,9 @@ namespace Widget.Forecast
     {
         public static readonly ReadOnlyCollection<WidgetForecastType> Types = new ReadOnlyCollection<WidgetForecastType>(new List<WidgetForecastType> {
             new WidgetForecastType { Id = 1, Icon = "bi-speedometer2", Name = "Speed" },
-            new WidgetForecastType { Id = 2, Icon = "bi-wind", Name = "Wind" },
-            new WidgetForecastType { Id = 3, Icon = "bi-tsunami", Name = "Wave" },
-            new WidgetForecastType { Id = 3, Icon = "bi-arrow-repeat", Name = "Current" }
+            new WidgetForecastType { Id = 2, Icon = "bi-wind", Name = "Wind", Threshold= 50m},
+            new WidgetForecastType { Id = 3, Icon = "bi-tsunami", Name = "Wave", Threshold= 2.5m },
+            new WidgetForecastType { Id = 3, Icon = "bi-arrow-repeat", Name = "Current", Threshold= 1m }
         });
     }
 }

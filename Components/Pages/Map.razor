@@ -1,0 +1,87 @@
+@page "/map"
+
+@inherits LayoutComponentBase
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@using Widget.Forecast
+@using System.Collections.ObjectModel
+@using System.Drawing
+@using Newtonsoft.Json
+@inject IJSRuntime JSRuntime
+@inject WidgetDataService DataService
+
+@rendermode InteractiveServer
+
+<PageTitle>Map</PageTitle>
+
+<style>
+    section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(1, 1, 1, 0.2);
+    }
+</style>
+
+<h1>Map</h1>
+
+<section>
+    <div id="map" style="width:600px; height:400px;">loading...</div>
+</section>
+
+@code {
+    private IJSObjectReference? module;
+    private string? result;
+    private dynamic vesselRoute = null;
+
+    public class LatLngItem
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            vesselRoute = await DataService.GetVesselRouteData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"));
+
+            List<LatLngItem> LatLngItems = new List<LatLngItem>();
+
+            if (firstRender)
+            {
+                module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./leafletmap.js");
+            }
+
+            foreach (var item in vesselRoute)
+            {
+                if (item.latitude != null && item.longitude != null)
+                {
+                    LatLngItems.Add(new LatLngItem
+                        {
+                            Lat = item.latitude,
+                            Lng = item.longitude
+                        });
+                }
+            }
+
+            await Task.Delay(100); // wait for foreach to complete
+
+            if (module != null)
+            {
+                result = await module.InvokeAsync<string>("load_map", LatLngItems);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching: {ex.Message}");
+        }
+    }
+}

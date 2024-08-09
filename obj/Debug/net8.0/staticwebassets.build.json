@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z6pChZk8pe3bX+RDMSsVmYFec/GNWFEWHBcpDkt3eFA=",
+  "Hash": "0NWVriS6c0aKB5DX7bisT5iMtY1kNceIOctcx8RzeJM=",
   "Source": "test-blazor-web-app",
   "BasePath": "_content/test-blazor-web-app",
   "Mode": "Default",
@@ -3777,6 +3777,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leafletmap.js",
+      "SourceId": "test-blazor-web-app",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\",
+      "BasePath": "_content/test-blazor-web-app",
+      "RelativePath": "leafletmap.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\leafletmap.js"
     }
   ]
 }

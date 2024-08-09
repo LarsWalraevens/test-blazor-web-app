@@ -124,8 +124,21 @@
         display: flex;
         border-radius: 100%;
         box-shadow: inset 0px 0px 0px 3px rgba(1, 1, 1, 0.1);
-        background: linear-gradient(to bottom, #2C9CF9 0%, #88D3E9 100%);
         flex-grow: 1;
+}
+.compass-map.level-1 {
+    background: radial-gradient(circle at 50% 50%, #6ADFF3 40%, #88D3E9 100%);
+}
+    
+.compass-map.level-2 {
+    background: radial-gradient(circle at 50% 50%, #44b5de 40%, #88D3E9 100%);
+}
+.compass-map.level-3 {
+    background: radial-gradient(circle at 50% 50%, #3ba5fb 40%, #88D3E9 100%);
+}
+
+.compass-map.level-4 {
+    background: radial-gradient(circle at 50% 50%, #1B87DF 40%, #88D3E9 100%);
 }
 
 .compass-map:after,

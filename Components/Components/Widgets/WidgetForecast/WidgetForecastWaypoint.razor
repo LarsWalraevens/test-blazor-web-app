@@ -2,20 +2,21 @@
 
 @using Widget.Forecast
 @using Newtonsoft.Json
+@inject IJSRuntime JS
 
 @if (ShownMainItem != null)
 {
         @if (IsVessel)
         {
-                        <div class="compass-map-vessel-waypoint @(ShownMainItem.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
-                            style="transform: rotate(@(ShownMainItem.Degree)deg)" />
+            <div class="compass-map-vessel-waypoint @(ShownMainItem.IsActual ? "compass-map-vessel-waypoint-actual" : null)"
+                style="transform: rotate(@(ShownMainItem.Degree)deg)" />
         }
         else
         {
-                    <div class="compass-map-target-waypoint @(ShownMainItem.IsActual ? "compass-map-target-waypoint-actual" : null)"
-                        style="@GenerateTargetWaypointSizeStyle(ShownMainItem.Degree, ShownMainItem.IsActual, ShownMainItem.ValueInPercent)">
-                        <span class="arrow" style="@GenerateTargetWaypointArrowStyle(ShownMainItem.ValueInPercent)"></span>
-                    </div>
+            <div class="compass-map-target-waypoint @(ShownMainItem.IsActual ? "compass-map-target-waypoint-actual" : null)"
+                style="@GenerateTargetWaypointSizeStyle(ShownMainItem.Degree, ShownMainItem.IsActual, ShownMainItem.ValueInPercent)">
+                <span class="arrow" style="@GenerateTargetWaypointArrowStyle(ShownMainItem.ValueInPercent)"></span>
+            </div>
         }
         @* CLICKABLE DOT - OPTIONS TO TOGGLE BETWEEN LAYERS *@
         @* increase height in container style attr if you want the dots to be further apart *@
@@ -35,9 +36,9 @@
                     </div>
                 @if (OtherOptions.Count > 0)
                 {
-                                <button @onclick="e=> ShowModal = true" class="compass-map-dot-button-options" style="left: @(DegreesItemsMiddle > 180 ? "-17%" : "67%")">
-                                    <i class="bi bi-list" style="font-size:1.1rem;"></i>
-                                </button>    
+                    <button @onclick="e=> ShowModal = true" class="compass-map-dot-button-options" style="left: @(DegreesItemsMiddle > 180 ? "-17%" : "67%")">
+                        <i class="bi bi-list" style="font-size:1.1rem;"></i>
+                    </button>    
                 }
                 @* TOOLTIP *@
                 <div class="compass-map-target-dot-button-tooltip">
@@ -47,7 +48,7 @@
                             @{
                                 if (SameTypeInOptions != null)
                                 {
-                                                        <li>@(SameTypeInOptions.IsActual ? "Actual" : "Planned"): @SameTypeInOptions.ValueText</li>
+                                    <li>@(SameTypeInOptions.IsActual ? "Actual" : "Planned"): @SameTypeInOptions.ValueText</li>
                                 }
                             }
                         </ul>
@@ -88,26 +89,26 @@
 
         @if (ShowModal == true)
         {
-                <div class="modal d-block" id="exampleModal" aria-hidden="false">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Switch to</h5>
-                                    <button @onclick="e=> ShowModal = false" type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                            <p>This is done because the items are so close to each other that we can only show one per time on the radar</p>
+            <div class="modal d-block" id="exampleModal" aria-hidden="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Switch to</h5>
+                            <button @onclick="e=> ShowModal = false" type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <p>This is done because the items are so close to each other that we can only show one per time on the radar</p>
                             <ul>
                                 @foreach (WidgetForecastItem item in OtherOptions.GroupBy(x => x.Type.Name).Select(x => x.First()))
                                 {
                                                 <li class="mb-1" style="cursor:pointer; text-decoration:underline;" @onclick="e=> ChangeToOption(item)">@item.Type.Name</li>
                                 }
                             </ul>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
         }
 }
 
@@ -132,7 +133,7 @@
     private bool IsHovering = false;
 
     private decimal MaxPercentage = 61;
-    private decimal MinPercentage = 13;
+    private decimal MinPercentage = 15;
 
     private bool ShowModal = false;
 

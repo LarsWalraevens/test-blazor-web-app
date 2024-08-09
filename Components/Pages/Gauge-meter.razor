@@ -1,0 +1,29 @@
+@page "/gauge-meter"
+
+@inherits LayoutComponentBase
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@using Widget.Forecast
+@using System.Collections.ObjectModel
+@using System.Drawing
+@using Newtonsoft.Json
+@inject IJSRuntime JSRuntime
+@inject WidgetDataService DataService
+
+@rendermode InteractiveServer
+
+<PageTitle>Gauge meter</PageTitle>
+
+<h1>Gauge meter</h1>
+
+<section>
+    <div class="d-flex">
+        <GaugeMeter MaxValue="120" Value="110" />
+        <GaugeMeter MaxValue="200" Value="80" />
+
+    </div>
+</section>
+
+@code {
+}

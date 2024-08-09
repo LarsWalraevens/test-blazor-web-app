@@ -6,7 +6,9 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-<div class="widget-forecast">
+@if(Instance != null && Instance.Items != null && Instance.Items.Count > 0)
+{
+    <div class="widget-forecast" style="display: flex;">
   @* <div class="d-flex justify-content-center align-items-center" style="gap:5px;">
         @foreach (WidgetForecastType type in WidgetForecast.Types)
         {
@@ -23,7 +25,8 @@
     </div> *@
 
 <WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning"
-    DegreeBearing="Instance.DegreeBearing">
+    DegreeBearing="Instance.DegreeBearing" DepthValueInMeter="Instance.DepthValueInMeter"
+     PositioningIsWarning="Instance.PositioningIsWarning">
     @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
     {
         WidgetForecastItem mainItem = group.FirstOrDefault();
@@ -48,6 +51,8 @@
     }
 </WidgetForecastMap>
 </div>
+
+}
 
 @code {
     [Parameter] public WidgetForecastInstance Instance { get; set; }
@@ -82,6 +87,7 @@
     // Loop through items to group if degree value is in the same margin
     protected override void OnInitialized()
     {
+        if(Instance.Items == null || Instance.Items.Count == 0) return;
         ForecastGroupedItems = new List<List<WidgetForecastItem>>();
         List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
         decimal margin = (decimal)Instance.DiameterInPx / 2.7M * (decimal)Instance.TargetDotSizeInPx /

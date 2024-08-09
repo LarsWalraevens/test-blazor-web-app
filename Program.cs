@@ -2,6 +2,7 @@ using test_blazor_web_app.Components;
 using DevExpress.Blazor;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
+using Widget.Forecast;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,16 +13,17 @@ builder.Services.AddRazorComponents()
 // Add DevExpressBlazor services.
 builder.Services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
 builder.Services.AddMvc();
+builder.Services.AddScoped<WidgetDataService>();
 
 // Register HttpClient with the base address from NavigationManager
 builder.Services.AddScoped(sp =>
 {
     var navigationManager = sp.GetRequiredService<NavigationManager>();
-    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+    var httpClient = new HttpClient { BaseAddress = new Uri("https://charttrackdev.azurewebsites.net") };
+    httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+    httpClient.DefaultRequestHeaders.Add("User-Agent", "test-blazor-web-app");
+    return httpClient;
 });
-
-// Register the service
-// builder.Services.AddScoped<ISalesInfoDataProvider, ISalesInfoDataProvider>();
 
 var app = builder.Build();
 

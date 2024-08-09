@@ -21,6 +21,10 @@
     <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-berry.bs5.min.css") rel="stylesheet" />
     @* Bootstrap 4 *@
     <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-berry.bs4.min.css") rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     @DxResourceManager.RegisterScripts()
 
     <HeadOutlet />
@@ -31,25 +35,6 @@
     <script type="text/javascript" src="_framework/blazor.server.js"></script>
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.2.5/js/dx.all.js"></script>
     <script src="_framework/blazor.web.js"></script>
-    <script>
-        window.interop = {
-            getBoundingClientRect: function (element) {
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    return {
-                        left: rect.left,
-                        top: rect.top,
-                        right: rect.right,
-                        bottom: rect.bottom,
-                        width: rect.width,
-                        height: rect.height
-                    };
-                }
-                return null;
-            }
-        };
-
-    </script>
 </body>
 
 </html>

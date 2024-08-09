@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\www\\playground\\test-blazor-web-app\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{930F8B27-5258-4271-8EC5-0B0EE998A59D}|test-blazor-web-app.csproj|c:\\www\\playground\\test-blazor-web-app\\components\\pages\\timeline.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{930F8B27-5258-4271-8EC5-0B0EE998A59D}|test-blazor-web-app.csproj|solutionrelative:components\\pages\\timeline.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{930F8B27-5258-4271-8EC5-0B0EE998A59D}|test-blazor-web-app.csproj|c:\\www\\playground\\test-blazor-web-app\\components\\components\\charts\\mylinechart.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{930F8B27-5258-4271-8EC5-0B0EE998A59D}|test-blazor-web-app.csproj|solutionrelative:components\\components\\charts\\mylinechart.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -42,11 +46,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "Timeline.razor",
+              "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Pages\\Timeline.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Timeline.razor",
+              "ToolTip": "C:\\www\\playground\\test-blazor-web-app\\Components\\Pages\\Timeline.razor",
+              "RelativeToolTip": "Components\\Pages\\Timeline.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-05T10:19:57.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "App.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\App.razor",
               "RelativeDocumentMoniker": "Components\\App.razor",
@@ -58,7 +75,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MyLinechart.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Components\\Charts\\MyLinechart.razor",
               "RelativeDocumentMoniker": "Components\\Components\\Charts\\MyLinechart.razor",
@@ -71,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Chart.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Pages\\Chart.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Chart.razor",
@@ -83,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Components\\Layout\\NavMenu.razor",
@@ -95,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "Components\\Layout\\MainLayout.razor",
@@ -107,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Routes.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Routes.razor",
               "RelativeDocumentMoniker": "Components\\Routes.razor",
@@ -119,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Home.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
@@ -131,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Component.razor",
               "DocumentMoniker": "C:\\www\\playground\\test-blazor-web-app\\Components\\Pages\\Component.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Component.razor",
