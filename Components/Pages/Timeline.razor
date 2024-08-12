@@ -12,21 +12,8 @@
     </DxChartLineSeries>
 </DxChart>
 
-<div class="controls">
-    <button class="btn btn-primary" @onclick="TogglePlayPause">
-        <i class="bi @PlayPauseIcon"></i>
-    </button>
-    <button class="btn btn-danger" @onclick="Stop">
-        <i class="bi bi-stop"></i>
-    </button>
-    <div class="slider-container">
-        <input type="range" min="0" max="@MaxSliderPoints" value="@CurrentSliderIndex" @oninput="@(e => Seek(e))"
-            class="timeline-slider" />
-        <div class="slider-label" style="left: @((CurrentSliderIndex / (double)MaxSliderPoints) * 100)%">
-            @SliderDate.ToString("g", CultureInfo.InvariantCulture)
-        </div>
-    </div>
-</div>
+<TimelineControls CurrentSliderIndex="@CurrentSliderIndex" MaxSliderPoints="@MaxSliderPoints" SliderDate="@SliderDate"
+    TogglePlayPause="@TogglePlayPause" Stop="@Stop" Seek="@Seek" PlayPauseIcon="@PlayPauseIcon" />
 
 @code {
     private DxChart<DataPoint> chart;
@@ -43,25 +30,22 @@
 
     protected override void OnInitialized()
     {
-        // Initialize chart data with detailed 5-minute data points
         Random random = new Random();
         DateTime startTime = DateTime.Now.AddHours(-10);
-        for (int i = 0; i < 10; i++) // Generate data for 10 hours
+        for (int i = 0; i < 10; i++)
         {
-            for (int j = 0; j < 60; j += 5) // Data points every 5 minutes
+            for (int j = 0; j < 60; j += 5)
             {
                 ChartData.Add(new DataPoint { Time = startTime.AddHours(i).AddMinutes(j), Value = random.Next(0, 100) });
             }
         }
 
-        // Initialize slider points with hourly intervals
-        for (int i = 0; i < 10; i++) // Slider points for 10 hours
+        for (int i = 0; i < 10; i++)
         {
             SliderPoints.Add(startTime.AddHours(i));
         }
 
-        // Initialize timer
-        _timer = new System.Timers.Timer(1000); // Update every second
+        _timer = new System.Timers.Timer(1000);
         _timer.Elapsed += UpdateChart;
     }
 
@@ -95,7 +79,6 @@
     {
         _isPlaying = false;
         _timer.Stop();
-        // Reset chart and slider
         CurrentSliderIndex = 0;
         UpdateSlider();
         UpdatePlayPauseIcon();
@@ -117,7 +100,6 @@
                     _timer.Stop();
                 }
 
-                // Ensure the slider and chart update correctly
                 UpdateSlider();
                 StateHasChanged();
             });
@@ -136,7 +118,6 @@
 
     private void UpdateSlider()
     {
-        // Update the chart to reflect the current data point
         var newData = VisibleData;
         chart.Data = newData;
     }
@@ -145,7 +126,6 @@
 
     private void UpdatePlayPauseIcon()
     {
-        // Trigger UI update for play/pause icon
         StateHasChanged();
     }
 
@@ -160,46 +140,3 @@
         public int Value { get; set; }
     }
 }
-
-<style>
-    .controls {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-    }
-
-    .slider-container {
-        position: relative;
-        flex-grow: 1;
-        margin: 0 15px;
-    }
-
-    .timeline-slider {
-        width: 100%;
-    }
-
-    .slider-label {
-        position: absolute;
-        top: -30px;
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 2px 5px;
-        font-size: 12px;
-        color: #333;
-        white-space: nowrap;
-        transform: translateX(-50%);
-        pointer-events: none;
-    }
-</style>
-
-<!-- Include Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

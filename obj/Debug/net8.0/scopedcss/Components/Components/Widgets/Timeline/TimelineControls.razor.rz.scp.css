@@ -1,4 +1,4 @@
-input[type="range"] {
+input[type="range"][b-9qikamvuz0] {
   /* removing default appearance */
   -webkit-appearance: none;
   appearance: none; 
@@ -12,21 +12,21 @@ input[type="range"] {
 }
 
 /* Track: webkit browsers */
-input[type="range"]::-webkit-slider-runnable-track {
+input[type="range"][b-9qikamvuz0]::-webkit-slider-runnable-track {
   height: 15px;
   background: #ccc;
   border-radius: 16px;
 }
 
 /* Track: Mozilla Firefox */
-input[type="range"]::-moz-range-track {
+input[type="range"][b-9qikamvuz0]::-moz-range-track {
   height: 15px;
   background: #ccc;
   border-radius: 16px;
 }
 
 /* Thumb: webkit */
-input[type="range"]::-webkit-slider-thumb {
+input[type="range"][b-9qikamvuz0]::-webkit-slider-thumb {
   /* removing default appearance */
   -webkit-appearance: none;
   appearance: none; 
@@ -35,7 +35,6 @@ input[type="range"]::-webkit-slider-thumb {
   width: 15px;
   background-color: #fff;
   border-radius: 50%;
-  border: 2px solid #f50;
   /*  slider progress trick  */
-  box-shadow: -407px 0 0 400px #f50;
+  box-shadow: -407px 0 0 400px #ccc;
 }

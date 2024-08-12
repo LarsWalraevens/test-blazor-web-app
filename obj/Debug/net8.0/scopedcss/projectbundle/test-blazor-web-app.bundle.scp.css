@@ -5,8 +5,8 @@
 #custom-dashboard-add-widget[b-s3gltzzj50] {
     cursor: pointer;
 }
-/* _content/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineSlider.razor.rz.scp.css */
-input[type="range"][b-f0eol83jsw] {
+/* _content/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineControls.razor.rz.scp.css */
+input[type="range"][b-9qikamvuz0] {
   /* removing default appearance */
   -webkit-appearance: none;
   appearance: none; 
@@ -20,21 +20,21 @@ input[type="range"][b-f0eol83jsw] {
 }
 
 /* Track: webkit browsers */
-input[type="range"][b-f0eol83jsw]::-webkit-slider-runnable-track {
+input[type="range"][b-9qikamvuz0]::-webkit-slider-runnable-track {
   height: 15px;
   background: #ccc;
   border-radius: 16px;
 }
 
 /* Track: Mozilla Firefox */
-input[type="range"][b-f0eol83jsw]::-moz-range-track {
+input[type="range"][b-9qikamvuz0]::-moz-range-track {
   height: 15px;
   background: #ccc;
   border-radius: 16px;
 }
 
 /* Thumb: webkit */
-input[type="range"][b-f0eol83jsw]::-webkit-slider-thumb {
+input[type="range"][b-9qikamvuz0]::-webkit-slider-thumb {
   /* removing default appearance */
   -webkit-appearance: none;
   appearance: none; 
@@ -43,9 +43,8 @@ input[type="range"][b-f0eol83jsw]::-webkit-slider-thumb {
   width: 15px;
   background-color: #fff;
   border-radius: 50%;
-  border: 2px solid #f50;
   /*  slider progress trick  */
-  box-shadow: -407px 0 0 400px #f50;
+  box-shadow: -407px 0 0 400px #ccc;
 }
 /* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor.rz.scp.css */
 .compass-map[b-4t59l3xqdg] {
