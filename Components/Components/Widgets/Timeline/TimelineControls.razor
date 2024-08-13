@@ -3,11 +3,9 @@
 @using DevExpress.Blazor
 @inject IJSRuntime JS
 @using System.Globalization
-
 @code {
-    [Parameter] public int CurrentSliderIndex { get; set; }
-    [Parameter] public int MaxSliderPoints { get; set; }
-    [Parameter] public DateTime SliderDate { get; set; }
+    [Parameter] public string CurrentSliderDate { get; set; }
+    [Parameter] public List<string> SliderDates { get; set; }
     [Parameter] public EventCallback TogglePlayPause { get; set; }
     [Parameter] public EventCallback Stop { get; set; }
     [Parameter] public EventCallback<ChangeEventArgs> Seek { get; set; }
@@ -22,50 +20,11 @@
         <i class="bi bi-stop"></i>
     </button>
     <div class="slider-container">
-        <input type="range" min="0" max="@MaxSliderPoints" value="@CurrentSliderIndex" @oninput="Seek"
-            class="timeline-slider" />
-        <div class="slider-label" style="left: @((CurrentSliderIndex / (double)MaxSliderPoints) * 100)%">
-            @SliderDate.ToString("g", CultureInfo.InvariantCulture)
+        <input type="range" min="@SliderDates.First()" max="@SliderDates.Last()" value="@CurrentSliderDate"
+            @oninput="@(async e => await Seek.InvokeAsync(e))" class="timeline-slider" />
+        <div class="slider-label"
+            style="left: @((SliderDates.IndexOf(CurrentSliderDate) / (double)(SliderDates.Count - 1)) * 100)%">            
+            @DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy HH:mm:ss")
         </div>
     </div>
 </div>
-
-<style>
-    .controls {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-    }
-
-    .slider-container {
-        position: relative;
-        flex-grow: 1;
-        margin: 0 15px;
-    }
-
-    .timeline-slider {
-        width: 100%;
-    }
-
-    .slider-label {
-        position: absolute;
-        top: -30px;
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 2px 5px;
-        font-size: 12px;
-        color: #333;
-        white-space: nowrap;
-        transform: translateX(-50%);
-        pointer-events: none;
-    }
-</style>

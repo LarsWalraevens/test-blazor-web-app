@@ -1,7 +1,6 @@
 export function load_map(raw) {
-    let map = L.map('map').setView(new L.LatLng(raw[0].lat, raw[0].lng), 16);
-    console.log(JSON.stringify(raw));
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+    let map = L.map('map').setView(new L.LatLng(raw[0].lat, raw[0].lng), 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 22 }).addTo(map);
 
     if (raw) {
         var polylinePoints = [];

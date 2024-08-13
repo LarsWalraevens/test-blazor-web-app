@@ -12,40 +12,39 @@
     </DxChartLineSeries>
 </DxChart>
 
-<TimelineControls CurrentSliderIndex="@CurrentSliderIndex" MaxSliderPoints="@MaxSliderPoints" SliderDate="@SliderDate"
-    TogglePlayPause="@TogglePlayPause" Stop="@Stop" Seek="@Seek" PlayPauseIcon="@PlayPauseIcon" />
+<TimelineControls CurrentSliderDate="@CurrentSliderDate" SliderDates="@SliderPoints" TogglePlayPause="@TogglePlayPause"
+    Stop="@Stop" Seek="@Seek" PlayPauseIcon="@PlayPauseIcon" />
 
 @code {
     private DxChart<DataPoint> chart;
     private List<DataPoint> ChartData = new List<DataPoint>();
-    private int MaxSliderPoints => SliderPoints.Count - 1;
+    private string CurrentSliderDate => SliderPoints[CurrentSliderIndex];
     private int CurrentSliderIndex = 0;
     private System.Timers.Timer _timer;
     private bool _isPlaying = false;
 
-    private List<DateTime> SliderPoints = new List<DateTime>();
-    private List<DataPoint> VisibleData => ChartData.Where(dp => dp.Time >= SliderDate && dp.Time <
-    SliderDate.AddHours(1)).ToList();
-    private DateTime SliderDate => SliderPoints[Math.Min(CurrentSliderIndex, SliderPoints.Count - 1)];
+    private List<string> SliderPoints = new List<string>();
+    private List<DataPoint> VisibleData => ChartData
+    .Where(dp => dp.Time >= DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture)
+    && dp.Time < DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture).AddMinutes(5))
+    .ToList();
 
     protected override void OnInitialized()
     {
         Random random = new Random();
         DateTime startTime = DateTime.Now.AddHours(-10);
-        for (int i = 0; i < 10; i++)
+
+        for (int i = 0; i < 10; i++) // Generate data for 10 hours
         {
-            for (int j = 0; j < 60; j += 5)
+            for (int j = 0; j < 60; j += 5) // Data points every 5 minutes
             {
-                ChartData.Add(new DataPoint { Time = startTime.AddHours(i).AddMinutes(j), Value = random.Next(0, 100) });
+                DateTime pointTime = startTime.AddHours(i).AddMinutes(j);
+                ChartData.Add(new DataPoint { Time = pointTime, Value = random.Next(0, 100) });
+                SliderPoints.Add(pointTime.ToString("MMddyyyyHHmm"));
             }
         }
 
-        for (int i = 0; i < 10; i++)
-        {
-            SliderPoints.Add(startTime.AddHours(i));
-        }
-
-        _timer = new System.Timers.Timer(1000);
+        _timer = new System.Timers.Timer(1000); // Update every second
         _timer.Elapsed += UpdateChart;
     }
 
@@ -90,7 +89,7 @@
         {
             InvokeAsync(() =>
             {
-                if (CurrentSliderIndex < MaxSliderPoints)
+                if (CurrentSliderIndex < SliderPoints.Count - 1)
                 {
                     CurrentSliderIndex++;
                 }
@@ -108,12 +107,10 @@
 
     private void Seek(ChangeEventArgs e)
     {
-        if (int.TryParse(e.Value.ToString(), out int index))
-        {
-            CurrentSliderIndex = index;
-            UpdateSlider();
-            StateHasChanged();
-        }
+        string selectedDate = e.Value.ToString();
+        CurrentSliderIndex = SliderPoints.IndexOf(selectedDate);
+        UpdateSlider();
+        StateHasChanged();
     }
 
     private void UpdateSlider()
