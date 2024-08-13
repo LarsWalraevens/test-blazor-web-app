@@ -5,8 +5,36 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Widget.Forecast
 {
-    public class WidgetForecastInstance
+    public class WidgetForecastInstance : INotifyPropertyChanged
     {
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        private WidgetForecastItem _focusedItem;
+        public WidgetForecastItem FocusedItem
+        {
+            get => _focusedItem;
+            set
+            {
+                if (_focusedItem != value)
+                {
+                    _focusedItem = value;
+                    OnPropertyChanged(nameof(FocusedItem)); // Notify UI
+                }
+            }
+        }
+        public void SetFocusedForecastItem(WidgetForecastItem newItem)
+        {
+            FocusedItem = newItem;
+            // You don't need to call OnPropertyChanged here again, 
+            // as setting FocusedItem already calls it
+        }
+
         public List<WidgetForecastItem> Items { get; set; }
 
         public int TargetDotSizeInPx { get; set; } = 60;

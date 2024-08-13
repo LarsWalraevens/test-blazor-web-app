@@ -50,10 +50,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXExvZ2luVG9kb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RDb21wb25lbnQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastVessel.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RWZXNzZWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -137,6 +133,10 @@ build_metadata.AdditionalFiles.CssScope = b-s3gltzzj50
 [C:/www/playground/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineControls.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcVGltZWxpbmVcVGltZWxpbmVDb250cm9scy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9qikamvuz0
+
+[C:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-o7klof06q2
 
 [C:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RNYXAucmF6b3I=

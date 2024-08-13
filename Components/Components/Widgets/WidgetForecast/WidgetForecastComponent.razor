@@ -6,56 +6,62 @@
 @using System.Collections.ObjectModel
 @inject IJSRuntime JSRuntime
 
-@if(Instance != null && Instance.Items != null && Instance.Items.Count > 0)
+@if (Instance != null && Instance.Items != null && Instance.Items.Count > 0)
 {
     <div class="widget-forecast" style="display: flex;">
-  @* <div class="d-flex justify-content-center align-items-center" style="gap:5px;">
-        @foreach (WidgetForecastType type in WidgetForecast.Types)
-        {
-            <div class="compass-map-target-dot-button-container" style="position: relative;">
-                <div class="compass-map-target-dot-button" style=" height: 50px; width:50px; position: relative; opacity:@(IsTypeVisible(type.Name) ? 1 : 0.5)" @onclick="() => FilterItems(type.Name, !IsTypeVisible(type.Name))">
-                    <div class="compass-map-target-dot-button-wrapper" style="height: 100%; ">
-                        <div class="compass-map-target-dot-button-content" style="pointer-events: none;">
-                            <i class="bi @(type.Icon)" style="font-size:1.2rem;" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        @* <div class="d-flex justify-content-center align-items-center" style="gap:5px;">
+    @foreach (WidgetForecastType type in WidgetForecast.Types)
+    {
+    <div class="compass-map-target-dot-button-container" style="position: relative;">
+    <div class="compass-map-target-dot-button" style=" height: 50px; width:50px; position: relative;
+    opacity:@(IsTypeVisible(type.Name) ? 1 : 0.5)" @onclick="() => FilterItems(type.Name, !IsTypeVisible(type.Name))">
+    <div class="compass-map-target-dot-button-wrapper" style="height: 100%; ">
+    <div class="compass-map-target-dot-button-content" style="pointer-events: none;">
+    <i class="bi @(type.Icon)" style="font-size:1.2rem;" />
+    </div>
+    </div>
+    </div>
+    </div>
+    }
     </div> *@
 
-<WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning"
-    DegreeBearing="Instance.DegreeBearing" DepthValueInMeter="Instance.DepthValueInMeter"
-     PositioningIsWarning="Instance.PositioningIsWarning">
-    @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
-    {
-        WidgetForecastItem mainItem = group.FirstOrDefault();
-        List<WidgetForecastItem> OtherOptions = group.Where(i => i != mainItem && i.IsVisible == true).ToList();
-
-        if (mainItem != null)
-        {
-            <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" Instance="@Instance" Item="@mainItem"
-                Options="@(OtherOptions)" ForecastGroupedItems="@ForecastGroupedItems"
-                SetForecastGroupedItems="SetForecastGroupedItems" />
-        }
-    }
-    @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
-    {
-        foreach (WidgetForecastItem item in group)
-        {
-            if (item.Type.Name == "Speed")
+        <WidgetForecastMap DiameterInPx="Instance.DiameterInPx" DegreePositioning="Instance.DegreePositioning"
+            DegreeBearing="Instance.DegreeBearing" DepthValueInMeter="Instance.DepthValueInMeter"
+            PositioningIsWarning="Instance.PositioningIsWarning">
+            @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
             {
-                <WidgetForecastVessel Degree="@item.Degree" IsActual="@item.IsActual" />
-            }
-        }
-    }
-</WidgetForecastMap>
-</div>
+                WidgetForecastItem mainItem = group.FirstOrDefault();
+                List<WidgetForecastItem> OtherOptions = group.Where(i => i != mainItem && i.IsVisible == true).ToList();
 
+                if (mainItem != null)
+                {
+                    <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" Instance="@Instance" Item="@mainItem"
+                        Options="@(OtherOptions)" ForecastGroupedItems="@ForecastGroupedItems"
+                        SetForecastGroupedItems="SetForecastGroupedItems" ToggleFocusItem="ToggleFocusItem" />
+                }
+            }
+            @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)
+            {
+                foreach (WidgetForecastItem item in group)
+                {
+                    if (item.Type.Name == "Speed")
+                    {
+                        <WidgetForecastVessel Degree="@item.Degree" IsActual="@item.IsActual" />
+                    }
+                }
+            }
+        </WidgetForecastMap>
+    </div>
 }
 
 @code {
     [Parameter] public WidgetForecastInstance Instance { get; set; }
+
+    private async Task ToggleFocusItem(WidgetForecastItem _item)
+    {
+        Instance.SetFocusedForecastItem(_item);
+        await InvokeAsync(StateHasChanged);
+    }
 
     public List<List<WidgetForecastItem>> ForecastGroupedItems { get; set; }
 
@@ -87,7 +93,7 @@
     // Loop through items to group if degree value is in the same margin
     protected override void OnInitialized()
     {
-        if(Instance.Items == null || Instance.Items.Count == 0) return;
+        if (Instance.Items == null || Instance.Items.Count == 0) return;
         ForecastGroupedItems = new List<List<WidgetForecastItem>>();
         List<WidgetForecastItem> currentGroup = new List<WidgetForecastItem>();
         decimal margin = (decimal)Instance.DiameterInPx / 2.7M * (decimal)Instance.TargetDotSizeInPx /
@@ -141,165 +147,3 @@
     }
 
 }
-
-
-<style>
-    :root {
-        --color-actual: #1EFF00;
-        --color-planned: white;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button-wrapper {
-        border-radius: 100%;
-        background: #1B87DF;
-        box-shadow: inset 0px 0px 0px 2px rgba(1, 1, 1, 0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 4px;
-        position: relative;
-        cursor: pointer;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content i {
-        margin-top: -5px;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        gap: 2px;
-        margin-top: -2px;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>span {
-        border-radius: 100%;
-        background-color: #175B93;
-        box-shadow: inset 0px 0px 2px rgba(1, 1, 1, 0.8);
-        display: none;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#planned.active {
-        display: inline-block;
-        background-color: var(--color-planned) !important;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#actual.active {
-        display: inline-block;
-        background-color: var(--color-actual) !important;
-    }
-
-    .compass-map-target-dot-button-container .compass-map-target-dot-button i {
-        color: white;
-    }
-
-    .compass-map-target-dot-button-container {
-        position: absolute;
-        display: grid;
-        justify-content: center;
-        align-items: flex-start;
-        justify-items: center;
-        bottom: 50%;
-        border-radius: 10%;
-    }
-
-    .compass-map-vessel-waypoint {
-        position: absolute;
-        height: 50%;
-        bottom: 50%;
-        left: 50%;
-        transform-origin: 0% 100%;
-        border-radius: 10%;
-        z-index: 1;
-        width: 2px;
-        background-color: unset;
-        background-size: 2px 9px;
-        background-repeat: repeat;
-        background-image: linear-gradient(to top, var(--color-planned) 60%, rgba(255, 255, 255, 0) 0%);
-    }
-
-    .compass-map-vessel-waypoint-actual {
-        background-image: linear-gradient(to top, var(--color-actual) 60%, rgba(255, 255, 255, 0) 0%);
-    }
-
-    .compass-map-target-waypoint .arrow {
-        content: "";
-        position: absolute;
-        left: -6px;
-        width: 0;
-        height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-top: 15px solid var(--color-planned);
-    }
-
-    .compass-map-target-waypoint-actual .arrow {
-        border-top-color: var(--color-actual) !important;
-    }
-
-    .compass-map-target-waypoint {
-        position: absolute;
-        height: 50%;
-        bottom: 50%;
-        left: 50%;
-        transform-origin: 0% 100%;
-        border-radius: 10%;
-        z-index: 1;
-        width: 2px;
-        background-color: unset;
-        background-repeat: repeat;
-        background-size: cover;
-    }
-
-    .compass-map-dot-button-options {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        justify-items: center;
-        top: -15%;
-        left: 0;
-        width: 50%;
-        height: 50%;
-        max-width: 35px;
-        max-height: 35px;
-        background-color: #175B93;
-        box-shadow: inset 0px 0px 3px rgba(1, 1, 1, 1);
-        border: none;
-        border-radius: 100%;
-        z-index: 10;
-    }
-
-    .compass-map-dot-button-options:hover {
-        background-color: #65BEF0;
-    }
-
-    .compass-map-target-dot-button:hover .compass-map-target-dot-button-tooltip {
-        display: block !important;
-        z-index: 1000 !important;
-    }
-
-    .compass-map-target-dot-button-tooltip {
-        display: none;
-        background-color: white;
-        z-index: 1000 !important;
-        width: 100%;
-        min-width: 200px;
-        position: absolute !important;
-        top: 100%;
-        padding: 0.5rem;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
-        border-radius: 0.2rem;
-    }
-</style>

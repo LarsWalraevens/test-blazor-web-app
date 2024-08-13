@@ -1,3 +1,8 @@
+:root {
+    --color-actual: #1EFF00;
+    --color-planned: white;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

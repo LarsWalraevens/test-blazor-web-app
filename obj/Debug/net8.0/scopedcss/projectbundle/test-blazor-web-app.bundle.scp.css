@@ -85,6 +85,151 @@ input[type="range"][b-9qikamvuz0]::-webkit-slider-thumb {
         transform: translateX(-50%);
         pointer-events: none;
     }
+/* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor.rz.scp.css */
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button-wrapper {
+        border-radius: 100%;
+        background: #1B87DF;
+        box-shadow: inset 0px 0px 0px 2px rgba(1, 1, 1, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-content i {
+        margin-top: -5px;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 2px;
+        margin-top: -2px;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>span {
+        border-radius: 100%;
+        background-color: #175B93;
+        box-shadow: inset 0px 0px 2px rgba(1, 1, 1, 0.8);
+        display: none;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#planned.active {
+        display: inline-block;
+        background-color: var(--color-planned) !important;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button .compass-map-target-dot-button-indicators>#actual.active {
+        display: inline-block;
+        background-color: var(--color-actual) !important;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container .compass-map-target-dot-button i {
+        color: white;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-container {
+        position: absolute;
+        display: grid;
+        justify-content: center;
+        align-items: flex-start;
+        justify-items: center;
+        bottom: 50%;
+        border-radius: 10%;
+    }
+
+    [b-o7klof06q2] .compass-map-vessel-waypoint {
+        position: absolute;
+        height: 50%;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: 0% 100%;
+        border-radius: 10%;
+        z-index: 1;
+        width: 2px;
+        background-color: unset;
+        background-size: 2px 9px;
+        background-repeat: repeat;
+        background-image: linear-gradient(to top, var(--color-planned) 60%, rgba(255, 255, 255, 0) 0%);
+    }
+
+    [b-o7klof06q2] .compass-map-vessel-waypoint-actual {
+        background-image: linear-gradient(to top, var(--color-actual) 60%, rgba(255, 255, 255, 0) 0%);
+    }
+
+    [b-o7klof06q2] .compass-map-target-waypoint .arrow {
+        content: "";
+        position: absolute;
+        left: -6px;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 15px solid var(--color-planned);
+    }
+
+    [b-o7klof06q2] .compass-map-target-waypoint-actual .arrow {
+        border-top-color: var(--color-actual) !important;
+    }
+
+    [b-o7klof06q2] .compass-map-target-waypoint {
+        position: absolute;
+        height: 50%;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: 0% 100%;
+        border-radius: 10%;
+        z-index: 1;
+        width: 2px;
+        background-color: unset;
+        background-repeat: repeat;
+        background-size: cover;
+    }
+
+    [b-o7klof06q2] .compass-map-dot-button-options {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        justify-items: center;
+        top: -15%;
+        left: 0;
+        width: 50%;
+        height: 50%;
+        max-width: 25px;
+        max-height: 25px;
+        background-color: #175B93;
+        box-shadow: inset 0px 0px 3px rgba(1, 1, 1, 1);
+        border: none;
+        border-radius: 100%;
+        z-index: 10;
+    }
+
+    [b-o7klof06q2] .compass-map-target-dot-button-tooltip {
+        display: inline-block;
+        z-index: 1000 !important;
+        background-color: white;
+        width: 100%;
+        min-width: 200px;
+        position: absolute !important;
+        top: 80%;
+        padding: 0.5rem;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+        border-radius: 0.2rem;
+    }
 /* _content/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor.rz.scp.css */
 .compass-map[b-4t59l3xqdg] {
     width: 100%;

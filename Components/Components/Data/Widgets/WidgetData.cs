@@ -146,7 +146,7 @@ namespace Widget.Forecast
 
                 WidgetForecastInstance instance = new WidgetForecastInstance()
                 {
-                    DegreeBearing = (decimal?)dynamicData.planned?.bearing ?? 0,
+                    DegreeBearing = (decimal?)dynamicData.planned?.vessel?.bearing ?? 0,
                     DegreePositioning = (decimal?)dynamicData.dot?.direction ?? 0,
                     // DepthValueInMeter = (decimal?)dynamicData.planned?.geo.oceanCurrentDepth ?? 0,
                     Items = new List<WidgetForecastItem>()
