@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0NWVriS6c0aKB5DX7bisT5iMtY1kNceIOctcx8RzeJM=",
+  "Hash": "W/g5d31rC5rTyQXQIenk3v0tITGhjV3NYpz6RzPeSAg=",
   "Source": "test-blazor-web-app",
   "BasePath": "_content/test-blazor-web-app",
   "Mode": "Default",
@@ -3779,6 +3779,25 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
+      "Identity": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leaflet.rotatedMarker.js",
+      "SourceId": "test-blazor-web-app",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\",
+      "BasePath": "_content/test-blazor-web-app",
+      "RelativePath": "leaflet.rotatedMarker.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\leaflet.rotatedMarker.js"
+    },
+    {
       "Identity": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leafletmap.js",
       "SourceId": "test-blazor-web-app",
       "SourceType": "Discovered",
@@ -3796,6 +3815,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\leafletmap.js"
+    },
+    {
+      "Identity": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel.png",
+      "SourceId": "test-blazor-web-app",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\",
+      "BasePath": "_content/test-blazor-web-app",
+      "RelativePath": "vessel.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\vessel.png"
     }
   ]
 }

@@ -1,5 +1,6 @@
 export function load_map(raw) {
-    let map = L.map('map', { zoomControl: false }).setView(new L.LatLng(raw[0].lat, raw[0].lng), 12);
+    let map = L.map('map', { zoomControl: false }).setView(new L.LatLng(raw[raw.length - 1].lat, raw[raw.length - 1].lng), 12);
+    const ele = document.getElementById('map');
 
     // L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', { maxZoom: 22 }).addTo(map);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 22 }).addTo(map);
@@ -41,12 +42,25 @@ export function load_map(raw) {
                 color: '#0F99FF',
                 weight: 2,
                 opacity: 1,
-                smoothFactor: 1
+                smoothFactor: 1,
+                noClip: true,
+                lineCap: 'round'
             });
             polyline.addTo(map);
-        });
-    }
 
+        });
+        // Add a marker at the end of the polyline
+        var marker = L.marker([raw[raw.length - 1].lat, raw[raw.length - 1].lng], {
+            icon: L.icon({
+                iconUrl: '/vessel.png',
+                iconSize: [15, 41],
+                iconAnchor: [7.5, 20.5],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41],
+                rotationAngle: 45
+            })
+        });
+        marker.addTo(map);
+    }
     return "";
 }
-

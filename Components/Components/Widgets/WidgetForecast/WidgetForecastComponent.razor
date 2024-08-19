@@ -37,7 +37,7 @@
                 {
                     <WidgetForecastWaypoint IsVessel="@(mainItem.Type.Name == "Speed")" Instance="@Instance" Item="@mainItem"
                         Options="@(OtherOptions)" ForecastGroupedItems="@ForecastGroupedItems"
-                        SetForecastGroupedItems="SetForecastGroupedItems" ToggleFocusItem="ToggleFocusItem" />
+                        SetForecastGroupedItems="SetForecastGroupedItems" ToggleFocusItem="@ToggleFocusItem" />
                 }
             }
             @foreach (List<WidgetForecastItem> group in ForecastGroupedItems)

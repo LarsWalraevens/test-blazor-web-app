@@ -1,0 +1,162 @@
+@page "/timeline"
+@rendermode InteractiveServer
+@using DevExpress.Blazor
+@inject IJSRuntime JS
+@using System.Globalization
+
+<h3>Interactive Timeline with Playback</h3>
+
+<DxChart Data="@VisibleData" T="DataPoint" @ref="chart">
+    <DxChartLineSeries T="DataPoint" TArgument="DateTime" TValue="int" Name="Series 1"
+        ArgumentField="@(data => data.Time)" ValueField="@(data => data.Value)">
+    </DxChartLineSeries>
+</DxChart>
+
+<TimelineControls CurrentSliderDate="@CurrentSliderDate" SliderDates="@SliderPoints" TogglePlayPause="@TogglePlayPause"
+    Stop="@Stop" Seek="@OnSeek" PlayPauseIcon="@PlayPauseIcon" />
+
+@code {
+    private DxChart<DataPoint> chart;
+    private List<DataPoint> ChartData = new List<DataPoint>();
+    private List<string> SliderPoints = new List<string>();
+    private int CurrentSliderIndex = 0;
+    private bool _isPlaying = false;
+    private System.Timers.Timer _timer;
+
+    public string CurrentSliderDate
+    {
+        get => SliderPoints.ElementAtOrDefault(CurrentSliderIndex) ?? SliderPoints.First();
+        set
+        {
+            if (SliderPoints.Contains(value))
+            {
+                CurrentSliderIndex = SliderPoints.IndexOf(value);
+                UpdateSlider();
+                StateHasChanged(); // Ensure UI updates
+            }
+        }
+    }
+
+    private List<DataPoint> VisibleData => ChartData
+    .Where(dp => dp.Time >= DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture)
+    && dp.Time < DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture).AddMinutes(5))
+    .ToList();
+
+    protected override void OnInitialized()
+    {
+        GenerateChartData();
+        InitializeTimer();
+    }
+
+    private void GenerateChartData()
+    {
+        Random random = new Random();
+        DateTime startTime = DateTime.Now.AddHours(-10);
+
+        for (int i = 0; i < 10; i++) // Generate data for 10 hours
+        {
+            for (int j = 0; j < 60; j += 5) // Data points every 5 minutes
+            {
+                DateTime pointTime = startTime.AddHours(i).AddMinutes(j);
+                ChartData.Add(new DataPoint { Time = pointTime, Value = random.Next(0, 100) });
+                SliderPoints.Add(pointTime.ToString("MMddyyyyHHmm"));
+            }
+        }
+    }
+
+    private void InitializeTimer()
+    {
+        _timer = new System.Timers.Timer(1000); // Timer interval 1 second
+        _timer.Elapsed += UpdateChart;
+    }
+
+    private void TogglePlayPause()
+    {
+        if (_isPlaying)
+        {
+            Pause();
+        }
+        else
+        {
+            Play();
+        }
+    }
+
+    private void Play()
+    {
+        _isPlaying = true;
+        if (!_timer.Enabled)
+        {
+            _timer.Start();
+        }
+        UpdatePlayPauseIcon();
+    }
+
+    private void Pause()
+    {
+        _isPlaying = false;
+        _timer.Stop();
+        UpdatePlayPauseIcon();
+    }
+
+    private void Stop()
+    {
+        _isPlaying = false;
+        _timer.Stop();
+        CurrentSliderIndex = 0;
+        UpdateSlider();
+        UpdatePlayPauseIcon();
+    }
+
+    private void UpdateChart(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (_isPlaying)
+        {
+            InvokeAsync(() =>
+            {
+                if (CurrentSliderIndex < SliderPoints.Count - 1)
+                {
+                    CurrentSliderIndex++;
+                }
+                else
+                {
+                    _isPlaying = false;
+                    _timer.Stop();
+                }
+
+                UpdateSlider();
+                StateHasChanged(); // Ensure UI updates
+            });
+        }
+    }
+
+    private async Task OnSeek(string selectedDate)
+    {
+        CurrentSliderDate = selectedDate;
+        await Task.CompletedTask;
+    }
+
+    private void UpdateSlider()
+    {
+        var newData = VisibleData;
+        chart.Data = newData;
+    }
+
+    private string PlayPauseIcon => _isPlaying ? "bi-pause" : "bi-play";
+
+    private void UpdatePlayPauseIcon()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+
+    public class DataPoint
+    {
+        public DateTime Time { get; set; }
+        public int Value { get; set; }
+    }
+}
