@@ -50,17 +50,28 @@ export function load_map(raw) {
 
         });
         // Add a marker at the end of the polyline
-        var marker = L.marker([raw[raw.length - 1].lat, raw[raw.length - 1].lng], {
-            icon: L.icon({
-                iconUrl: '/vessel.png',
-                iconSize: [15, 41],
-                iconAnchor: [7.5, 20.5],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41],
-                rotationAngle: 45
-            })
+        var marker = L.divIcon({
+            html: '<img src="/vessel.png" alt="Vessel" style="width:calc(15px*1.5); height:calc(50px*1.5); transform:rotate(45deg);"><span style="position: absolute; top: 230%; left: -10%; transform: rotate(315deg); text-transform: uppercase; text-align: left; font-weight:600;">abc</span>',
+            style: "position:relative",
+            className: 'my-div-icon',
+            //         iconSize: [15, 41],
+
+            iconAnchor: [7.5, 20.5],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
         });
-        marker.addTo(map);
+        L.marker([raw[raw.length - 1].lat, raw[raw.length - 1].lng], { icon: marker }).addTo(map);
+        // var marker = L.marker([raw[raw.length - 1].lat, raw[raw.length - 1].lng], {
+        //     icon: L.icon({
+        //         iconUrl: '/vessel.png',
+        //         iconSize: [15, 41],
+        //         iconAnchor: [7.5, 20.5],
+        //         popupAnchor: [1, -34],
+        //         shadowSize: [41, 41],
+        //         rotationAngle: 45
+        //     })
+        // });
+        // marker.addTo(map);
     }
     return "";
 }

@@ -12,24 +12,34 @@
     </DxChartLineSeries>
 </DxChart>
 
-<TimelineControls CurrentSliderDate="@CurrentSliderDate" SliderDates="@SliderPoints" TogglePlayPause="@TogglePlayPause"
-    Stop="@Stop" Seek="@Seek" PlayPauseIcon="@PlayPauseIcon" />
+<TimelineControls CurrentSliderTicks="@CurrentSliderTicks" MinTicks="@MinTicks" MaxTicks="@MaxTicks"
+    SliderDates="@SliderPoints" OnSeek="OnSeek" TogglePlayPause="TogglePlayPause" Stop="Stop"
+    PlayPauseIcon="@PlayPauseIcon" />
 
 @code {
     private DxChart<DataPoint> chart;
     private List<DataPoint> ChartData = new List<DataPoint>();
-    private string CurrentSliderDate => SliderPoints[CurrentSliderIndex];
+    private List<DateTime> SliderPoints = new List<DateTime>();
     private int CurrentSliderIndex = 0;
-    private System.Timers.Timer _timer;
     private bool _isPlaying = false;
+    private System.Timers.Timer _timer;
 
-    private List<string> SliderPoints = new List<string>();
+    public long CurrentSliderTicks => SliderPoints[CurrentSliderIndex].Ticks;
+    public long MinTicks => SliderPoints.First().Ticks;
+    public long MaxTicks => SliderPoints.Last().Ticks;
+
     private List<DataPoint> VisibleData => ChartData
-    .Where(dp => dp.Time >= DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture)
-    && dp.Time < DateTime.ParseExact(CurrentSliderDate, "MMddyyyyHHmm", CultureInfo.InvariantCulture).AddMinutes(5))
+    .Where(dp => dp.Time >= SliderPoints[CurrentSliderIndex]
+    && dp.Time < SliderPoints[CurrentSliderIndex].AddMinutes(5))
     .ToList();
 
     protected override void OnInitialized()
+    {
+        GenerateChartData();
+        InitializeTimer();
+    }
+
+    private void GenerateChartData()
     {
         Random random = new Random();
         DateTime startTime = DateTime.Now.AddHours(-10);
@@ -40,11 +50,14 @@
             {
                 DateTime pointTime = startTime.AddHours(i).AddMinutes(j);
                 ChartData.Add(new DataPoint { Time = pointTime, Value = random.Next(0, 100) });
-                SliderPoints.Add(pointTime.ToString("MMddyyyyHHmm"));
+                SliderPoints.Add(pointTime);
             }
         }
+    }
 
-        _timer = new System.Timers.Timer(1000); // Update every second
+    private void InitializeTimer()
+    {
+        _timer = new System.Timers.Timer(1000); // Timer interval 1 second
         _timer.Elapsed += UpdateChart;
     }
 
@@ -100,17 +113,17 @@
                 }
 
                 UpdateSlider();
-                StateHasChanged();
+                StateHasChanged(); // Ensure UI updates
             });
         }
     }
 
-    private void Seek(ChangeEventArgs e)
+    private async Task OnSeek(long selectedTicks)
     {
-        string selectedDate = e.Value.ToString();
-        CurrentSliderIndex = SliderPoints.IndexOf(selectedDate);
+        var closestDate = SliderPoints.OrderBy(d => Math.Abs(d.Ticks - selectedTicks)).FirstOrDefault();
+        CurrentSliderIndex = SliderPoints.IndexOf(closestDate);
         UpdateSlider();
-        StateHasChanged();
+        await Task.CompletedTask;
     }
 
     private void UpdateSlider()
@@ -128,7 +141,7 @@
 
     public void Dispose()
     {
-        _timer.Dispose();
+        _timer?.Dispose();
     }
 
     public class DataPoint
