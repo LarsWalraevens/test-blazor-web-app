@@ -18,9 +18,12 @@
 <h1>Gauge meter</h1>
 
 <section>
-    <div class="d-flex">
-        <GaugeMeter MaxValue="120" Value="110" />
-        <GaugeMeter MaxValue="200" Value="80" />
+    <div class="d-flex" style="background:red;">
+        <GaugeMeter MaxValue="120" Value="110" UnitLabel="°C" LabelText="Temperature" MinRange=20 MaxRange=80 />
+        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" MinRange=50 MaxRange=70 UnitLabel="°C"
+            LabelText="Temperature" />
+        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" MinRange=50 MaxRange=70 UnitLabel="°C" MinValue="-20"
+            LabelText="Temperature" />
 
     </div>
 </section>

@@ -1,0 +1,100 @@
+.gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.gauge {
+    position: relative;
+    border-radius: 50%;
+    background: #333333;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #6f6f6f, #222222);
+}
+
+.gauge__meter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px;
+    background: #ff0000;
+    border-radius: 2px;
+    transform-origin: 0% 100%;
+    transform: rotate(-135deg);
+    transition: transform 0.3s ease-out;
+}
+.gauge__range {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    border-radius: 50%;
+    border-width: 9px; /* Adjust as needed */
+    border-color: #00ff00; /* Highlight color */
+    border-style: solid;
+    transform-origin: center center;
+    clip-path: polygon(50% 50%, 0% 50%, 100% 0, 100% 50%);
+    z-index: 1;
+}
+
+
+.gauge__ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    left: 50%;
+}
+
+.gauge__subticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    left: 50%;
+}
+
+.gauge__tick {
+    position: absolute;
+    width: 2px;
+    background: #ffffff;
+    top: 0;
+    transform-origin: bottom center;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    line-height: 360%;
+}
+
+.gauge__subtick {
+    position: absolute;
+    width: 2px;
+    background: #888888;
+    top: 0;
+    transform-origin: bottom center;
+}
+
+.gauge__info > * {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    text-align: center;
+    color: #ffffff;
+}
+
+.gauge__value {
+    font-weight: bold;
+}

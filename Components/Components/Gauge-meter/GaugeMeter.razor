@@ -1,117 +1,95 @@
 @using Microsoft.AspNetCore.Components
-@using Newtonsoft.Json
 @namespace test_blazor_web_app.Components
 
 <div class="gauge-container">
-    <div class="gauge">
-        <div class="gauge__meter" style="transform: rotate(@DegreeValue)"></div>
-        <div class="gauge__ticks">
+    <div class="gauge" style="width: @(SizeInPx)px; height: @(SizeInPx)px;">
+        <div class="gauge__background"></div>
+
+        @if (MinRange.HasValue && MaxRange.HasValue)
+        {
+            <div class="gauge__range" style="width: @(SizeInPx)px; 
+                        height: @(SizeInPx)px; 
+                        border-width: @(SizeInPx * 0.03)px; 
+                        transform: rotate(@RangeStartDegree); 
+                        clip-path: polygon(50% 50%, 100% 50%, 100% 0, 50% 0); 
+                        border-style: solid; 
+                        border-color: #00ff00; 
+                        border-radius: 50%;
+                        border-top-width: 0;
+                        border-right-width: 0;
+                        border-bottom-width: @(SizeInPx * 0.03)px;
+                        border-left-width: @(SizeInPx * 0.03)px;">
+                <div class="gauge__range-inner" style="width: 100%; height: 100%; border-radius: 50%; border-style: solid; border-color: #00ff00; border-width: @(SizeInPx * 0.03)px; transform: rotate(@RangeSweep);"></div>
+            </div>
+        }
+
+        <div class="gauge__meter"
+            style="transform: translate(0%, -100%) rotate(@NeedleDegree); height: @(SizeInPx * 0.35)px;"></div>
+
+        <div class="gauge__ticks" style="top:calc(50% - @((SizeInPx * 0.35) / 7)px)">
             @foreach (var label in Labels)
             {
-                <div class="gauge__tick" style="transform: rotate(@label.Degree) translateY(-90px)"></div>
+                <div class="gauge__tick"
+                    style="transform: rotate(@label.Degree) translateY(-@((SizeInPx/2) - (SizeInPx * 0.05))px);  height: @(SizeInPx * 0.05)px;">
+                    @label.Value</div>
             }
         </div>
-        <div class="gauge__labels">
-            @foreach (var label in Labels)
+
+        <div class="gauge__subticks" style="top: calc(50% - @((SizeInPx * 0.03))px);">
+            @foreach (var subTick in SubTicks)
             {
-                <div class="gauge__label" style="transform: rotate(@label.Degree) translateY(-100px)">
-                    @label.Value
+                <div class="gauge__subtick"
+                    style="transform: rotate(@subTick.Degree) translateY(-@((SizeInPx/2) - (SizeInPx * 0.03))px); height: @(SizeInPx * 0.03)px;">
                 </div>
             }
         </div>
-    </div>
-    <div class="gauge__value">
-        @Value/@MaxValue
+
+        <div class="gauge__info" style="max-width: @(SizeInPx/4)px;">
+            <div class="gauge__value" style="font-size: @(SizeInPx * 0.07)px; bottom: 15%;">
+                @Value @UnitLabel
+            </div>
+            <div style="font-size: @(SizeInPx * 0.05)px; top: 35%;">
+                @LabelText
+            </div>
+        </div>
     </div>
 </div>
 
-<style>
-    .gauge-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 20px;
-        padding: 20px;
-    }
-
-    .gauge {
-        position: relative;
-        width: 200px;
-        height: 100px;
-        border-radius: 100px 100px 0 0;
-        background: rgba(0, 0, 0, 0.8);
-    }
-
-    .gauge__meter {
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        width: 4px;
-        height: 80px;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        background: #ff0000;
-        transform-origin: bottom;
-        transition: transform 0.3s ease-out;
-    }
-
-    .gauge__ticks {
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
-
-    .gauge__tick {
-        position: absolute;
-        width: 2px;
-        height: 10px;
-        background: #ffffff;
-        bottom: 0;
-        transform-origin: bottom center;
-    }
-
-    .gauge__labels {
-        position: absolute;
-        left: 40%;
-        bottom: -80%;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
-
-    .gauge__label {
-        position: absolute;
-        width: 40px;
-        text-align: center;
-        font-size: 12px;
-        color: #000;
-        transform-origin: center bottom;
-    }
-
-    .gauge__value {
-        margin: 5px 0px;
-    }
-</style>
-
 @code {
     [Parameter] public int MaxValue { get; set; } = 200;
+    [Parameter] public int MinValue { get; set; } = 0; // Optional minimum value
+    [Parameter] public int SizeInPx { get; set; } = 300;
     [Parameter] public int Value { get; set; } = 0;
+    [Parameter] public string UnitLabel { get; set; } // Value unit
+    [Parameter] public string LabelText { get; set; } // Gauge label
+    [Parameter] public int? MinRange { get; set; } // Optional minimum range value
+    [Parameter] public int? MaxRange { get; set; } // Optional maximum range value
 
-    private string DegreeValue => $"{-90 + (Value * 180 / MaxValue)}deg";
+    private string NeedleDegree => $"{-135 + ((Value - MinValue) * 270 / (MaxValue - MinValue))}deg"; // Adjust for the current value
+
+    private string RangeStartDegree => $"{-135 + ((MinRange.GetValueOrDefault(MinValue) - MinValue) * 270 / (MaxValue - MinValue))}deg";
+    
+    private string RangeSweep => $"{(MaxRange.GetValueOrDefault(MaxValue) - MinRange.GetValueOrDefault(MinValue)) * 270 / (MaxValue - MinValue)}deg";
 
     private List<GaugeLabel> Labels { get; set; }
+    private List<GaugeSubTick> SubTicks { get; set; }
 
     protected override void OnInitialized()
     {
         // Generate labels and ticks for the gauge (e.g., every 20 units)
-        Labels = Enumerable.Range(0, MaxValue / 20 + 1)
+        Labels = Enumerable.Range(0, (MaxValue - MinValue) / 20 + 1)
         .Select(i => new GaugeLabel
             {
-                Value = (i * 20).ToString(),
-                Degree = $"{-90 + (i * 20 * 180 / MaxValue)}deg"
+                Value = (MinValue + i * 20).ToString(),
+                Degree = $"{-135 + ((MinValue + i * 20 - MinValue) * 270 / (MaxValue - MinValue))}deg"
+            })
+        .ToList();
+
+        // Generate subticks (e.g., every 10 units)
+        SubTicks = Enumerable.Range(1, ((MaxValue - MinValue) / 10) - 1)
+        .Select(i => new GaugeSubTick
+            {
+                Degree = $"{-135 + ((MinValue + i * 10 - MinValue) * 270 / (MaxValue - MinValue))}deg"
             })
         .ToList();
     }
@@ -119,6 +97,11 @@
     private class GaugeLabel
     {
         public string Value { get; set; }
+        public string Degree { get; set; }
+    }
+
+    private class GaugeSubTick
+    {
         public string Degree { get; set; }
     }
 }
