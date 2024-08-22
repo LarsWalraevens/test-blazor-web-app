@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\vessel.png"
     },
     {
+      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel2.png",
+      "PackagePath": "staticwebassets\\vessel2.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.test-blazor-web-app.props",
       "PackagePath": "build\\test-blazor-web-app.props"
     },

@@ -8,27 +8,263 @@ using Newtonsoft.Json.Linq;
 
 namespace Widget.Forecast
 {
-    public class VesselRouteData
+    public class TelemetryData
     {
-        public List<Sailed> Sailed { get; set; }
+        private List<TelemetryItem> _items = new List<TelemetryItem>
+    {
+       private List<TelemetryItem> _items = new List<TelemetryItem>
+        {     
+            new TelemetryItem
+            {
+                Key = "1-a",
+                Description = "Aux #1 - Gauge meter - in kiloWatt",
+                Value = null,
+                Name = "aux1"
+            },
+            new TelemetryItem
+            {
+                Key = "2-a",
+                Description = "Aux #2 - Gauge meter - in kiloWatt",
+                Value = null,
+                Name = "aux2"
+            },
+            new TelemetryItem
+            {
+                Key = "3-a",
+                Description = "Aux #3 - Gauge meter - in kiloWatt",
+                Value = null,
+                Name = "aux3"
+            },
+            new TelemetryItem
+            {
+                Key = "1-kw",
+                Description = null,
+                Value = null,
+                Name = "kw1"
+            },
+            new TelemetryItem
+            {
+                Key = "2-kw",
+                Description = null,
+                Value = null,
+                Name = "kw2"
+            },
+            new TelemetryItem
+            {
+                Key = "3-kw",
+                Description = null,
+                Value = null,
+                Name = "kw3"
+            },
+            new TelemetryItem
+            {
+                Key = "1-v",
+                Description = null,
+                Value = null,
+                Name = "v1"
+            },
+            new TelemetryItem
+            {
+                Key = "2-v",
+                Description = null,
+                Value = null,
+                Name = "v2"
+            },
+            new TelemetryItem
+            {
+                Key = "2-v",
+                Description = null,
+                Value = null,
+                Name = "v2"
+            },
+            new TelemetryItem
+            {
+                Key = "3-v",
+                Description = null,
+                Value = null,
+                Name = "v3"
+            },
+            new TelemetryItem
+            {
+                Key = "ais-status",
+            },
+            new TelemetryItem
+            {
+                Key = "ais-status-text",
+            },
+            new TelemetryItem
+            {
+                Key = "beaufort",
+            },
+            new TelemetryItem
+            {
+                Key = "coordinates",
+            },
+            new TelemetryItem
+            {
+                Key = "currentDirection",
+                Unit = "°"
+            },
+            new TelemetryItem
+            {
+                Key = "currentSpeed",
+                Unit = "m/s"
+            },
+            new TelemetryItem
+            {
+                Key = "distanceNM",
+                Unit = "NM"
+            },
+            new TelemetryItem
+            {
+                Key = "gb-lo-in",
+            },
+            new TelemetryItem
+            {
+                Key = "GGAts",
+            },
+            new TelemetryItem
+            {
+                Key = "lat",
+            },
+            new TelemetryItem
+            {
+                Key = "LOG",
+            },
+            new TelemetryItem
+            {
+                Key = "lon",
+            },
+            new TelemetryItem
+            {
+                Key = "me-exhaust-temp",
+                Unit = "°C"
+            },
+            new TelemetryItem
+            {
+                Key = "me-jacket-cfw-in",
+                Unit = "°C"
+            },
+            new TelemetryItem
+            {
+                Key = "me-lo-in",
+                Unit = "°C"
+            },
+            new TelemetryItem
+            {
+                Key = "me-prop-rpm",
+                Unit = "RPM"
+            },
+            new TelemetryItem
+            {
+                Key = "me-rpm",
+                Unit = "RPM"
+            },
+            new TelemetryItem
+            {
+                Key = "me-start-air",
+                Unit = "bar"
+            },
+            new TelemetryItem
+            {
+                Key = "precipitation",
+            },
+            new TelemetryItem
+            {
+                Key = "SOG",
+                Unit = "knots"
+            },
+            new TelemetryItem
+            {
+                Key = "swellDir",
+                Unit = "°"
+            },
+            new TelemetryItem
+            {
+                Key = "swellHeight",
+                Unit = "m"
+            },
+            new TelemetryItem
+            {
+                Key = "temperature",
+                Unit = "°C"
+            },
+            new TelemetryItem
+            {
+                Key = "total-kw",
+                Description = "Total Power",
+                Unit = "kW"
+            },
+            new TelemetryItem
+            {
+                Key = "ts",
+            },
+            new TelemetryItem
+            {
+                Key = "turbo-rpm",
+                Unit = "RPM"
+            },
+            new TelemetryItem
+            {
+                Key = "utc",
+            },
+            new TelemetryItem
+            {
+                Key = "vessel",
+            },
+            new TelemetryItem
+            {
+                Key = "visibility",
+                Unit = "km"
+            },
+            new TelemetryItem
+            {
+                Key = "waterTemperature",
+                Unit = "°C"
+            },
+            new TelemetryItem
+            {
+                Key = "waveDirection",
+                Unit = "°"
+            },
+            new TelemetryItem
+            {
+                Key = "waveHeight",
+                Unit = "m"
+            },
+            new TelemetryItem
+            {
+                Key = "weatherTime",
+            },
+            new TelemetryItem
+            {
+                Key = "winddirDegree",
+                Unit = "°"
+            },
+            new TelemetryItem
+            {
+                Key = "windspeedKmph",
+                Unit = "km/h"
+            }
+        };
+
+    };
+
+
+        public List<TelemetryItem> Items { get; set; }
+
+        public void ConvertToItems(string json)
+        {
+
+        }
     }
 
-    public class Sailed
+    public class TelemetryItem
     {
-        public bool IsOriginal { get; set; }
-        public DateTime RecordChanged { get; set; }
-        public DateTime RecordCreated { get; set; }
-        public DateTime Timestamp { get; set; }
-        public double Bearing { get; set; }
-        public double Heading { get; set; }
-        public double DistanceToEnd { get; set; }
-        public double DistanceToNext { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public Guid PassageRouteId { get; set; }
-        public Guid RefinedWaypointId { get; set; }
-        public Guid VesselId { get; set; }
-        public int Number { get; set; }
+        public string Key { get; set; }
+        public string Description { get; set; }
+        public string Value { get; set; }
+        public string Name { get; set; }
     }
 
     public class WidgetDataService
@@ -79,6 +315,45 @@ namespace Widget.Forecast
             return JsonConvert.DeserializeObject(content);
         }
 
+        public async Task<object> GetVesselTelemetryData(Guid id, DateTime date)
+        {
+            try
+            {
+                var requestBody = new
+                {
+                    VesselId = id,
+                    Timestamp = date
+                };
+
+                var jsonRequestBody = JsonConvert.SerializeObject(requestBody);
+                var response = await _http.PostAsync("/api/v1/select/vessel/telemetry", new StringContent(jsonRequestBody, Encoding.UTF8, "application/json"));
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error response: {errorContent}");
+                    response.EnsureSuccessStatusCode();
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                JObject contentJson = JObject.Parse(content);
+
+                if (contentJson["data"] == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return JsonConvert.DeserializeObject(contentJson["data"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetVesselTelemetryData: " + ex.Message);
+                return null;
+            }
+        }
+
         public async Task<object> GetVesselRouteData(Guid id)
         {
             var requestBody = new
@@ -115,23 +390,6 @@ namespace Widget.Forecast
 
                 decompressedObj["sailed"] = JArray.FromObject(sailedArray);
                 return JsonConvert.DeserializeObject(decompressedObj["sailed"].ToString());
-                //             "sailed": [
-                // {
-                //                 "isOriginal": false,
-                //   "recordChanged": "2024-07-29T10:03:42.1635104+02:00",
-                //   "recordCreated": "2024-07-29T10:03:42.1635104+02:00",
-                //   "timestamp": "2023-12-20T11:21:43.973+01:00",
-                //   "bearing": 0.0,
-                //   "heading": 0.0,
-                //   "distanceToEnd": 0.0,
-                //   "distanceToNext": 0.0,
-                //   "latitude": 49.28909,
-                //   "longitude": -123.07868,
-                //   "passageRouteId": "00000000-0000-0000-0000-000000000000",
-                //   "refinedWaypointId": "8d0f5e64-e062-4e6c-bde6-011d8621108c",
-                //   "vesselId": "a1a6d02b-9b38-4e8d-9bd1-0cffe327f2b0",
-                //   "number": 1
-                // }
             }
         }
 

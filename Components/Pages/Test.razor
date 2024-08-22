@@ -1,47 +1,74 @@
 ﻿@page "/test"
+@inherits LayoutComponentBase
+@using CustomDashboard.Components
+@using Microsoft.AspNetCore.Components
+@using Widget.Forecast
+@using System.Collections.ObjectModel
+@using Newtonsoft.Json
+@inject IJSRuntime JSRuntime
+@inject WidgetDataService DataService
 @rendermode InteractiveServer
 
-<PageTitle>Todo page</PageTitle>
-
-<h3>Todo (with login) component </h3>
-<LoginTodos.LoginTodos />
-<div class="clock">
-    <div class="hand" id="hand"></div>
-</div>
-<canvas class="leaflet-zoom-animated leaflet-chosen-tracker" width="2215" height="1032"
-    style="transform: translate3d(-185px, -80px, 0px); width: 2215px; height: 1032px; cursor: pointer;"></canvas>
+<PageTitle>All widgets tests with real data</PageTitle>
 
 <style>
-    .clock {
-        position: relative;
-        width: 200px;
-        /* Diameter of the clock */
-        height: 200px;
-        /* Diameter of the clock */
-        border: 2px solid black;
-        /* Border of the clock */
-        border-radius: 50%;
-        /* Make it a circle */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .hand {
-        position: absolute;
-        width: 2px;
-        /* Width of the hand */
-        height: 100px;
-        /* 20% of the clock's diameter (200px * 0.2) */
-        background: black;
-        /* Color of the hand */
-        top: 50%;
-        /* Center the hand vertically */
-        left: 50%;
-        /* Center the hand horizontally */
-        transform-origin: bottom center;
-        /* Rotate around the bottom center */
-        transform: rotate(90deg) translateY(-50%);
-        /* Rotate to 90 degrees and move the hand to start from the edge */
+    section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(1, 1, 1, 0.2);
     }
 </style>
+
+<h1>Widgets with backend data</h1>
+
+<section>
+    <h2>Planned & actual forecast widget</h2>
+    <div class="d-grid align-items-start flex-wrap" style="gap: 5px; grid-template-columns: 1fr 1fr 1fr;">
+        <div>
+            @if (ForecastInstance != null)
+            {
+                <WidgetForecastComponent Instance="@ForecastInstance" />
+            }
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <h2>Gauges</h2>
+    @if (telementryData != null)
+    {
+        <pre>@JsonConvert.SerializeObject(telementryData, Formatting.Indented)</pre>
+    }
+</section>
+
+
+@code {
+    private WidgetForecastInstance ForecastInstance;
+    private dynamic vesselRoute = null;
+    private dynamic forecastData = null;
+    private dynamic telementryData = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            forecastData = await DataService.GetForecastData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new DateTime(2024,
+            3, 6, 0, 0, 0, DateTimeKind.Utc));
+            telementryData = await DataService.GetVesselTelemetryData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new
+            DateTime(2024, 3, 6, 0, 0, 0, DateTimeKind.Utc));
+
+            ForecastInstance = await DataService.GetForecastInstanceFromForecastData(forecastData.data);
+
+            vesselRoute = await DataService.GetVesselRouteData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"));
+
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching: {ex.Message}");
+        }
+    }
+}

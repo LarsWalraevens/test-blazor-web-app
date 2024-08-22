@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "W/g5d31rC5rTyQXQIenk3v0tITGhjV3NYpz6RzPeSAg=",
+  "Hash": "UvlwTx7dSU3AjYdgVmMAGgaAlwG7Z+PvkrACYg5ArXo=",
   "Source": "test-blazor-web-app",
   "BasePath": "_content/test-blazor-web-app",
   "Mode": "Default",
@@ -3834,6 +3834,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\vessel.png"
+    },
+    {
+      "Identity": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel2.png",
+      "SourceId": "test-blazor-web-app",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\",
+      "BasePath": "_content/test-blazor-web-app",
+      "RelativePath": "vessel2.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\vessel2.png"
     }
   ]
 }

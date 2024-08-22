@@ -2,10 +2,15 @@
 @namespace test_blazor_web_app.Components
 
 <div class="gauge-container">
-    <div class="gauge" style="width: @(SizeInPx)px; height: @(SizeInPx)px;">
+    <div class="gauge @(HasTemp == true ? "has-temp" : null)" style="width: @(SizeInPx)px; height: @(SizeInPx)px;">
         <div class="gauge__background"></div>
+        
+        @if(HasTemp == true) 
+        {
+        <div class="gauge__temp" style="width: @(SizeInPx)px; height: @(SizeInPx)px;" />
+        }
 
-        @if (MinRange.HasValue && MaxRange.HasValue)
+        @* @if (MinRange.HasValue && MaxRange.HasValue)
         {
             <div class="gauge__range" style="width: @(SizeInPx)px; 
                         height: @(SizeInPx)px; 
@@ -21,7 +26,7 @@
                         border-left-width: @(SizeInPx * 0.03)px;">
                 <div class="gauge__range-inner" style="width: 100%; height: 100%; border-radius: 50%; border-style: solid; border-color: #00ff00; border-width: @(SizeInPx * 0.03)px; transform: rotate(@RangeSweep);"></div>
             </div>
-        }
+        }  *@
 
         <div class="gauge__meter"
             style="transform: translate(0%, -100%) rotate(@NeedleDegree); height: @(SizeInPx * 0.35)px;"></div>
@@ -61,13 +66,15 @@
     [Parameter] public int SizeInPx { get; set; } = 300;
     [Parameter] public int Value { get; set; } = 0;
     [Parameter] public string UnitLabel { get; set; } // Value unit
+    [Parameter] public bool? HasTemp { get; set; } // Gauge label
     [Parameter] public string LabelText { get; set; } // Gauge label
     [Parameter] public int? MinRange { get; set; } // Optional minimum range value
     [Parameter] public int? MaxRange { get; set; } // Optional maximum range value
 
     private string NeedleDegree => $"{-135 + ((Value - MinValue) * 270 / (MaxValue - MinValue))}deg"; // Adjust for the current value
 
-    private string RangeStartDegree => $"{-135 + ((MinRange.GetValueOrDefault(MinValue) - MinValue) * 270 / (MaxValue - MinValue))}deg";
+    private string RangeStartDegree => "-135deg";
+    @* private string RangeStartDegree => $"{-135 + ((MinRange.GetValueOrDefault(MinValue) - MinValue) * 270 / (MaxValue - MinValue))}deg"; *@
     
     private string RangeSweep => $"{(MaxRange.GetValueOrDefault(MaxValue) - MinRange.GetValueOrDefault(MinValue)) * 270 / (MaxValue - MinValue)}deg";
 
