@@ -11,9 +11,7 @@ namespace Widget.Forecast
     public class TelemetryData
     {
         private List<TelemetryItem> _items = new List<TelemetryItem>
-    {
-       private List<TelemetryItem> _items = new List<TelemetryItem>
-        {     
+        {
             new TelemetryItem
             {
                 Key = "1-a",
@@ -248,15 +246,8 @@ namespace Widget.Forecast
             }
         };
 
-    };
-
-
         public List<TelemetryItem> Items { get; set; }
 
-        public void ConvertToItems(string json)
-        {
-
-        }
     }
 
     public class TelemetryItem
@@ -265,6 +256,7 @@ namespace Widget.Forecast
         public string Description { get; set; }
         public string Value { get; set; }
         public string Name { get; set; }
+        public string Unit { get; set; }
     }
 
     public class WidgetDataService

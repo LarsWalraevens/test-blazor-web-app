@@ -1,39 +1,39 @@
 {
   "Files": [
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\test-blazor-web-app.bundle.scp.css",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\test-blazor-web-app.bundle.scp.css",
       "PackagePath": "staticwebassets\\test-blazor-web-app.bundle.scp.css"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\app.css",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\favicon.png",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leaflet.rotatedMarker.js",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\leaflet.rotatedMarker.js",
       "PackagePath": "staticwebassets\\leaflet.rotatedMarker.js"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\leafletmap.js",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\leafletmap.js",
       "PackagePath": "staticwebassets\\leafletmap.js"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel.png",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel.png",
       "PackagePath": "staticwebassets\\vessel.png"
     },
     {
-      "Id": "C:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel2.png",
+      "Id": "D:\\www\\playground\\test-blazor-web-app\\wwwroot\\vessel2.png",
       "PackagePath": "staticwebassets\\vessel2.png"
     },
     {

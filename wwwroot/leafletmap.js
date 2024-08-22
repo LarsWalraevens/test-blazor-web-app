@@ -51,7 +51,7 @@ export function load_map(raw) {
         });
         // Add a marker at the end of the polyline
         var marker = L.divIcon({
-            html: '<img src="/vessel.png" alt="Vessel" style="width:calc(15px*1.5); height:calc(40px*1.5); transform:rotate(45deg);"><span style="position: absolute; top: 240%; left: -16%; transform: rotate(315deg); text-transform: uppercase; text-align: left; font-weight:600;">abc</span>',
+            html: '<img src="/vessel.png" alt="Vessel" style="width:calc(15px*1.5); height:calc(40px*1.5); transform:rotate(45deg);"><span style="position: absolute; top: 215%; left: -43%; transform: rotate(315deg); text-transform: uppercase; text-align: left; font-weight:600;">abc</span>',
             style: "position:relative",
             className: 'my-div-icon',
             //         iconSize: [15, 41],

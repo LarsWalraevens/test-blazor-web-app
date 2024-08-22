@@ -20,13 +20,44 @@
 <section>
     <div class="d-flex" style="background:transparent;">
         <GaugeMeter MaxValue="120" Value="110" UnitLabel="°C" LabelText="Temperature" HasTemp="true" />
-        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" MinRange=50 MaxRange=70 UnitLabel="°C"
+        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" MinRange=50 MaxRange=120 UnitLabel="°C"
             LabelText="Temperature" />
-        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" MinRange=50 MaxRange=70 UnitLabel="°C" MinValue="-20"
+        <GaugeMeter MaxValue="180" Value="120" SizeInPx="200" RangeColor="red" MinRange=95 MaxRange=100 UnitLabel="°C"
             LabelText="Temperature" />
 
     </div>
+    <DxBarGauge Width="100%" Height="500px" StartValue="-5" EndValue="5" BaseValue="0"
+        PaletteExtensionMode="@CurrentPaletteMode" Palette="@Colors[CurrentPalette]" Values="@Values">
+        <DxBarGaugeLabelSettings>
+            <DxTextFormatSettings LdmlString="@LabelFormat" />
+        </DxBarGaugeLabelSettings>
+        <DxBarGaugeLegendSettings Visible="false" ItemCaptions="@LegendItemCaptions"
+            VerticalAlignment="VerticalEdge.Bottom" HorizontalAlignment="HorizontalAlignment.Center" />
+        <DxExportSettings Enabled="@ExportEnabled" />
+        <DxTooltipSettings Enabled="true" Color="lightyellow">
+            <DxTextFormatSettings LdmlString="@LabelFormat" />
+        </DxTooltipSettings>
+    </DxBarGauge>
 </section>
 
 @code {
+
+    string LabelFormat = "##.## mm;-##.## mm";
+    [Parameter] public bool ExportEnabled { get; set; }
+    public enum Palettes
+    {
+        Material,
+        Bootstrap,
+        Tailwind
+    }
+    Dictionary<Palettes, string[]> Colors = new Dictionary<Palettes, string[]>() {
+{ Palettes.Material, new string[] { "#1db2f5", "#f5564a", "#97c95c" } },
+{ Palettes.Bootstrap, new string[] { "#0d6efd", "#6c757d", "#28a745" } },
+{ Palettes.Tailwind, new string[] { "#ef4444", "#eab308", "#22c55e" } }
+};
+    Palettes CurrentPalette = Palettes.Material;
+    PaletteExtensionMode CurrentPaletteMode = PaletteExtensionMode.Alternate;
+    double[] Values = new double[] { -2.13 };
+    string[] LegendItemCaptions = new string[] { "Shaft" };
+
 }

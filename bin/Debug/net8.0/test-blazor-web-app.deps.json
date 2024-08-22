@@ -8,125 +8,123 @@
     ".NETCoreApp,Version=v8.0": {
       "test-blazor-web-app/1.0.0": {
         "dependencies": {
-          "DevExpress.Blazor": "24.1.3",
-          "DevExpress.Blazor.RichEdit": "24.1.3",
-          "DevExpress.Blazor.Themes": "24.1.3",
+          "DevExpress.Blazor": "24.1.5",
+          "DevExpress.Blazor.RichEdit": "24.1.5",
+          "DevExpress.Blazor.Themes": "24.1.5",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "test-blazor-web-app.dll": {}
         }
       },
-      "DevExpress.Blazor/24.1.3": {
+      "DevExpress.Blazor/24.1.5": {
         "dependencies": {
-          "DevExpress.Blazor.Themes": "24.1.3",
-          "DevExpress.Data": "24.1.3",
-          "DevExpress.Printing.Core": "24.1.3",
+          "DevExpress.Blazor.Themes": "24.1.5",
+          "DevExpress.Data": "24.1.5",
+          "DevExpress.Printing.Core": "24.1.5",
           "DevExtreme.AspNet.Data": "4.0.0",
           "System.Drawing.Common": "4.7.2",
           "System.Reactive": "5.0.0"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Blazor.v24.1.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Blazor.RichEdit/24.1.3": {
+      "DevExpress.Blazor.RichEdit/24.1.5": {
         "dependencies": {
-          "DevExpress.Blazor": "24.1.3",
-          "DevExpress.Data": "24.1.3",
-          "DevExpress.Drawing": "24.1.3",
-          "DevExpress.SpellChecker.Core": "24.1.3",
+          "DevExpress.Blazor": "24.1.5",
+          "DevExpress.Data": "24.1.5",
+          "DevExpress.Drawing": "24.1.5",
+          "DevExpress.SpellChecker.Core": "24.1.5",
           "Microsoft.Extensions.FileProviders.Abstractions": "6.0.0"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Blazor.RichEdit.v24.1.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Blazor.Themes/24.1.3": {},
-      "DevExpress.Data/24.1.3": {
+      "DevExpress.Blazor.Themes/24.1.5": {},
+      "DevExpress.Data/24.1.5": {
         "dependencies": {
           "System.Drawing.Common": "4.7.2"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Data.v24.1.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Drawing/24.1.3": {
+      "DevExpress.Drawing/24.1.5": {
         "dependencies": {
-          "DevExpress.Data": "24.1.3",
+          "DevExpress.Data": "24.1.5",
           "System.Drawing.Common": "4.7.2"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Drawing.v24.1.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Pdf.Core/24.1.3": {
+      "DevExpress.Pdf.Core/24.1.5": {
         "dependencies": {
-          "DevExpress.Data": "24.1.3",
-          "DevExpress.Drawing": "24.1.3",
-          "Microsoft.CodeAnalysis.NetAnalyzers": "8.0.0",
+          "DevExpress.Data": "24.1.5",
+          "DevExpress.Drawing": "24.1.5",
           "System.Drawing.Common": "4.7.2",
           "System.Security.Cryptography.Pkcs": "6.0.3"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Pdf.v24.1.Core.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Pdf.Drawing/24.1.3": {
+      "DevExpress.Pdf.Drawing/24.1.5": {
         "dependencies": {
-          "DevExpress.Data": "24.1.3",
-          "DevExpress.Drawing": "24.1.3",
-          "DevExpress.Pdf.Core": "24.1.3",
+          "DevExpress.Data": "24.1.5",
+          "DevExpress.Drawing": "24.1.5",
+          "DevExpress.Pdf.Core": "24.1.5",
           "System.Drawing.Common": "4.7.2"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Pdf.v24.1.Drawing.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.Printing.Core/24.1.3": {
+      "DevExpress.Printing.Core/24.1.5": {
         "dependencies": {
-          "DevExpress.Data": "24.1.3",
-          "DevExpress.Drawing": "24.1.3",
-          "DevExpress.Pdf.Core": "24.1.3",
-          "DevExpress.Pdf.Drawing": "24.1.3",
-          "Microsoft.CodeAnalysis.NetAnalyzers": "8.0.0",
+          "DevExpress.Data": "24.1.5",
+          "DevExpress.Drawing": "24.1.5",
+          "DevExpress.Pdf.Core": "24.1.5",
+          "DevExpress.Pdf.Drawing": "24.1.5",
           "System.Drawing.Common": "4.7.2",
           "System.Security.Cryptography.Pkcs": "6.0.3",
           "System.ServiceModel.Http": "6.2.0"
         },
         "runtime": {
           "lib/net6.0/DevExpress.Printing.v24.1.Core.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
-      "DevExpress.SpellChecker.Core/24.1.3": {
+      "DevExpress.SpellChecker.Core/24.1.5": {
         "dependencies": {
-          "DevExpress.Data": "24.1.3"
+          "DevExpress.Data": "24.1.5"
         },
         "runtime": {
           "lib/net6.0/DevExpress.SpellChecker.v24.1.Core.dll": {
-            "assemblyVersion": "24.1.3.0",
-            "fileVersion": "24.1.3.0"
+            "assemblyVersion": "24.1.5.0",
+            "fileVersion": "24.1.5.0"
           }
         }
       },
@@ -138,7 +136,6 @@
           }
         }
       },
-      "Microsoft.CodeAnalysis.NetAnalyzers/8.0.0": {},
       "Microsoft.Extensions.FileProviders.Abstractions/6.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "6.0.0"
@@ -339,68 +336,68 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DevExpress.Blazor/24.1.3": {
+    "DevExpress.Blazor/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Zzax62uPmd+NnmzAEzwl4SD44oeKc54OIS1fqHw8IjvG5FOiXxkcyBcv5kCEh5oeqtYJ9FdgGTNTez5exzCkEQ==",
-      "path": "devexpress.blazor/24.1.3",
-      "hashPath": "devexpress.blazor.24.1.3.nupkg.sha512"
+      "sha512": "sha512-NW6Ev1VTTwN0lLzkTXL1wTfG0y+YGRwHzxfmMU9HoXfA7DKe5GUHTsdcfP1ddPuhXX/c4gQh75juDZqjQrfBLQ==",
+      "path": "devexpress.blazor/24.1.5",
+      "hashPath": "devexpress.blazor.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Blazor.RichEdit/24.1.3": {
+    "DevExpress.Blazor.RichEdit/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RDTz/jUZsBe5wFy6TmPzaxkMPBlEBhQoYHXwg63Zps65ZtkOGPJ8JigxX4A2yd5zpzYe0vjuKGSn5OoQBdckHw==",
-      "path": "devexpress.blazor.richedit/24.1.3",
-      "hashPath": "devexpress.blazor.richedit.24.1.3.nupkg.sha512"
+      "sha512": "sha512-YHkS0dzNKYnfNy1CXhmoKmX426QBG0i3HqFs1v5Iv7omiBqOXDGaOe5NFBnWs6WNOcKSUt5iM4XlOtHsrsu4cw==",
+      "path": "devexpress.blazor.richedit/24.1.5",
+      "hashPath": "devexpress.blazor.richedit.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Blazor.Themes/24.1.3": {
+    "DevExpress.Blazor.Themes/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3o8pIJIm6w17e35FDeti12TAl+nSKoWRJnRm0kFzUFlEGEppzzpGXC9y88QsVWlfojkJHNnhy5OFwAUN70Mz+Q==",
-      "path": "devexpress.blazor.themes/24.1.3",
-      "hashPath": "devexpress.blazor.themes.24.1.3.nupkg.sha512"
+      "sha512": "sha512-Gg21wGWOZGVw9sgtim1+CeMzV1nuSQhMvgcMgyWi0w+gc7jM4K0cOFpM+5n6Vc/eXMgWMocjLfKjZVaKeQgWoA==",
+      "path": "devexpress.blazor.themes/24.1.5",
+      "hashPath": "devexpress.blazor.themes.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Data/24.1.3": {
+    "DevExpress.Data/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-v79f+FzE3vqoq79NGbXbyvh+4bcAXkRONV63whkY93nd+UU/nuQ27VuzPm1qd/Yx7ImGBTLDqBx3FKVkg/7rGw==",
-      "path": "devexpress.data/24.1.3",
-      "hashPath": "devexpress.data.24.1.3.nupkg.sha512"
+      "sha512": "sha512-mJvmevwCZeQQweChpW0XMd+lXXho8tdH7xrbgS3LaA9I2b2MKryp05alcHTDlYO3+mSMdq5MND3Xal6BM1/Evw==",
+      "path": "devexpress.data/24.1.5",
+      "hashPath": "devexpress.data.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Drawing/24.1.3": {
+    "DevExpress.Drawing/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2Fs6D5YIpi0hlpjNUYdwY/56iJSrVZKkPmj6EghSmVOUXrpS4sWYcoStUpeJbKbhN0u+jbOirsWGxudwK97JiQ==",
-      "path": "devexpress.drawing/24.1.3",
-      "hashPath": "devexpress.drawing.24.1.3.nupkg.sha512"
+      "sha512": "sha512-NSH3Co98m6TmKnyVu9IYbagHXKhXQ4AvlMMvxz8LKC2MNJEURjNgwuIAci6OAtKi8MKnutvZ+UqybTa+6ahFOA==",
+      "path": "devexpress.drawing/24.1.5",
+      "hashPath": "devexpress.drawing.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Pdf.Core/24.1.3": {
+    "DevExpress.Pdf.Core/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lwa/MwBNolCUy7r0CB846lsPMWu7abn6NZnlA6V/pjReMFNd9veln0buEekkWR/HvtSVQjTt8wKP2L0oYnAMJw==",
-      "path": "devexpress.pdf.core/24.1.3",
-      "hashPath": "devexpress.pdf.core.24.1.3.nupkg.sha512"
+      "sha512": "sha512-m7z4uZDSAleZ+DnedxKA5dTHfppNhTq7p8fN8qBB4/u7Ps1FAXMwPkJZ3MI2INJKsiuQoIRENzkxgRVWkcG4gw==",
+      "path": "devexpress.pdf.core/24.1.5",
+      "hashPath": "devexpress.pdf.core.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Pdf.Drawing/24.1.3": {
+    "DevExpress.Pdf.Drawing/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KlPyO6fcir4rMuCTX4PSiDOVy93MQM/WFrcDAdBN/1QLxT90qSRVqh/HU3rJnBBtPzd+41B1JaywQkJZ6NenVw==",
-      "path": "devexpress.pdf.drawing/24.1.3",
-      "hashPath": "devexpress.pdf.drawing.24.1.3.nupkg.sha512"
+      "sha512": "sha512-LY3gePBkaJhf3WoilJ38jn7ChOY5LgjISQQcyq4jNwuKWyVeIBM0UTfBVZLpr6rxW7yKpRkZ/Xlf4xIg8SZSuw==",
+      "path": "devexpress.pdf.drawing/24.1.5",
+      "hashPath": "devexpress.pdf.drawing.24.1.5.nupkg.sha512"
     },
-    "DevExpress.Printing.Core/24.1.3": {
+    "DevExpress.Printing.Core/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-p1E4e6X99mfjtKlHVSeof/Be4k+gkYVkXoHBukDOlr/gb0UNfD4jHMFPbs+pffnKdsYGk5B38V24u5on7iF32A==",
-      "path": "devexpress.printing.core/24.1.3",
-      "hashPath": "devexpress.printing.core.24.1.3.nupkg.sha512"
+      "sha512": "sha512-Zlg+n0OyTUzfXzRpJjCXDwlq5gnNrDNHx6lcZvzOxrhs204zAMgMjClu3CudXdjvLR1Fw4rmi4Pp5j5dq3gWSA==",
+      "path": "devexpress.printing.core/24.1.5",
+      "hashPath": "devexpress.printing.core.24.1.5.nupkg.sha512"
     },
-    "DevExpress.SpellChecker.Core/24.1.3": {
+    "DevExpress.SpellChecker.Core/24.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PuytK5Ahos/BhFL9I3sPxXAyjnviIXgcgJxxP5CN/j1gRHjY1FNc2aL0+NQdw0Dpd1/WURbYKdxPdLbEVdE2zg==",
-      "path": "devexpress.spellchecker.core/24.1.3",
-      "hashPath": "devexpress.spellchecker.core.24.1.3.nupkg.sha512"
+      "sha512": "sha512-8X/4FQosS5GH4CdeFh76aWg9xXbP7yOBrcQHTL0bgbceldzufE53ZR7yaxE4B54Ux3GrQIiweT+ToeVGpvJjsQ==",
+      "path": "devexpress.spellchecker.core/24.1.5",
+      "hashPath": "devexpress.spellchecker.core.24.1.5.nupkg.sha512"
     },
     "DevExtreme.AspNet.Data/4.0.0": {
       "type": "package",
@@ -408,13 +405,6 @@
       "sha512": "sha512-BfADnQ9HD3L1/du53CrDbqfb+3zTBc+yGYG1sblYKL33cf2BEjljUEAopI6K4i35fcR4pI6dUbsQL4qOMrRqZg==",
       "path": "devextreme.aspnet.data/4.0.0",
       "hashPath": "devextreme.aspnet.data.4.0.0.nupkg.sha512"
-    },
-    "Microsoft.CodeAnalysis.NetAnalyzers/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-DxiTgkCl3CGq1rYmBX2wjY7XGbxiBdL4J+/AJIAFLKy5z70NxhnVRnPghnicXZ8oF6JKVXlW3xwznRbI3ioEKg==",
-      "path": "microsoft.codeanalysis.netanalyzers/8.0.0",
-      "hashPath": "microsoft.codeanalysis.netanalyzers.8.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Abstractions/6.0.0": {
       "type": "package",

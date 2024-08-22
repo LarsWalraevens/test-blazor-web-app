@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj": {}
+    "D:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj": {}
   },
   "projects": {
-    "C:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj": {
+    "D:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj",
+        "projectUniqueName": "D:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj",
         "projectName": "test-blazor-web-app",
-        "projectPath": "C:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj",
-        "packagesPath": "C:\\Users\\gebruiker1\\.nuget\\packages\\",
-        "outputPath": "C:\\www\\playground\\test-blazor-web-app\\obj\\",
+        "projectPath": "D:\\www\\playground\\test-blazor-web-app\\test-blazor-web-app.csproj",
+        "packagesPath": "C:\\Users\\larsw\\.nuget\\packages\\",
+        "outputPath": "D:\\www\\playground\\test-blazor-web-app\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
+          "D:\\Program Files\\DevExpress\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gebruiker1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\larsw\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -28,10 +28,9 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.devexpress.com/PDqGpHdaYFfLb5XjTubYoIsnHPb3pjflFRGVmXxGddjvkHgkJl/api/v3/index.json": {}
+          "D:\\Program Files\\DevExpress\\Components\\System\\Components\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -90,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

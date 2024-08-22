@@ -68,19 +68,28 @@
     transform: rotate(-135deg);
     transition: transform 0.3s ease-out;
 }
-.gauge__range {
+
+.gauge__range-container {
     position: absolute;
-    top: 0%;
-    left: 0%;
-    border-radius: 50%;
-    border-width: 9px; /* Adjust as needed */
-    border-color: #00ff00; /* Highlight color */
-    border-style: solid;
-    transform-origin: center center;
-    clip-path: polygon(50% 50%, 0% 50%, 100% 0, 100% 50%);
-    z-index: 1;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
+.gauge__range {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
+    clip-path: polygon(50% 50%, 0% 0%, 0% 100%, 100% 100%, 100% 0%);
+}
 
 .gauge__ticks {
     position: absolute;

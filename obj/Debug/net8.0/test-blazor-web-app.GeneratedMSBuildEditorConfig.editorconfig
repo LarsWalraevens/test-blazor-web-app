@@ -9,147 +9,147 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = test-blazor-web-app
 build_property.RootNamespace = test-blazor-web-app
-build_property.ProjectDir = c:\www\playground\test-blazor-web-app\
+build_property.ProjectDir = d:\www\playground\test-blazor-web-app\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\www\playground\test-blazor-web-app
+build_property.MSBuildProjectDirectory = d:\www\playground\test-blazor-web-app
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/www/playground/test-blazor-web-app/Components/App.razor]
+[d:/www/playground/test-blazor-web-app/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Charts/MyBarchart.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Charts/MyBarchart.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXENoYXJ0c1xNeUJhcmNoYXJ0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Charts/MyLinechart.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Charts/MyLinechart.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXENoYXJ0c1xNeUxpbmVjaGFydC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Charts/MyPiechart.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Charts/MyPiechart.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXENoYXJ0c1xNeVBpZWNoYXJ0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetModal.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRNb2RhbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Dashboard/CustomDashboardComponent.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Dashboard/CustomDashboardComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxDdXN0b21EYXNoYm9hcmRDb21wb25lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/LoginTodos.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/LoginTodos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXExvZ2luVG9kb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastVessel.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastVessel.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RWZXNzZWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastWaypoint.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastWaypoint.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RXYXlwb2ludC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Layout/DashboardLayout.razor]
+[d:/www/playground/test-blazor-web-app/Components/Layout/DashboardLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRGFzaGJvYXJkTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Chart.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Chart.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDaGFydC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Counter.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Dashboard.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Dashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Error.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Forecast.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Forecast.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JlY2FzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Gauge-meter.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Gauge-meter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYXVnZS1tZXRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Home.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Http-request.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Http-request.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIdHRwLXJlcXVlc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Map.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Map.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNYXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Test.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Test.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZXN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Timeline.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Timeline.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaW1lbGluZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Todo.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Todo.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUb2RvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Weather.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Pages/Widgets.razor]
+[d:/www/playground/test-blazor-web-app/Components/Pages/Widgets.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXaWRnZXRzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Routes.razor]
+[d:/www/playground/test-blazor-web-app/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/_Imports.razor]
+[d:/www/playground/test-blazor-web-app/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetTeaser.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Dashboard/AddWidgetTeaser.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXERhc2hib2FyZFxBZGRXaWRnZXRUZWFzZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-s3gltzzj50
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Gauge-meter/GaugeMeter.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXEdhdWdlLW1ldGVyXEdhdWdlTWV0ZXIucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-ns887jiibn
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/Gauge-meter/GaugeMeter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcR2F1Z2UtbWV0ZXJcR2F1Z2VNZXRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-gyuddnthag
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineControls.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/Timeline/TimelineControls.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcVGltZWxpbmVcVGltZWxpbmVDb250cm9scy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-9qikamvuz0
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RDb21wb25lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-o7klof06q2
 
-[c:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor]
+[d:/www/playground/test-blazor-web-app/Components/Components/Widgets/WidgetForecast/WidgetForecastMap.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wb25lbnRzXFdpZGdldHNcV2lkZ2V0Rm9yZWNhc3RcV2lkZ2V0Rm9yZWNhc3RNYXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-4t59l3xqdg
 
-[c:/www/playground/test-blazor-web-app/Components/Layout/MainLayout.razor]
+[d:/www/playground/test-blazor-web-app/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-f2lph6kr76
 
-[c:/www/playground/test-blazor-web-app/Components/Layout/NavMenu.razor]
+[d:/www/playground/test-blazor-web-app/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-bj6p98ftjl
 
-[c:/www/playground/test-blazor-web-app/Components/_Host.cshtml]
+[d:/www/playground/test-blazor-web-app/Components/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSG9zdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

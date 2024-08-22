@@ -4,29 +4,21 @@
 <div class="gauge-container">
     <div class="gauge @(HasTemp == true ? "has-temp" : null)" style="width: @(SizeInPx)px; height: @(SizeInPx)px;">
         <div class="gauge__background"></div>
-        
-        @if(HasTemp == true) 
+
+        @if (HasTemp == true)
         {
-        <div class="gauge__temp" style="width: @(SizeInPx)px; height: @(SizeInPx)px;" />
+            <div class="gauge__temp" style="width: @(SizeInPx)px; height: @(SizeInPx)px;" />
         }
 
-        @* @if (MinRange.HasValue && MaxRange.HasValue)
+        @if (MinRange.HasValue && MaxRange.HasValue)
         {
-            <div class="gauge__range" style="width: @(SizeInPx)px; 
-                        height: @(SizeInPx)px; 
-                        border-width: @(SizeInPx * 0.03)px; 
-                        transform: rotate(@RangeStartDegree); 
-                        clip-path: polygon(50% 50%, 100% 50%, 100% 0, 50% 0); 
-                        border-style: solid; 
-                        border-color: #00ff00; 
-                        border-radius: 50%;
-                        border-top-width: 0;
-                        border-right-width: 0;
-                        border-bottom-width: @(SizeInPx * 0.03)px;
-                        border-left-width: @(SizeInPx * 0.03)px;">
-                <div class="gauge__range-inner" style="width: 100%; height: 100%; border-radius: 50%; border-style: solid; border-color: #00ff00; border-width: @(SizeInPx * 0.03)px; transform: rotate(@RangeSweep);"></div>
+            <div class="gauge__range-container" style="width: @(SizeInPx*1.05)px; height: @(SizeInPx*1.05)px;">
+                <div class="gauge__range" style="
+                        background: conic-gradient(from @RangeStartDegree, @(RangeColor) @RangeSweep, transparent 0);
+                        transform: rotate(180deg);">
+                </div>
             </div>
-        }  *@
+        }
 
         <div class="gauge__meter"
             style="transform: translate(0%, -100%) rotate(@NeedleDegree); height: @(SizeInPx * 0.35)px;"></div>
@@ -35,7 +27,7 @@
             @foreach (var label in Labels)
             {
                 <div class="gauge__tick"
-                    style="transform: rotate(@label.Degree) translateY(-@((SizeInPx/2) - (SizeInPx * 0.05))px);  height: @(SizeInPx * 0.05)px;">
+                    style="transform: rotate(@label.Degree) translateY(-@((SizeInPx/2) - (SizeInPx * 0.05))px); height: @(SizeInPx * 0.05)px;">
                     @label.Value</div>
             }
         </div>
@@ -61,29 +53,26 @@
 </div>
 
 @code {
-    [Parameter] public int MaxValue { get; set; } = 200;
-    [Parameter] public int MinValue { get; set; } = 0; // Optional minimum value
+    [Parameter] public int MaxValue { get; set; } = 120;
+    [Parameter] public int MinValue { get; set; } = 0;
     [Parameter] public int SizeInPx { get; set; } = 300;
     [Parameter] public int Value { get; set; } = 0;
-    [Parameter] public string UnitLabel { get; set; } // Value unit
-    [Parameter] public bool? HasTemp { get; set; } // Gauge label
-    [Parameter] public string LabelText { get; set; } // Gauge label
-    [Parameter] public int? MinRange { get; set; } // Optional minimum range value
-    [Parameter] public int? MaxRange { get; set; } // Optional maximum range value
+    [Parameter] public string UnitLabel { get; set; }
+    [Parameter] public bool? HasTemp { get; set; }
+    [Parameter] public string LabelText { get; set; }
+    [Parameter] public int? MinRange { get; set; }
+    [Parameter] public int? MaxRange { get; set; }
+    [Parameter] public string? RangeColor { get; set; } = "#00ff00";
 
-    private string NeedleDegree => $"{-135 + ((Value - MinValue) * 270 / (MaxValue - MinValue))}deg"; // Adjust for the current value
-
-    private string RangeStartDegree => "-135deg";
-    @* private string RangeStartDegree => $"{-135 + ((MinRange.GetValueOrDefault(MinValue) - MinValue) * 270 / (MaxValue - MinValue))}deg"; *@
-    
-    private string RangeSweep => $"{(MaxRange.GetValueOrDefault(MaxValue) - MinRange.GetValueOrDefault(MinValue)) * 270 / (MaxValue - MinValue)}deg";
+    private string NeedleDegree => $"{-135 + ((Value - MinValue) * 270 / (MaxValue - MinValue))}deg";  
+    private string RangeStartDegree => $"{45 + ((MinRange.GetValueOrDefault(MinValue) - MinValue) * 270 / (MaxValue - MinValue))}deg";    private string RangeSweep => $"{((MaxRange.GetValueOrDefault(MaxValue) - MinRange.GetValueOrDefault(MinValue)) * 270 / (MaxValue - MinValue))}deg";
+    private string RangeRotation => $"{-135}deg";
 
     private List<GaugeLabel> Labels { get; set; }
     private List<GaugeSubTick> SubTicks { get; set; }
 
     protected override void OnInitialized()
     {
-        // Generate labels and ticks for the gauge (e.g., every 20 units)
         Labels = Enumerable.Range(0, (MaxValue - MinValue) / 20 + 1)
         .Select(i => new GaugeLabel
             {
@@ -92,13 +81,28 @@
             })
         .ToList();
 
-        // Generate subticks (e.g., every 10 units)
         SubTicks = Enumerable.Range(1, ((MaxValue - MinValue) / 10) - 1)
         .Select(i => new GaugeSubTick
             {
                 Degree = $"{-135 + ((MinValue + i * 10 - MinValue) * 270 / (MaxValue - MinValue))}deg"
             })
         .ToList();
+
+        if(MinValue > MaxValue) 
+        {
+            throw new ArgumentException("MinValue cannot be greater than MaxValue");
+        }
+        if(MinRange != null && MaxRange != null)
+        {
+            if(MinRange < MinValue || MaxRange > MaxValue)
+            {
+                throw new ArgumentException("MinRange and MaxRange must be between MinValue and MaxValue");
+            }
+            if(MinRange > MaxRange)
+            {
+                throw new ArgumentException("MinRange cannot be greater than MaxRange");
+            }
+        } 
     }
 
     private class GaugeLabel

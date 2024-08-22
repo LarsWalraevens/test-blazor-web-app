@@ -36,6 +36,13 @@
     </div>
 </section>
 
+
+
+<section>
+    <h2>Map</h2>
+    <div id="map" style="width:300px; height:300px;">loading...</div>
+</section>
+
 <section>
     <h2>Gauges</h2>
     @if (telementryData != null)
@@ -51,19 +58,62 @@
     private dynamic forecastData = null;
     private dynamic telementryData = null;
 
+
+    private IJSObjectReference? module;
+    private string? result;
+
+    public class LatLngItem
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+    }
+
     protected override async Task OnInitializedAsync()
+    {
+
+        forecastData = await DataService.GetForecastData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new DateTime(2024,
+        3, 6, 0, 0, 0, DateTimeKind.Utc));
+        telementryData = await DataService.GetVesselTelemetryData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new
+        DateTime(2024, 3, 6, 0, 0, 0, DateTimeKind.Utc));
+
+        ForecastInstance = await DataService.GetForecastInstanceFromForecastData(forecastData.data);
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
         {
-            forecastData = await DataService.GetForecastData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new DateTime(2024,
-            3, 6, 0, 0, 0, DateTimeKind.Utc));
-            telementryData = await DataService.GetVesselTelemetryData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new
-            DateTime(2024, 3, 6, 0, 0, 0, DateTimeKind.Utc));
-
-            ForecastInstance = await DataService.GetForecastInstanceFromForecastData(forecastData.data);
-
             vesselRoute = await DataService.GetVesselRouteData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"));
 
+
+            // MAP
+            List<LatLngItem> LatLngItems = new List<LatLngItem>();
+
+            if (firstRender)
+            {
+                module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./leafletmap.js");
+                await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./leaflet.rotatedMarker.js");
+            }
+
+            foreach (var item in vesselRoute)
+            {
+                if (item.latitude != null && item.longitude != null)
+                {
+                    LatLngItems.Add(new LatLngItem
+                        {
+                            Lat = item.latitude,
+                            Lng = item.longitude
+                        });
+                }
+            }
+
+            await Task.Delay(100); // wait for foreach to complete
+
+            if (module != null)
+            {
+                result = await module.InvokeAsync<string>("load_map", LatLngItems);
+            }
 
         }
         catch (Exception ex)
