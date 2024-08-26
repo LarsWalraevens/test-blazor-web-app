@@ -3,17 +3,17 @@
 
 <div class="gauge-container">
     <div class="gauge @(HasTemp == true ? "has-temp" : null)" style="width: @(SizeInPx)px; height: @(SizeInPx)px;">
-        <div class="gauge__background"></div>
+        <div class="gauge-background"></div>
 
         @if (HasTemp == true)
         {
-            <div class="gauge__temp" style="width: @(SizeInPx)px; height: @(SizeInPx)px;" />
+            <div class="gauge-temp" style="width: @(SizeInPx)px; height: @(SizeInPx)px;" />
         }
 
         @if (MinRange.HasValue && MaxRange.HasValue)
         {
-            <div class="gauge__range-container" style="width: @(SizeInPx*1.05)px; height: @(SizeInPx*1.05)px;">
-                <div class="gauge__range" style="
+            <div class="gauge-range-container" style="width: @(SizeInPx*1.05)px; height: @(SizeInPx*1.05)px;">
+                <div class="gauge-range" style="
                         background: conic-gradient(from @RangeStartDegree, @(RangeColor) @RangeSweep, transparent 0);
                         transform: rotate(180deg);">
                 </div>
@@ -42,10 +42,10 @@
         </div>
 
         <div class="gauge__info" style="max-width: @(SizeInPx/4)px;">
-            <div class="gauge__value" style="font-size: @(SizeInPx * 0.07)px; bottom: 15%;">
+            <div class="gauge__value" style="font-size: @(SizeInPx * 0.09)px; bottom: 15%;">
                 @Value @UnitLabel
             </div>
-            <div style="font-size: @(SizeInPx * 0.05)px; top: 35%;">
+            <div style="font-size: @(SizeInPx * 0.05)px; top: 35%; opacity: 0.7; font-style: italic;">
                 @LabelText
             </div>
         </div>
@@ -53,10 +53,10 @@
 </div>
 
 @code {
-    [Parameter] public int MaxValue { get; set; } = 120;
-    [Parameter] public int MinValue { get; set; } = 0;
+    [Parameter] public int MaxValue { get; set; }
+    [Parameter] public int MinValue { get; set; }
     [Parameter] public int SizeInPx { get; set; } = 300;
-    [Parameter] public int Value { get; set; } = 0;
+    [Parameter] public decimal Value { get; set; } = 0;
     [Parameter] public string UnitLabel { get; set; }
     [Parameter] public bool? HasTemp { get; set; }
     [Parameter] public string LabelText { get; set; }
@@ -71,39 +71,58 @@
     private List<GaugeLabel> Labels { get; set; }
     private List<GaugeSubTick> SubTicks { get; set; }
 
-    protected override void OnInitialized()
-    {
-        Labels = Enumerable.Range(0, (MaxValue - MinValue) / 20 + 1)
+protected override void OnInitialized()
+{
+    // Number of main labels on the gauge
+    int MaxLabelsAmount = 13;
+    
+    // Create the labels evenly distributed across the gauge
+    Labels = Enumerable.Range(0, MaxLabelsAmount)
         .Select(i => new GaugeLabel
-            {
-                Value = (MinValue + i * 20).ToString(),
-                Degree = $"{-135 + ((MinValue + i * 20 - MinValue) * 270 / (MaxValue - MinValue))}deg"
-            })
-        .ToList();
-
-        SubTicks = Enumerable.Range(1, ((MaxValue - MinValue) / 10) - 1)
-        .Select(i => new GaugeSubTick
-            {
-                Degree = $"{-135 + ((MinValue + i * 10 - MinValue) * 270 / (MaxValue - MinValue))}deg"
-            })
-        .ToList();
-
-        if(MinValue > MaxValue) 
         {
-            throw new ArgumentException("MinValue cannot be greater than MaxValue");
+            // Calculate the value for each label
+            Value = (MinValue + i * (MaxValue - MinValue) / (MaxLabelsAmount - 1)).ToString(),
+            // Calculate the rotation degree for each label
+            Degree = $"{-135 + (i * 270 / (MaxLabelsAmount - 1))}deg"
+        })
+        .ToList();
+
+    SubTicks = new List<GaugeSubTick>();
+
+    // Number of subticks between each label
+    int subTicksPerSegment = 4;
+
+    // Generate subticks between each pair of main labels
+    for (int i = 0; i < MaxLabelsAmount - 1; i++)
+    {
+        int startValue = int.Parse(Labels[i].Value);
+        int endValue = int.Parse(Labels[i + 1].Value);
+        int segmentRange = endValue - startValue;
+
+        for (int j = 1; j <= subTicksPerSegment; j++)
+        {
+            var subTickValue = startValue + (segmentRange * j / (subTicksPerSegment + 1));
+            var degree = -135 + ((subTickValue - MinValue) * 270 / (MaxValue - MinValue));
+            SubTicks.Add(new GaugeSubTick { Degree = $"{degree}deg" });
         }
-        if(MinRange != null && MaxRange != null)
-        {
-            if(MinRange < MinValue || MaxRange > MaxValue)
-            {
-                throw new ArgumentException("MinRange and MaxRange must be between MinValue and MaxValue");
-            }
-            if(MinRange > MaxRange)
-            {
-                throw new ArgumentException("MinRange cannot be greater than MaxRange");
-            }
-        } 
     }
+
+    if (MinValue > MaxValue)
+    {
+        throw new ArgumentException("MinValue cannot be greater than MaxValue");
+    }
+    if (MinRange != null && MaxRange != null)
+    {
+        if (MinRange < MinValue || MaxRange > MaxValue)
+        {
+            throw new ArgumentException("MinRange and MaxRange must be between MinValue and MaxValue");
+        }
+        if (MinRange > MaxRange)
+        {
+            throw new ArgumentException("MinRange cannot be greater than MaxRange");
+        }
+    }
+}
 
     private class GaugeLabel
     {

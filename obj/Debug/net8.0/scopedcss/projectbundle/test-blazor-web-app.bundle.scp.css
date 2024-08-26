@@ -14,7 +14,7 @@
     padding: 20px;
 }
 
-.gauge__temp[b-gyuddnthag] {
+.gauge-temp[b-gyuddnthag] {
     position: relative;
     border-radius: 50%;
     background: conic-gradient(from -135deg, 
@@ -27,7 +27,7 @@
     clip-path: polygon(50% 51%, 0% 100%, 0% 0%, 100% 0%, 100% 100%);
 }
 
-.gauge__temp[b-gyuddnthag]:after {
+.gauge-temp[b-gyuddnthag]:after {
     position: absolute;
     top: 5%;
     left: 5%;
@@ -57,7 +57,7 @@
     justify-content: center;
 }
 
-.gauge__background[b-gyuddnthag] {
+.gauge-background[b-gyuddnthag] {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -77,7 +77,7 @@
     transition: transform 0.3s ease-out;
 }
 
-.gauge__range-container[b-gyuddnthag] {
+.gauge-range-container[b-gyuddnthag] {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -88,7 +88,7 @@
     z-index: -1;
 }
 
-.gauge__range[b-gyuddnthag] {
+.gauge-range[b-gyuddnthag] {
     position: absolute;
     left: 0;
     top: 0;

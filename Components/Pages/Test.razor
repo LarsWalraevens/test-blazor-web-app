@@ -21,8 +21,11 @@
     }
 </style>
 
-<h1>Widgets with backend data</h1>
-
+<h1>Widgets <u>with backend data</u></h1>
+@if (telementryTimelineData != null)
+{
+    <pre>@JsonConvert.SerializeObject(telementryTimelineData, Formatting.Indented)</pre>
+}
 <section>
     <h2>Planned & actual forecast widget</h2>
     <div class="d-grid align-items-start flex-wrap" style="gap: 5px; grid-template-columns: 1fr 1fr 1fr;">
@@ -36,8 +39,6 @@
     </div>
 </section>
 
-
-
 <section>
     <h2>Map</h2>
     <div id="map" style="width:300px; height:300px;">loading...</div>
@@ -45,18 +46,58 @@
 
 <section>
     <h2>Gauges</h2>
-    @if (telementryData != null)
+    @if (telementryData != null && telementryData.Count > 0)
     {
-        <pre>@JsonConvert.SerializeObject(telementryData, Formatting.Indented)</pre>
+        <div class="d-flex">
+            @if (telementryData.Where(x => x.telemetryKey == "me-exhaust-temp").Count() > 0)
+            {
+                var telemetryValue = telementryData.Where(x => x.telemetryKey == "me-exhaust-temp").FirstOrDefault();
+                decimal value = telemetryValue != null ? telemetryValue.telemetryValue : 0;
+                <GaugeMeter Value="@value" HasTemp="true" LabelText="Exhaust Temperature" MaxValue="500" MinValue="0"
+                    UnitLabel="°C" />
+            }
+            @if (telementryData.Where(x => x.telemetryKey == "me-prop-rpm").Count() > 0)
+            {
+                var telemetryValue = telementryData.Where(x => x.telemetryKey == "me-prop-rpm").FirstOrDefault();
+                decimal value = telemetryValue != null ? telemetryValue.telemetryValue : 0;
+                <GaugeMeter Value="@value" LabelText="ME RPM" MaxValue="500" MinValue="0" UnitLabel="rpm" />
+            }
+        </div>
+
     }
 </section>
 
+<section>
+    <h2>Gauges half</h2>
+
+    @if (telementryData != null && telementryData.Count > 0)
+    {
+        <div class="d-flex">
+            @if (telementryData.Where(x => x.telemetryKey == "1-a").Count() > 0)
+            {
+                var telemetryValue = telementryData.Where(x => x.telemetryKey == "me-exhaust-temp").FirstOrDefault();
+                double value = telemetryValue != null ? telemetryValue.telemetryValue : 0;
+                <DxBarGauge Width="500px" Height="300px" StartValue="0" EndValue="500" BaseValue="0"
+                    Values="new double[] { value }">
+                    <DxBarGaugeLabelSettings>
+                        <DxTextFormatSettings LdmlString="##.## kW;-##.## kW" />
+                    </DxBarGaugeLabelSettings>
+                    <DxTooltipSettings Enabled="true" Color="lightyellow">
+                        <DxTextFormatSettings LdmlString="##.## kW;-##.## kW" />
+                    </DxTooltipSettings>
+                </DxBarGauge>
+            }
+        </div>
+
+    }
+</section>
 
 @code {
     private WidgetForecastInstance ForecastInstance;
     private dynamic vesselRoute = null;
     private dynamic forecastData = null;
-    private dynamic telementryData = null;
+    private List<dynamic> telementryTimelineData = null;
+    private List<dynamic> telementryData = null;
 
 
     private IJSObjectReference? module;
@@ -73,8 +114,11 @@
 
         forecastData = await DataService.GetForecastData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new DateTime(2024,
         3, 6, 0, 0, 0, DateTimeKind.Utc));
-        telementryData = await DataService.GetVesselTelemetryData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new
-        DateTime(2024, 3, 6, 0, 0, 0, DateTimeKind.Utc));
+        telementryData = (List<dynamic>)await
+        DataService.GetVesselTelemetryData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), new DateTime(2024, 3, 6, 0, 0, 0,
+        DateTimeKind.Utc));
+        telementryTimelineData = (List<dynamic>)await
+        DataService.GetVesselTelemetryTimelineData(Guid.Parse("A1A6D02B-9B38-4E8D-9BD1-0CFFE327F2B0"), DataService.TelemetryKeys);
 
         ForecastInstance = await DataService.GetForecastInstanceFromForecastData(forecastData.data);
     }

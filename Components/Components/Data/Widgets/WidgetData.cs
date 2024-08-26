@@ -8,248 +8,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Widget.Forecast
 {
-    public class TelemetryData
-    {
-        private List<TelemetryItem> _items = new List<TelemetryItem>
-        {
-            new TelemetryItem
-            {
-                Key = "1-a",
-                Description = "Aux #1 - Gauge meter - in kiloWatt",
-                Value = null,
-                Name = "aux1"
-            },
-            new TelemetryItem
-            {
-                Key = "2-a",
-                Description = "Aux #2 - Gauge meter - in kiloWatt",
-                Value = null,
-                Name = "aux2"
-            },
-            new TelemetryItem
-            {
-                Key = "3-a",
-                Description = "Aux #3 - Gauge meter - in kiloWatt",
-                Value = null,
-                Name = "aux3"
-            },
-            new TelemetryItem
-            {
-                Key = "1-kw",
-                Description = null,
-                Value = null,
-                Name = "kw1"
-            },
-            new TelemetryItem
-            {
-                Key = "2-kw",
-                Description = null,
-                Value = null,
-                Name = "kw2"
-            },
-            new TelemetryItem
-            {
-                Key = "3-kw",
-                Description = null,
-                Value = null,
-                Name = "kw3"
-            },
-            new TelemetryItem
-            {
-                Key = "1-v",
-                Description = null,
-                Value = null,
-                Name = "v1"
-            },
-            new TelemetryItem
-            {
-                Key = "2-v",
-                Description = null,
-                Value = null,
-                Name = "v2"
-            },
-            new TelemetryItem
-            {
-                Key = "2-v",
-                Description = null,
-                Value = null,
-                Name = "v2"
-            },
-            new TelemetryItem
-            {
-                Key = "3-v",
-                Description = null,
-                Value = null,
-                Name = "v3"
-            },
-            new TelemetryItem
-            {
-                Key = "ais-status",
-            },
-            new TelemetryItem
-            {
-                Key = "ais-status-text",
-            },
-            new TelemetryItem
-            {
-                Key = "beaufort",
-            },
-            new TelemetryItem
-            {
-                Key = "coordinates",
-            },
-            new TelemetryItem
-            {
-                Key = "currentDirection",
-                Unit = "°"
-            },
-            new TelemetryItem
-            {
-                Key = "currentSpeed",
-                Unit = "m/s"
-            },
-            new TelemetryItem
-            {
-                Key = "distanceNM",
-                Unit = "NM"
-            },
-            new TelemetryItem
-            {
-                Key = "gb-lo-in",
-            },
-            new TelemetryItem
-            {
-                Key = "GGAts",
-            },
-            new TelemetryItem
-            {
-                Key = "lat",
-            },
-            new TelemetryItem
-            {
-                Key = "LOG",
-            },
-            new TelemetryItem
-            {
-                Key = "lon",
-            },
-            new TelemetryItem
-            {
-                Key = "me-exhaust-temp",
-                Unit = "°C"
-            },
-            new TelemetryItem
-            {
-                Key = "me-jacket-cfw-in",
-                Unit = "°C"
-            },
-            new TelemetryItem
-            {
-                Key = "me-lo-in",
-                Unit = "°C"
-            },
-            new TelemetryItem
-            {
-                Key = "me-prop-rpm",
-                Unit = "RPM"
-            },
-            new TelemetryItem
-            {
-                Key = "me-rpm",
-                Unit = "RPM"
-            },
-            new TelemetryItem
-            {
-                Key = "me-start-air",
-                Unit = "bar"
-            },
-            new TelemetryItem
-            {
-                Key = "precipitation",
-            },
-            new TelemetryItem
-            {
-                Key = "SOG",
-                Unit = "knots"
-            },
-            new TelemetryItem
-            {
-                Key = "swellDir",
-                Unit = "°"
-            },
-            new TelemetryItem
-            {
-                Key = "swellHeight",
-                Unit = "m"
-            },
-            new TelemetryItem
-            {
-                Key = "temperature",
-                Unit = "°C"
-            },
-            new TelemetryItem
-            {
-                Key = "total-kw",
-                Description = "Total Power",
-                Unit = "kW"
-            },
-            new TelemetryItem
-            {
-                Key = "ts",
-            },
-            new TelemetryItem
-            {
-                Key = "turbo-rpm",
-                Unit = "RPM"
-            },
-            new TelemetryItem
-            {
-                Key = "utc",
-            },
-            new TelemetryItem
-            {
-                Key = "vessel",
-            },
-            new TelemetryItem
-            {
-                Key = "visibility",
-                Unit = "km"
-            },
-            new TelemetryItem
-            {
-                Key = "waterTemperature",
-                Unit = "°C"
-            },
-            new TelemetryItem
-            {
-                Key = "waveDirection",
-                Unit = "°"
-            },
-            new TelemetryItem
-            {
-                Key = "waveHeight",
-                Unit = "m"
-            },
-            new TelemetryItem
-            {
-                Key = "weatherTime",
-            },
-            new TelemetryItem
-            {
-                Key = "winddirDegree",
-                Unit = "°"
-            },
-            new TelemetryItem
-            {
-                Key = "windspeedKmph",
-                Unit = "km/h"
-            }
-        };
-
-        public List<TelemetryItem> Items { get; set; }
-
-    }
-
     public class TelemetryItem
     {
         public string Key { get; set; }
@@ -307,7 +65,7 @@ namespace Widget.Forecast
             return JsonConvert.DeserializeObject(content);
         }
 
-        public async Task<object> GetVesselTelemetryData(Guid id, DateTime date)
+        public async Task<List<object>> GetVesselTelemetryData(Guid id, DateTime date)
         {
             try
             {
@@ -336,8 +94,45 @@ namespace Widget.Forecast
                 }
                 else
                 {
-                    return JsonConvert.DeserializeObject(contentJson["data"].ToString());
+
+                    return JsonConvert.DeserializeObject<List<dynamic>>(contentJson["data"].ToString());
+                    return (List<dynamic>)JsonConvert.DeserializeObject(contentJson["data"].ToString());
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetVesselTelemetryData: " + ex.Message);
+                return null;
+            }
+        }
+        public async Task<List<object>> GetVesselTelemetryTimelineData(Guid id, List<string> keys)
+        {
+            try
+            {
+                var requestBody = new
+                {
+                    VesselId = id,
+                    TelemetryKeys = keys
+                };
+
+                var jsonRequestBody = JsonConvert.SerializeObject(requestBody);
+                var response = await _http.PostAsync("/api/v1/select/vessel/telemetry/timeline", new StringContent(jsonRequestBody, Encoding.UTF8, "application/json"));
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error response: {errorContent}");
+                    response.EnsureSuccessStatusCode();
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                JObject contentJson = JObject.Parse(content);
+
+                Console.WriteLine(contentJson.ToString());
+
+
+                return JsonConvert.DeserializeObject<List<dynamic>>(contentJson.ToString());
+
             }
             catch (Exception ex)
             {
@@ -517,6 +312,54 @@ namespace Widget.Forecast
                 return null;
             }
         }
+
+        public readonly List<string> TelemetryKeys = new List<string>
+        {
+            "1-a",
+            "2-a",
+            "3-a",
+            "1-kw",
+            "2-kw",
+            "3-kw",
+            "1-v",
+            "2-v",
+            "3-v",
+            "ais-status",
+            "ais-status-text",
+            "beaufort",
+            "coordinates",
+            "currentDirection",
+            "currentSpeed",
+            "distanceNM",
+            "gb-lo-in",
+            "GGAts",
+            "lat",
+            "LOG",
+            "lon",
+            "me-exhaust-temp",
+            "me-jacket-cfw-in",
+            "me-lo-in",
+            "me-prop-rpm",
+            "me-rpm",
+            "me-start-air",
+            "precipitation",
+            "SOG",
+            "swellDir",
+            "swellHeight",
+            "temperature",
+            "total-kw",
+            "ts",
+            "turbo-rpm",
+            "utc",
+            "vessel",
+            "visibility",
+            "waterTemperature",
+            "waveDirection",
+            "waveHeight",
+            "weatherTime",
+            "winddirDegree",
+            "windspeedKmph"
+        };
     }
 }
 
